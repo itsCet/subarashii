@@ -27,6 +27,7 @@ export function PracticalInfo() {
             {CAFE.address.street}
             <br />
             {CAFE.address.zip} {CAFE.address.city}
+            <span className="mt-1 block text-sm text-gold">{CAFE.address.note}</span>
           </address>
 
           <h3 className="mt-5 flex items-center gap-2 font-extrabold text-paper">
@@ -37,6 +38,21 @@ export function PracticalInfo() {
               <li key={a.mode} className="flex gap-2">
                 <span className="w-24 shrink-0 font-bold text-zinc-300">{a.mode}</span>
                 <span className="text-zinc-400">{a.detail}</span>
+              </li>
+            ))}
+          </ul>
+
+          <ul className="mt-5 flex flex-wrap gap-2">
+            {CAFE.socials.map((s) => (
+              <li key={s.label}>
+                <a
+                  href={s.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block rounded-full border border-zinc-700 px-3 py-1 text-xs font-bold text-zinc-300 transition hover:border-torii hover:text-paper"
+                >
+                  {s.label}
+                </a>
               </li>
             ))}
           </ul>

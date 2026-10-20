@@ -6,8 +6,9 @@ agenda des événements, Pass de Combat saisonnier, XP & quêtes, classement TOP
 DA « manga café chaleureux » : fond charbon, papier manga, rouge torii, or dorayaki, touches sakura,
 cases de manga à bordure nette et trames halftone (`manga-panel`, `halftone-*` dans `app/globals.css`).
 
-> ⚠️ **À compléter** : l'adresse, l'accès, les horaires, les contacts et les partenaires sont des valeurs
-> provisoires dans `lib/cafe.ts`. Le lien « Réserver une Alcôve » (`alcoveBookingUrl`) renvoie aux infos pratiques tant qu'il n'est pas renseigné.
+Les infos du lieu (adresse, horaires, réseaux, partenaires) sont dans `lib/cafe.ts`.
+> ⚠️ **À compléter** : arrêt de tram/bus, liens des partenaires, et `alcoveBookingUrl` (le bouton
+> « Réserver une Alcôve » renvoie aux infos pratiques tant qu'il n'est pas renseigné).
 
 **Stack** : Next.js 16 (App Router, TypeScript) · Tailwind CSS 4 · Framer Motion · Lucide · Supabase (Auth, Postgres, RLS, Realtime).
 

@@ -18,7 +18,8 @@ export function Hero() {
             {CAFE.tagline.replace(" à Genève", "")}
             <span className="block text-torii">à {CAFE.city}</span>
           </h1>
-          <p className="mt-4 max-w-lg text-zinc-300">
+          <p className="mt-3 text-sm font-extrabold uppercase tracking-widest text-gold">{CAFE.claim} 🇨🇭</p>
+          <p className="mt-3 max-w-lg text-zinc-300">
             Installe-toi dans une alcôve avec une pile de mangas, un bubble tea et des amis : le Subarashii,
             c&apos;est une bibliothèque, un bar, une zone gaming et un shop TCG sous le même toit.
           </p>
