@@ -1,0 +1,63 @@
+import {
+  Badge,
+  BookOpen,
+  CalendarCheck,
+  Coffee,
+  Cookie,
+  Crown,
+  CupSoda,
+  Gamepad2,
+  Gem,
+  Gift,
+  Image,
+  KeyRound,
+  Layers,
+  type LucideIcon,
+  type LucideProps,
+  Percent,
+  ScanLine,
+  Shirt,
+  ShoppingBag,
+  Sparkles,
+  Star,
+  Sticker,
+  Swords,
+  Ticket,
+  Trophy,
+  Utensils,
+  Zap,
+} from "lucide-react";
+
+// Les noms correspondent aux colonnes `icon_name` / `free_icon_name` en base.
+const ICONS: Record<string, LucideIcon> = {
+  badge: Badge,
+  "book-open": BookOpen,
+  "calendar-check": CalendarCheck,
+  coffee: Coffee,
+  cookie: Cookie,
+  crown: Crown,
+  "cup-soda": CupSoda,
+  "gamepad-2": Gamepad2,
+  gem: Gem,
+  gift: Gift,
+  image: Image,
+  "key-round": KeyRound,
+  layers: Layers,
+  percent: Percent,
+  "scan-line": ScanLine,
+  shirt: Shirt,
+  "shopping-bag": ShoppingBag,
+  sparkles: Sparkles,
+  star: Star,
+  sticker: Sticker,
+  swords: Swords,
+  ticket: Ticket,
+  trophy: Trophy,
+  utensils: Utensils,
+  zap: Zap,
+};
+
+export function RewardIcon({ icon, ...props }: { icon: string | null } & LucideProps) {
+  const Icon = (icon && ICONS[icon]) || Gift;
+  return <Icon aria-hidden {...props} />;
+}

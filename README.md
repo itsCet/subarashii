@@ -1,36 +1,59 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Subarashii Manga Café — PWA
 
-## Getting Started
+Web App / PWA du Subarashii Manga Café de Genève : Pass de Combat saisonnier, XP & quêtes,
+classement TOP 10, carte membre QR et interface caisse.
 
-First, run the development server:
+**Stack** : Next.js 16 (App Router, TypeScript) · Tailwind CSS 4 · Framer Motion · Lucide · Supabase (Auth, Postgres, RLS, Realtime).
+
+## Démarrage
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev          # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Sans variables Supabase, l'app tourne en **mode démo** (données locales + boutons pour simuler un ticket de caisse).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Brancher Supabase
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Créer un projet sur [supabase.com](https://supabase.com).
+2. Copier `.env.example` en `.env.local` et renseigner l'URL et la clé `anon`.
+3. Exécuter dans le SQL Editor, dans l'ordre :
+   - `supabase/migrations/20261020000000_init.sql` (tables, RLS, fonctions, realtime)
+   - `supabase/seed.sql` (Saison 1 « Cyber Arcade », 30 paliers, quêtes)
 
-## Learn More
+   ou avec la CLI : `supabase db push` puis `supabase db reset` en local.
+4. Authentication → URL Configuration : ajouter `http://localhost:3000/auth/callback` (et l'URL de prod) aux Redirect URLs.
+5. Donner un rôle au staff :
+   ```sql
+   update public.profiles set role = 'cashier' where id = '<uuid du compte>';
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+## Règles métier
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Règle | Où |
+| --- | --- |
+| 1 CHF = 10 XP | `record_transaction` (SQL) · `lib/game.ts` |
+| Niveau = `floor(XP / 500) + 1` | trigger `sync_profile_level` · `levelForXp` |
+| Pass Premium dès 25 CHF cumulés sur la saison | `record_transaction` · `applyTransaction` |
+| Récompense réclamable si niveau atteint (+ Premium pour la voie Premium) | `claim_reward` · `rewardState` |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Toute écriture sensible (XP, montant, pass, récompenses, quêtes) passe par des fonctions
+`security definer` ; les joueurs ne peuvent modifier que `username` et `avatar_url` de leur profil.
+Le profil est publié en Realtime : quand le caissier valide un ticket, l'écran du joueur affiche
+l'XP gagnée et l'animation « PASS PREMIUM DÉBLOQUÉ ! » en direct.
 
-## Deploy on Vercel
+## Structure
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+app/
+  page.tsx              Dashboard / Pass de Combat
+  login/, auth/callback Connexion par lien magique
+  profile/ leaderboard/ shop/ cashier/   (à venir)
+  actions/battle-pass.ts  Server actions (claim, quêtes)
+components/dashboard/   Header joueur, jauge Premium, timeline 30 paliers, quêtes, overlay
+lib/game.ts             Règles métier (miroir du SQL)
+lib/season-content.ts   Contenu de saison (source du seed et du mode démo)
+supabase/               Migration + seed (npm run db:seed:generate)
+proxy.ts                Rafraîchissement de session Supabase
+```
