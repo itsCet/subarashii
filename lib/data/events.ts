@@ -26,7 +26,7 @@ export async function getUpcomingEvents(limit = 50): Promise<UpcomingEvent[]> {
   }
 }
 
-function getDemoEvents(): UpcomingEvent[] {
+export function getDemoEvents(): UpcomingEvent[] {
   return SAMPLE_EVENTS.map((e, i) => {
     const start = zurichDateTime(e.day_offset, e.time);
     return {

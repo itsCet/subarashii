@@ -123,6 +123,33 @@ export type UpcomingEvent = Omit<CafeEvent, "is_published" | "created_at"> & {
   is_registered: boolean;
 };
 
+export type ProductCategory = "manga" | "tcg" | "goodies";
+
+export type Product = {
+  id: string;
+  name: string;
+  category: ProductCategory;
+  description: string;
+  price_chf: number;
+  stock: number | null;
+  image_url: string | null;
+  is_new: boolean;
+  is_published: boolean;
+  created_at: string;
+  updated_at: string;
+};
+
+export type StaffEvent = Omit<CafeEvent, "created_at"> & { registrations: number };
+
+export type RecentTransaction = {
+  id: string;
+  created_at: string;
+  amount_chf: number;
+  xp_gained: number;
+  member: string | null;
+  cashier: string | null;
+};
+
 export type LeaderboardEntry = Pick<Profile, "id" | "username" | "avatar_url" | "level" | "xp"> & {
   rank: number;
 };
@@ -139,6 +166,7 @@ export type Database = {
       user_quests: Table<UserQuest, "user_id" | "quest_id" | "period_start">;
       events: Table<CafeEvent, "slug" | "title" | "category" | "starts_at">;
       event_registrations: Table<EventRegistration, "event_id" | "user_id">;
+      products: Table<Product, "name" | "category" | "price_chf">;
     };
     Views: { [_ in never]: never };
     Functions: {
@@ -150,6 +178,12 @@ export type Database = {
       get_upcoming_events: { Args: { p_limit?: number }; Returns: UpcomingEvent[] };
       register_for_event: { Args: { p_event_id: string }; Returns: number | null };
       cancel_event_registration: { Args: { p_event_id: string }; Returns: undefined };
+      get_staff_events: { Args: Record<PropertyKey, never>; Returns: StaffEvent[] };
+      get_event_registrations: {
+        Args: { p_event_id: string };
+        Returns: { user_id: string; username: string | null; registered_at: string }[];
+      };
+      get_recent_transactions: { Args: { p_limit?: number }; Returns: RecentTransaction[] };
       is_staff: { Args: Record<PropertyKey, never>; Returns: boolean };
       is_admin: { Args: Record<PropertyKey, never>; Returns: boolean };
     };

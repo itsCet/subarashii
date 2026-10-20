@@ -30,6 +30,7 @@ Sans variables Supabase, l'app tourne en **mode démo** (données locales + bout
    - `supabase/migrations/20261020000000_init.sql` (tables, RLS, fonctions, realtime)
    - `supabase/migrations/20261021000000_events.sql` (agenda, inscriptions à places limitées)
    - `supabase/migrations/20261022000000_profiles_backfill.sql` (profils des comptes déjà créés)
+   - `supabase/migrations/20261023000000_staff.sql` (articles du shop, droits staff, images, historique caisse)
    - `supabase/seed.sql` (Saison 1 « Cyber Arcade », 30 paliers, quêtes, événements d'exemple)
 
    ou avec la CLI : `supabase db push` puis `supabase db reset` en local.
@@ -47,10 +48,23 @@ Sans variables Supabase, l'app tourne en **mode démo** (données locales + bout
 6. **E-mails (indispensable en production)** : le service d'e-mail intégré de Supabase est limité à
    quelques envois par heure et sert uniquement aux tests. Configurer un SMTP (Resend, Brevo, Postmark…)
    dans Authentication → SMTP Settings, puis relever la limite dans Authentication → Rate Limits.
-7. Donner un rôle au staff :
+7. Donner un rôle au personnel (la personne doit s'être connectée une première fois) :
    ```sql
-   update public.profiles set role = 'cashier' where id = '<uuid du compte>';
+   update public.profiles set role = 'admin'   -- ou 'cashier'
+   where id = (select id from auth.users where email = 'prenom@exemple.ch');
    ```
+
+## Espace staff (`/staff`)
+
+Accessible aux rôles `cashier` et `admin` (lien depuis « Mon profil »).
+
+- **Caisse** : scanner la carte membre du client (QR code dans « Mon profil ») ou le chercher par pseudo,
+  saisir le montant du ticket. L'XP, le cumul de saison et le déblocage du Pass Premium sont calculés
+  par la base ; le client voit le résultat en direct sur son téléphone.
+- **Agenda** : créer, modifier, dépublier ou supprimer un événement, ajouter une affiche, voir les inscrits.
+- **Shop** : gérer les articles (catégorie, prix, stock, photo, nouveauté, visibilité). Ils apparaissent sur `/shop`.
+
+Le scanner utilise la caméra : il faut le site en **https** (c'est le cas sur Vercel).
 
 ## Règles métier
 
@@ -74,11 +88,15 @@ app/
   events/               Agenda filtrable + inscriptions
   pass/                 Pass de Combat & quêtes
   login/, auth/callback Connexion par lien magique
-  profile/ leaderboard/ shop/ cashier/   (à venir)
+  profile/              Carte membre (QR code) et historique
+  shop/                 Catalogue public
+  staff/                Espace staff : caisse, agenda, shop
+  leaderboard/          (à venir)
   actions/              Server actions (pass, quêtes, inscriptions)
 components/home/        Sections de l'accueil
 components/events/      Cartes et filtres de l'agenda
 components/dashboard/   Header joueur, jauge Premium, timeline 30 paliers, quêtes, overlay
+components/staff/       Caisse + scanner QR, gestion agenda et shop, envoi d'images
 lib/cafe.ts             Infos du lieu (adresse, horaires, univers, partenaires)
 lib/events-content.ts   Catégories et événements d'exemple
 lib/game.ts             Règles métier (miroir du SQL)

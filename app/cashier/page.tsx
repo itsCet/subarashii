@@ -1,15 +1,6 @@
-import { ScanLine } from "lucide-react";
-import type { Metadata } from "next";
-import { ComingSoon } from "@/components/coming-soon";
+import { redirect } from "next/navigation";
 
-export const metadata: Metadata = { title: "Caisse" };
-
+// L'ancienne interface caisse fait désormais partie de l'espace staff.
 export default function CashierPage() {
-  return (
-    <ComingSoon
-      icon={ScanLine}
-      title="Interface caisse"
-      items={["Scan du QR Code membre", "Saisie du montant du ticket", "Crédit XP et déblocage du Pass Premium"]}
-    />
-  );
+  redirect("/staff");
 }
