@@ -1,6 +1,7 @@
 "use client";
 
 import { Gift, Hourglass, ScanLine } from "lucide-react";
+import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { claimReward, completeQuest } from "@/app/actions/battle-pass";
 import { Toaster, useToasts } from "@/components/ui/toaster";
@@ -88,7 +89,11 @@ export function DashboardClient({ initial }: { initial: DashboardData }) {
 
     if (!result.ok) return push(result.error, "error");
     setClaimed((prev) => new Set(prev).add(key));
-    push(`Récompense obtenue : ${track === "free" ? tier.free_reward : tier.premium_reward}`, track === "premium" ? "xp" : "info");
+    const redeemable = track === "free" ? tier.free_redeemable : tier.premium_redeemable;
+    push(
+      `${track === "free" ? tier.free_reward : tier.premium_reward}${redeemable ? " : à retirer au comptoir" : " : débloqué"}`,
+      track === "premium" ? "xp" : "info",
+    );
   }
 
   async function handleQuest(quest: PlayerQuest) {
@@ -152,7 +157,13 @@ export function DashboardClient({ initial }: { initial: DashboardData }) {
               Pass de Combat
             </h2>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <Link
+              href="/profile#recompenses"
+              className="text-[11px] font-bold text-paper underline decoration-torii decoration-2 underline-offset-4 hover:text-torii"
+            >
+              Mes récompenses
+            </Link>
             {claimable.free + claimable.premium > 0 && (
               <span className="inline-flex items-center gap-1 rounded-full border border-sakura/50 bg-sakura/10 px-2.5 py-1 text-[11px] font-semibold text-sakura">
                 <Gift className="size-3.5" /> {claimable.free + claimable.premium} à réclamer

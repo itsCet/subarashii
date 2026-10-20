@@ -45,6 +45,8 @@ export type BattlePassTier = {
   premium_reward: string | null;
   icon_name: string | null;
   free_icon_name: string | null;
+  free_redeemable: boolean;
+  premium_redeemable: boolean;
 };
 
 export type UserReward = {
@@ -53,7 +55,22 @@ export type UserReward = {
   tier_id: string;
   track: Track;
   claimed_at: string;
+  redeemed_at: string | null;
+  redeemed_by: string | null;
 };
+
+export type MyReward = {
+  id: string;
+  tier_level: number;
+  track: Track;
+  reward: string | null;
+  icon_name: string | null;
+  redeemable: boolean;
+  claimed_at: string;
+  redeemed_at: string | null;
+};
+
+export type PendingReward = Omit<MyReward, "redeemable" | "redeemed_at">;
 
 export type Transaction = {
   id: string;
@@ -184,6 +201,9 @@ export type Database = {
         Returns: { user_id: string; username: string | null; registered_at: string }[];
       };
       get_recent_transactions: { Args: { p_limit?: number }; Returns: RecentTransaction[] };
+      get_my_rewards: { Args: Record<PropertyKey, never>; Returns: MyReward[] };
+      get_pending_rewards: { Args: { p_user_id: string }; Returns: PendingReward[] };
+      redeem_reward: { Args: { p_user_reward_id: string }; Returns: string };
       is_staff: { Args: Record<PropertyKey, never>; Returns: boolean };
       is_admin: { Args: Record<PropertyKey, never>; Returns: boolean };
     };

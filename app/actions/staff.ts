@@ -4,7 +4,7 @@ import { normalizeProduct } from "@/lib/data/products";
 import { EVENT_CATEGORIES } from "@/lib/events-content";
 import { PRODUCT_CATEGORIES } from "@/lib/products-content";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
-import type { EventCategory, Product, ProductCategory, StaffEvent } from "@/lib/supabase/database.types";
+import type { EventCategory, PendingReward, Product, ProductCategory, StaffEvent } from "@/lib/supabase/database.types";
 import { createClient } from "@/lib/supabase/server";
 import { zurichLocalToDate } from "@/lib/time";
 import type { ActionResult } from "./battle-pass";
@@ -19,6 +19,8 @@ const ERRORS: Record<string, string> = {
   SELF_TRANSACTION: "Impossible de créditer ton propre compte.",
   INVALID_AMOUNT: "Montant invalide.",
   MEMBER_NOT_FOUND: "Membre introuvable.",
+  ALREADY_REDEEMED: "Cette récompense a déjà été remise.",
+  REWARD_NOT_FOUND: "Récompense introuvable.",
 };
 const toError = (message?: string) => ERRORS[message ?? ""] ?? "Une erreur est survenue. Réessaie.";
 
@@ -85,6 +87,23 @@ export async function recordTransaction(memberId: string, amountChf: number): Pr
     ok: true,
     data: { ...r, amount_chf: Number(r.amount_chf), current_season_spent: Number(r.current_season_spent) },
   };
+}
+
+/** Récompenses du Pass réclamées par le membre mais pas encore remises au comptoir. */
+export async function getPendingRewards(memberId: string): Promise<ActionResult<PendingReward[]>> {
+  if (!isSupabaseConfigured) return DEMO;
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc("get_pending_rewards", { p_user_id: memberId });
+  if (error) return { ok: false, error: toError(error.message) };
+  return { ok: true, data: data ?? [] };
+}
+
+export async function redeemReward(userRewardId: string): Promise<ActionResult> {
+  if (!isSupabaseConfigured) return DEMO;
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("redeem_reward", { p_user_reward_id: userRewardId });
+  if (error) return { ok: false, error: toError(error.message) };
+  return { ok: true, data: undefined };
 }
 
 // -----------------------------------------------------------------------------

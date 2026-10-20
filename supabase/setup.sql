@@ -916,6 +916,124 @@ create policy "media_staff_delete" on storage.objects
   for delete to authenticated using (bucket_id = 'media' and public.is_staff());
 
 -- =============================================================================
+-- migrations/20261024000000_reward_redemption.sql
+-- =============================================================================
+
+-- =============================================================================
+-- Remise des récompenses du Pass au comptoir.
+-- Récompenses « physiques » (boisson, booster, goodies…) : le joueur les réclame
+-- dans l'app, puis le staff les lui remet et les marque comme retirées.
+-- Récompenses « numériques » (badge, titre, cadre…) : rien à retirer.
+-- =============================================================================
+
+alter table public.battle_pass_tiers
+  add column free_redeemable    boolean not null default true,
+  add column premium_redeemable boolean not null default true;
+
+-- Même règle que `isDigitalReward` dans lib/season-content.ts.
+update public.battle_pass_tiers
+set free_redeemable = coalesce(free_reward, '') !~* '^(badge|titre|cadre de profil|fond d.écran|avatar)',
+    premium_redeemable = coalesce(premium_reward, '') !~* '^(badge|titre|cadre de profil|fond d.écran|avatar)';
+
+alter table public.user_rewards
+  add column redeemed_at timestamptz,
+  add column redeemed_by uuid references public.profiles (id) on delete set null;
+
+-- Récompenses réclamées par le joueur connecté (page « Mon profil »).
+create or replace function public.get_my_rewards ()
+returns table (
+  id          uuid,
+  tier_level  integer,
+  track       text,
+  reward      text,
+  icon_name   text,
+  redeemable  boolean,
+  claimed_at  timestamptz,
+  redeemed_at timestamptz
+)
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select
+    ur.id, t.level, ur.track,
+    case ur.track when 'premium' then t.premium_reward else t.free_reward end,
+    case ur.track when 'premium' then t.icon_name else t.free_icon_name end,
+    case ur.track when 'premium' then t.premium_redeemable else t.free_redeemable end,
+    ur.claimed_at, ur.redeemed_at
+  from public.user_rewards ur
+  join public.battle_pass_tiers t on t.id = ur.tier_id
+  where ur.user_id = auth.uid()
+  order by ur.redeemed_at nulls first, t.level;
+$$;
+
+-- Récompenses physiques à remettre à un membre (caisse).
+create or replace function public.get_pending_rewards (p_user_id uuid)
+returns table (id uuid, tier_level integer, track text, reward text, icon_name text, claimed_at timestamptz)
+language plpgsql
+stable
+security definer
+set search_path = ''
+as $$
+begin
+  if not public.is_staff() then
+    raise exception 'FORBIDDEN' using errcode = '42501';
+  end if;
+
+  return query
+    select
+      ur.id, t.level, ur.track,
+      case ur.track when 'premium' then t.premium_reward else t.free_reward end,
+      case ur.track when 'premium' then t.icon_name else t.free_icon_name end,
+      ur.claimed_at
+    from public.user_rewards ur
+    join public.battle_pass_tiers t on t.id = ur.tier_id
+    where ur.user_id = p_user_id
+      and ur.redeemed_at is null
+      and case ur.track when 'premium' then t.premium_redeemable else t.free_redeemable end
+    order by t.level;
+end;
+$$;
+
+-- Marque une récompense comme remise (une seule fois).
+create or replace function public.redeem_reward (p_user_reward_id uuid)
+returns timestamptz
+language plpgsql
+security definer
+set search_path = ''
+as $$
+declare
+  v_redeemed_at timestamptz;
+begin
+  if not public.is_staff() then
+    raise exception 'FORBIDDEN' using errcode = '42501';
+  end if;
+
+  update public.user_rewards
+  set redeemed_at = now(), redeemed_by = auth.uid()
+  where id = p_user_reward_id and redeemed_at is null
+  returning redeemed_at into v_redeemed_at;
+
+  if v_redeemed_at is null then
+    if exists (select 1 from public.user_rewards where id = p_user_reward_id) then
+      raise exception 'ALREADY_REDEEMED' using errcode = '23505';
+    end if;
+    raise exception 'REWARD_NOT_FOUND' using errcode = 'P0002';
+  end if;
+
+  return v_redeemed_at;
+end;
+$$;
+
+revoke execute on function public.get_my_rewards ()            from public, anon;
+revoke execute on function public.get_pending_rewards (uuid)   from public, anon;
+revoke execute on function public.redeem_reward (uuid)         from public, anon;
+grant execute on function public.get_my_rewards ()             to authenticated;
+grant execute on function public.get_pending_rewards (uuid)    to authenticated;
+grant execute on function public.redeem_reward (uuid)          to authenticated;
+
+-- =============================================================================
 -- seed.sql
 -- =============================================================================
 
@@ -927,40 +1045,40 @@ with season as (
   values ('Saison 1 : Cyber Arcade', current_date, current_date + 90, true)
   returning id
 )
-insert into public.battle_pass_tiers (season_id, level, xp_required, free_reward, premium_reward, icon_name, free_icon_name)
+insert into public.battle_pass_tiers (season_id, level, xp_required, free_reward, premium_reward, icon_name, free_icon_name, free_redeemable, premium_redeemable)
 select season.id, t.*
 from season, (values
-  (1, 0, 'Badge Rookie', 'Avatar néon exclusif', 'sparkles', 'badge'),
-  (2, 500, null, 'Sticker Subarashii holo', 'sticker', null),
-  (3, 1000, 'Fond d''écran Cyber Arcade', '-20% sur une boisson', 'cup-soda', 'image'),
-  (4, 1500, null, 'Mochi glacé offert', 'cookie', null),
-  (5, 2000, 'Thé glacé offert', 'Booster TCG au choix', 'layers', 'cup-soda'),
-  (6, 2500, null, 'Marque-page métal', 'book-open', null),
-  (7, 3000, 'Sticker logo', '1h de gaming offerte', 'gamepad-2', 'sticker'),
-  (8, 3500, null, 'Bon shop 5 CHF', 'ticket', null),
-  (9, 4000, '-10% sur un manga', 'Ramune offerte', 'cup-soda', 'percent'),
-  (10, 4500, 'Titre « Otaku Confirmé »', 'Tote bag Subarashii', 'shopping-bag', 'star'),
-  (11, 5000, null, 'Booster TCG', 'layers', null),
-  (12, 5500, 'Boisson chaude offerte', 'Porte-clés acrylique', 'key-round', 'coffee'),
-  (13, 6000, null, 'Snack japonais offert', 'cookie', null),
-  (14, 6500, 'Cadre de profil Néon', '2h de gaming offertes', 'gamepad-2', 'sparkles'),
-  (15, 7000, 'Booster TCG', 'Bon shop 10 CHF', 'ticket', 'layers'),
-  (16, 7500, null, 'Pin''s collector', 'badge', null),
-  (17, 8000, '-15% sur un manga', 'Bubble tea offert', 'cup-soda', 'percent'),
-  (18, 8500, null, 'Poster exclusif de saison', 'image', null),
-  (19, 9000, 'Sticker holo', '2 boosters TCG', 'layers', 'sticker'),
-  (20, 9500, 'Titre « Légende d''Arcade »', 'Mug Subarashii', 'coffee', 'star'),
-  (21, 10000, null, 'Manga tome 1 au choix', 'book-open', null),
-  (22, 10500, 'Boisson offerte', 'Bon shop 15 CHF', 'ticket', 'cup-soda'),
-  (23, 11000, null, 'Snack box japonaise', 'gift', null),
-  (24, 11500, 'Cadre de profil Holo', 'Accès tournoi privé', 'swords', 'sparkles'),
-  (25, 12000, 'Booster TCG', 'T-shirt Subarashii', 'shirt', 'layers'),
-  (26, 12500, null, 'Mini-figurine gacha', 'gift', null),
-  (27, 13000, '-20% sur un manga', 'Bon shop 20 CHF', 'ticket', 'percent'),
-  (28, 13500, null, '-30% sur un display TCG', 'layers', null),
-  (29, 14000, 'Badge Saison 1', 'Coffret collector', 'gem', 'badge'),
-  (30, 14500, 'Titre « Maître du Café »', 'Figurine premium au choix', 'trophy', 'crown')
-) as t (level, xp_required, free_reward, premium_reward, icon_name, free_icon_name);
+  (1, 0, 'Badge Rookie', 'Avatar néon exclusif', 'sparkles', 'badge', false, false),
+  (2, 500, null, 'Sticker Subarashii holo', 'sticker', null, false, true),
+  (3, 1000, 'Fond d''écran Cyber Arcade', '-20% sur une boisson', 'cup-soda', 'image', false, true),
+  (4, 1500, null, 'Mochi glacé offert', 'cookie', null, false, true),
+  (5, 2000, 'Thé glacé offert', 'Booster TCG au choix', 'layers', 'cup-soda', true, true),
+  (6, 2500, null, 'Marque-page métal', 'book-open', null, false, true),
+  (7, 3000, 'Sticker logo', '1h de gaming offerte', 'gamepad-2', 'sticker', true, true),
+  (8, 3500, null, 'Bon shop 5 CHF', 'ticket', null, false, true),
+  (9, 4000, '-10% sur un manga', 'Ramune offerte', 'cup-soda', 'percent', true, true),
+  (10, 4500, 'Titre « Otaku Confirmé »', 'Tote bag Subarashii', 'shopping-bag', 'star', false, true),
+  (11, 5000, null, 'Booster TCG', 'layers', null, false, true),
+  (12, 5500, 'Boisson chaude offerte', 'Porte-clés acrylique', 'key-round', 'coffee', true, true),
+  (13, 6000, null, 'Snack japonais offert', 'cookie', null, false, true),
+  (14, 6500, 'Cadre de profil Néon', '2h de gaming offertes', 'gamepad-2', 'sparkles', false, true),
+  (15, 7000, 'Booster TCG', 'Bon shop 10 CHF', 'ticket', 'layers', true, true),
+  (16, 7500, null, 'Pin''s collector', 'badge', null, false, true),
+  (17, 8000, '-15% sur un manga', 'Bubble tea offert', 'cup-soda', 'percent', true, true),
+  (18, 8500, null, 'Poster exclusif de saison', 'image', null, false, true),
+  (19, 9000, 'Sticker holo', '2 boosters TCG', 'layers', 'sticker', true, true),
+  (20, 9500, 'Titre « Légende d''Arcade »', 'Mug Subarashii', 'coffee', 'star', false, true),
+  (21, 10000, null, 'Manga tome 1 au choix', 'book-open', null, false, true),
+  (22, 10500, 'Boisson offerte', 'Bon shop 15 CHF', 'ticket', 'cup-soda', true, true),
+  (23, 11000, null, 'Snack box japonaise', 'gift', null, false, true),
+  (24, 11500, 'Cadre de profil Holo', 'Accès tournoi privé', 'swords', 'sparkles', false, true),
+  (25, 12000, 'Booster TCG', 'T-shirt Subarashii', 'shirt', 'layers', true, true),
+  (26, 12500, null, 'Mini-figurine gacha', 'gift', null, false, true),
+  (27, 13000, '-20% sur un manga', 'Bon shop 20 CHF', 'ticket', 'percent', true, true),
+  (28, 13500, null, '-30% sur un display TCG', 'layers', null, false, true),
+  (29, 14000, 'Badge Saison 1', 'Coffret collector', 'gem', 'badge', false, true),
+  (30, 14500, 'Titre « Maître du Café »', 'Figurine premium au choix', 'trophy', 'crown', false, true)
+) as t (level, xp_required, free_reward, premium_reward, icon_name, free_icon_name, free_redeemable, premium_redeemable);
 
 insert into public.quests (slug, title, description, xp_reward, frequency, verification, target_value, icon_name, sort_order)
 values

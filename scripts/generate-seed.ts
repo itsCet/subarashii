@@ -11,7 +11,7 @@ const q = (v: string | number | null) =>
 
 const tiers = SEASON_1_TIERS.map(
   (t) =>
-    `  (${[t.level, t.xp_required, q(t.free_reward), q(t.premium_reward), q(t.icon_name), q(t.free_icon_name)].join(", ")})`,
+    `  (${[t.level, t.xp_required, q(t.free_reward), q(t.premium_reward), q(t.icon_name), q(t.free_icon_name), t.free_redeemable, t.premium_redeemable].join(", ")})`,
 ).join(",\n");
 
 const quests = QUESTS.map(
@@ -32,11 +32,11 @@ with season as (
   values (${q(SEASON_1.title)}, current_date, current_date + ${SEASON_LENGTH_DAYS}, true)
   returning id
 )
-insert into public.battle_pass_tiers (season_id, level, xp_required, free_reward, premium_reward, icon_name, free_icon_name)
+insert into public.battle_pass_tiers (season_id, level, xp_required, free_reward, premium_reward, icon_name, free_icon_name, free_redeemable, premium_redeemable)
 select season.id, t.*
 from season, (values
 ${tiers}
-) as t (level, xp_required, free_reward, premium_reward, icon_name, free_icon_name);
+) as t (level, xp_required, free_reward, premium_reward, icon_name, free_icon_name, free_redeemable, premium_redeemable);
 
 insert into public.quests (slug, title, description, xp_reward, frequency, verification, target_value, icon_name, sort_order)
 values

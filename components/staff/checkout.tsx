@@ -1,15 +1,28 @@
 "use client";
 
-import { Check, Crown, Loader2, ScanLine, Search, X } from "lucide-react";
+import { Check, Crown, Gift, Loader2, ScanLine, Search, X } from "lucide-react";
 import { useEffect, useState } from "react";
-import { type MemberSummary, type TransactionReceipt, findMembers, recordTransaction } from "@/app/actions/staff";
+import {
+  type MemberSummary,
+  type TransactionReceipt,
+  findMembers,
+  getPendingRewards,
+  recordTransaction,
+  redeemReward,
+} from "@/app/actions/staff";
+import { RewardIcon } from "@/components/ui/reward-icon";
 import { PREMIUM_THRESHOLD_CHF, applyTransaction, formatChf, formatXp } from "@/lib/game";
-import type { RecentTransaction } from "@/lib/supabase/database.types";
+import type { PendingReward, RecentTransaction } from "@/lib/supabase/database.types";
 import { formatDateTimeShort } from "@/lib/time";
 import { inputClass, primaryButton, secondaryButton } from "./form";
 import { QrScanner } from "./qr-scanner";
 
 const QUICK_AMOUNTS = [5, 10, 15, 20, 25];
+
+const DEMO_PENDING: PendingReward[] = [
+  { id: "demo-r1", tier_level: 5, track: "free", reward: "Thé glacé offert", icon_name: "cup-soda", claimed_at: "" },
+  { id: "demo-r2", tier_level: 4, track: "premium", reward: "Mochi glacé offert", icon_name: "cookie", claimed_at: "" },
+];
 
 const DEMO_MEMBERS: MemberSummary[] = [
   { id: "demo-1", username: "NeoOtaku", avatar_url: null, xp: 3420, level: 7, current_season_spent: 18.5, is_premium_pass: false },
@@ -34,6 +47,8 @@ export function Checkout({ mode, initialTransactions }: Props) {
   const [error, setError] = useState<string | null>(null);
   const [receipt, setReceipt] = useState<TransactionReceipt | null>(null);
   const [history, setHistory] = useState(initialTransactions);
+  const [pendingRewards, setPendingRewards] = useState<PendingReward[]>([]);
+  const [redeemingId, setRedeemingId] = useState<string | null>(null);
 
   // Recherche par pseudo, avec un léger délai pendant la frappe.
   useEffect(() => {
@@ -60,15 +75,27 @@ export function Checkout({ mode, initialTransactions }: Props) {
     selectMember(result.data[0]);
   }
 
-  function selectMember(m: MemberSummary) {
+  async function selectMember(m: MemberSummary) {
     setMember(m);
     setQuery("");
     setResults([]);
     setError(null);
+    setPendingRewards([]);
+    const result = demo ? { ok: true as const, data: m.id === "demo-1" ? DEMO_PENDING : [] } : await getPendingRewards(m.id);
+    if (result.ok) setPendingRewards(result.data);
+  }
+
+  async function redeem(reward: PendingReward) {
+    setRedeemingId(reward.id);
+    const result = demo ? ({ ok: true } as const) : await redeemReward(reward.id);
+    setRedeemingId(null);
+    if (!result.ok) return setError(result.error);
+    setPendingRewards((list) => list.filter((r) => r.id !== reward.id));
   }
 
   function reset() {
     setMember(null);
+    setPendingRewards([]);
     setAmount("");
     setReceipt(null);
     setError(null);
@@ -199,6 +226,35 @@ export function Checkout({ mode, initialTransactions }: Props) {
                 </div>
               )}
             </section>
+
+            {member && pendingRewards.length > 0 && (
+              <section aria-labelledby="pending-rewards" className="mt-6 border-2 border-gold p-4">
+                <h2 id="pending-rewards" className="flex items-center gap-2 text-sm font-extrabold text-paper">
+                  <Gift className="size-4 text-gold" /> Récompenses à remettre · {pendingRewards.length}
+                </h2>
+                <ul className="mt-3 divide-y divide-zinc-800">
+                  {pendingRewards.map((r) => (
+                    <li key={r.id} className="flex items-center gap-3 py-2">
+                      <RewardIcon icon={r.icon_name} className="size-5 shrink-0 text-gold" />
+                      <span className="min-w-0 flex-1">
+                        <span className="block font-bold text-paper">{r.reward}</span>
+                        <span className="text-xs text-zinc-500">
+                          Palier {r.tier_level} · {r.track === "premium" ? "Premium" : "Gratuit"}
+                        </span>
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => redeem(r)}
+                        disabled={redeemingId === r.id}
+                        className={secondaryButton}
+                      >
+                        {redeemingId === r.id ? <Loader2 className="size-4 animate-spin" /> : "Remettre"}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
 
             {/* Étape 2 : montant */}
             <form onSubmit={submit} aria-labelledby="step-amount" className={`mt-8 ${member ? "" : "pointer-events-none opacity-40"}`}>

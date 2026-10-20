@@ -3,8 +3,10 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { signOut } from "@/app/actions/auth";
 import { MemberCard } from "@/components/member-card";
+import { MyRewards } from "@/components/my-rewards";
 import { SectionTitle } from "@/components/ui/section-title";
 import { getPlayerSummary } from "@/lib/data/player";
+import { getMyRewards } from "@/lib/data/rewards";
 import { formatChf } from "@/lib/game";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import type { Transaction } from "@/lib/supabase/database.types";
@@ -24,7 +26,7 @@ export default async function ProfilePage() {
   const { mode, profile } = await getPlayerSummary();
   if (!profile) redirect("/login?next=/profile");
 
-  const transactions = await getMyTransactions();
+  const [transactions, rewards] = await Promise.all([getMyTransactions(), getMyRewards()]);
   const isStaff = profile.role === "cashier" || profile.role === "admin";
 
   return (
@@ -40,8 +42,10 @@ export default async function ProfilePage() {
         </Link>
       )}
 
+      <MyRewards rewards={rewards} index="01" />
+
       <section aria-labelledby="history-title">
-        <SectionTitle index="01" title="Mes passages en caisse" id="history-title" />
+        <SectionTitle index="02" title="Mes passages en caisse" id="history-title" />
         {transactions.length === 0 ? (
           <p className="text-sm text-zinc-400">
             {mode === "demo" ? "Historique disponible une fois Supabase branché." : "Aucun achat enregistré pour l'instant."}

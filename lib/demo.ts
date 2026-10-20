@@ -38,6 +38,7 @@ export function getDemoDashboard(): DashboardData {
     claimed: [
       { tier_id: "demo-tier-1", track: "free" },
       { tier_id: "demo-tier-3", track: "free" },
+      { tier_id: "demo-tier-5", track: "free" },
     ],
     quests: QUESTS.map((q, i) => ({
       ...q,

@@ -47,6 +47,10 @@ const TIERS: TierContent[] = [
 
 if (TIERS.length !== MAX_TIER) throw new Error(`La saison doit avoir ${MAX_TIER} paliers`);
 
+/** Récompense « numérique » : rien à retirer au comptoir. Même règle que la migration reward_redemption. */
+export const isDigitalReward = (reward: string | null) =>
+  !reward || /^(badge|titre|cadre de profil|fond d.écran|avatar)/i.test(reward);
+
 export const SEASON_1_TIERS = TIERS.map((t, i) => ({
   level: i + 1,
   xp_required: xpForLevel(i + 1),
@@ -54,6 +58,8 @@ export const SEASON_1_TIERS = TIERS.map((t, i) => ({
   free_icon_name: t.free?.[1] ?? null,
   premium_reward: t.premium[0],
   icon_name: t.premium[1],
+  free_redeemable: !isDigitalReward(t.free?.[0] ?? null),
+  premium_redeemable: !isDigitalReward(t.premium[0]),
 }));
 
 export const QUESTS = [

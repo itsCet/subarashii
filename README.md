@@ -62,6 +62,8 @@ Accessible aux rôles `cashier` et `admin` (lien depuis « Mon profil »).
 - **Caisse** : scanner la carte membre du client (QR code dans « Mon profil ») ou le chercher par pseudo,
   saisir le montant du ticket. L'XP, le cumul de saison et le déblocage du Pass Premium sont calculés
   par la base ; le client voit le résultat en direct sur son téléphone.
+  Si le membre a réclamé des récompenses physiques dans son Pass (boisson, booster, goodies…),
+  elles s'affichent sous sa fiche avec un bouton « Remettre » : une récompense ne peut être remise qu'une fois.
 - **Agenda** : créer, modifier, dépublier ou supprimer un événement, ajouter une affiche, voir les inscrits.
 - **Shop** : gérer les articles (catégorie, prix, stock, photo, nouveauté, visibilité). Ils apparaissent sur `/shop`.
 
@@ -75,6 +77,7 @@ Le scanner utilise la caméra : il faut le site en **https** (c'est le cas sur V
 | Niveau = `floor(XP / 500) + 1` | trigger `sync_profile_level` · `levelForXp` |
 | Pass Premium dès 25 CHF cumulés sur la saison | `record_transaction` · `applyTransaction` |
 | Récompense réclamable si niveau atteint (+ Premium pour la voie Premium) | `claim_reward` · `rewardState` |
+| Récompense physique à retirer au comptoir ; badges, titres, cadres, avatars, fonds d'écran = numériques | `redeem_reward` · `isDigitalReward` |
 
 Toute écriture sensible (XP, montant, pass, récompenses, quêtes) passe par des fonctions
 `security definer` ; les joueurs ne peuvent modifier que `username` et `avatar_url` de leur profil.
