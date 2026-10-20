@@ -6,13 +6,14 @@ import { useState } from "react";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { createClient } from "@/lib/supabase/client";
 
-type Step = "email" | "code";
+type Step = "email" | "code" | "password";
 
 export function LoginForm({ next }: { next?: string }) {
   const router = useRouter();
   const [step, setStep] = useState<Step>("email");
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
+  const [password, setPassword] = useState("");
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const destination = next && next.startsWith("/") && !next.startsWith("//") ? next : "/pass";
@@ -54,6 +55,20 @@ export function LoginForm({ next }: { next?: string }) {
     router.refresh();
   }
 
+  async function signInWithPassword(e: React.FormEvent) {
+    e.preventDefault();
+    setPending(true);
+    setError(null);
+    const { error } = await createClient().auth.signInWithPassword({ email, password });
+    if (error) {
+      setPending(false);
+      setError("E-mail ou mot de passe incorrect.");
+      return;
+    }
+    router.replace(destination);
+    router.refresh();
+  }
+
   if (!isSupabaseConfigured) {
     return <p className="mt-8 text-sm text-zinc-500">Supabase n&apos;est pas configuré : l&apos;app fonctionne en mode démo.</p>;
   }
@@ -62,6 +77,52 @@ export function LoginForm({ next }: { next?: string }) {
     "w-full border-2 border-zinc-700 bg-ink px-3 py-3 text-paper outline-none placeholder:text-zinc-600 focus:border-paper";
   const button =
     "flex w-full items-center justify-center gap-2 border-2 border-black bg-torii py-3 text-sm font-extrabold text-paper shadow-panel transition hover:bg-torii-bright disabled:opacity-70";
+
+  if (step === "password") {
+    return (
+      <form onSubmit={signInWithPassword} className="mt-8 w-full space-y-3 text-left">
+        <label htmlFor="pw-email" className="text-xs font-bold uppercase tracking-wider text-zinc-400">
+          E-mail
+        </label>
+        <input
+          id="pw-email"
+          type="email"
+          required
+          autoComplete="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className={input}
+        />
+        <label htmlFor="pw-password" className="block text-xs font-bold uppercase tracking-wider text-zinc-400">
+          Mot de passe
+        </label>
+        <input
+          id="pw-password"
+          type="password"
+          required
+          autoComplete="current-password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className={input}
+        />
+        <button type="submit" disabled={pending} className={button}>
+          {pending && <Loader2 className="size-4 animate-spin" />}
+          Se connecter
+        </button>
+        {error && <p className="text-sm text-torii">{error}</p>}
+        <button
+          type="button"
+          onClick={() => {
+            setStep("email");
+            setError(null);
+          }}
+          className="text-sm text-zinc-400 underline underline-offset-4 hover:text-paper"
+        >
+          Recevoir un code par e-mail à la place
+        </button>
+      </form>
+    );
+  }
 
   if (step === "code") {
     return (
@@ -122,7 +183,7 @@ export function LoginForm({ next }: { next?: string }) {
       />
       <button type="submit" disabled={pending} className={button}>
         {pending && <Loader2 className="size-4 animate-spin" />}
-        Recevoir mon code
+        Recevoir mon lien de connexion
       </button>
       {error && <p className="text-sm text-torii">{error}</p>}
       <button
@@ -135,6 +196,16 @@ export function LoginForm({ next }: { next?: string }) {
         className="text-sm text-zinc-400 underline underline-offset-4 hover:text-paper disabled:opacity-40"
       >
         J&apos;ai déjà reçu un code
+      </button>
+      <button
+        type="button"
+        onClick={() => {
+          setError(null);
+          setStep("password");
+        }}
+        className="block text-sm text-zinc-400 underline underline-offset-4 hover:text-paper"
+      >
+        Connexion avec mot de passe (équipe)
       </button>
     </form>
   );
