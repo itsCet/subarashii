@@ -11,12 +11,17 @@ export async function getPlayerSummary(): Promise<{ mode: "demo" | "live"; profi
   await connection();
   if (!isSupabaseConfigured) return { mode: "demo", profile: getDemoDashboard().profile };
 
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) return { mode: "live", profile: null };
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) return { mode: "live", profile: null };
 
-  const { data } = await supabase.from("profiles").select("*").eq("id", user.id).single();
-  return { mode: "live", profile: data ? normalizeProfile(data) : null };
+    const { data } = await supabase.from("profiles").select("*").eq("id", user.id).single();
+    return { mode: "live", profile: data ? normalizeProfile(data) : null };
+  } catch (error) {
+    console.error("[player] chargement du profil impossible :", error);
+    return { mode: "live", profile: null };
+  }
 }

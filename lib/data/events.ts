@@ -10,11 +10,18 @@ export async function getUpcomingEvents(limit = 50): Promise<UpcomingEvent[]> {
   await connection();
   if (!isSupabaseConfigured) return getDemoEvents().slice(0, limit);
 
-  const supabase = await createClient();
-  const { data, error } = await supabase.rpc("get_upcoming_events", { p_limit: limit });
-  if (error) throw error;
-  // PostgREST renvoie les `numeric` sous forme de chaîne.
-  return (data ?? []).map((e) => ({ ...e, price_chf: Number(e.price_chf) }));
+  // Un agenda indisponible (migration events non appliquée, Supabase injoignable…)
+  // ne doit jamais faire tomber l'accueil : on affiche simplement une liste vide.
+  try {
+    const supabase = await createClient();
+    const { data, error } = await supabase.rpc("get_upcoming_events", { p_limit: limit });
+    if (error) throw error;
+    // PostgREST renvoie les `numeric` sous forme de chaîne.
+    return (data ?? []).map((e) => ({ ...e, price_chf: Number(e.price_chf) }));
+  } catch (error) {
+    console.error("[events] chargement impossible :", error);
+    return [];
+  }
 }
 
 function getDemoEvents(): UpcomingEvent[] {
