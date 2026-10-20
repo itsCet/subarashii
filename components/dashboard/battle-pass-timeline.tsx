@@ -95,7 +95,7 @@ export function BattlePassTimeline({ tiers, playerLevel, isPremium, claimed, pen
                       isCurrent
                         ? "bg-gold text-black ring-4 ring-gold/20"
                         : reached
-                          ? "bg-torii text-paper"
+                          ? "bg-torii text-white"
                           : "border border-zinc-700 bg-zinc-900 text-zinc-500"
                     }`}
                     aria-label={`Palier ${tier.level}${isCurrent ? " (actuel)" : ""}`}
@@ -198,7 +198,7 @@ function RewardCard({
         <>
           <div
             className={`mt-1 grid size-12 place-items-center rounded-sm ${
-              premium ? "bg-gold/10 text-gold" : "bg-torii/15 text-red-300"
+              premium ? "bg-gold/10 text-gold" : "bg-torii/15 text-torii"
             } ${muted ? "opacity-50" : ""}`}
           >
             <RewardIcon icon={icon} className="size-6" />
@@ -216,14 +216,14 @@ function RewardCard({
                 className={`flex w-full items-center justify-center gap-1 rounded-sm py-1.5 text-[11px] font-bold uppercase tracking-wider transition active:scale-95 disabled:opacity-70 ${
                   premium
                     ? "bg-gold text-black hover:bg-dorayaki"
-                    : "bg-torii text-paper hover:brightness-110"
+                    : "bg-torii text-white hover:brightness-110"
                 }`}
               >
                 {pending ? <Loader2 className="size-3.5 animate-spin" /> : "Réclamer"}
               </button>
             )}
             {state === "claimed" && (
-              <span className="flex items-center justify-center gap-1 py-1.5 text-[11px] font-bold uppercase tracking-wider text-emerald-400">
+              <span className="flex items-center justify-center gap-1 py-1.5 text-[11px] font-bold uppercase tracking-wider text-ok">
                 <Check className="size-3.5" /> Obtenu
               </span>
             )}

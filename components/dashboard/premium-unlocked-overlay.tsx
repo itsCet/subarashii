@@ -92,7 +92,7 @@ export function PremiumUnlockedOverlay({ open, rewardsReady, onClose }: Props) {
               PASS PREMIUM DÉBLOQUÉ ! 🎉
             </motion.h2>
             <motion.p
-              className="mt-3 max-w-sm text-zinc-300"
+              className="mt-3 max-w-sm text-white/80"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.5 }}

@@ -10,10 +10,49 @@
   --color-gold: #e9c46a;
   --color-dorayaki: #f4a261;
   --color-sakura: #f6c9d4;
+  --color-ok: #34d399;
 
   /* Ombre « case de manga » : décalée et nette. */
   --shadow-panel: 4px 4px 0 0 #000;
 
+}
+
+/* -----------------------------------------------------------------------------
+   Thèmes. Le thème sombre est la valeur par défaut (variables @theme ci-dessus).
+   Le thème clair inverse les couleurs de base : fond, cartes, texte et toute
+   l'échelle des gris (zinc-50 ↔ zinc-950…). Les composants n'ont donc pas besoin
+   de classes `dark:` : un `text-zinc-400` reste « texte secondaire » dans les deux
+   thèmes. Les accents (rouge, or, rose) sont seulement assombris pour rester
+   lisibles sur fond clair ; les gouttières noires restent noires.
+   ----------------------------------------------------------------------------- */
+:root {
+  --tone-dot: rgba(0, 0, 0, 0.1);
+  --halftone-dot: rgba(244, 244, 245, 0.09);
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --color-ink: #f5f3ee;
+  --color-charcoal: #ffffff;
+  --color-paper: #18181b;
+  --color-gold: #c9982f;
+  --color-sakura: #c2416c;
+  --color-ok: #059669;
+
+  --color-zinc-50: oklch(14.1% 0.005 285.823);
+  --color-zinc-100: oklch(21% 0.006 285.885);
+  --color-zinc-200: oklch(27.4% 0.006 286.033);
+  --color-zinc-300: oklch(37% 0.013 285.805);
+  --color-zinc-400: oklch(44.2% 0.017 285.786);
+  --color-zinc-500: oklch(55.2% 0.016 285.938);
+  --color-zinc-600: oklch(70.5% 0.015 286.067);
+  --color-zinc-700: oklch(80% 0.008 286.286);
+  --color-zinc-800: oklch(90% 0.004 286.32);
+  --color-zinc-900: oklch(95% 0.001 286.375);
+  --color-zinc-950: oklch(98.5% 0 0);
+
+  --tone-dot: rgba(255, 255, 255, 0.14);
+  --halftone-dot: rgba(0, 0, 0, 0.08);
 }
 
 @theme inline {
@@ -26,6 +65,7 @@
 }
 
 html {
+  transition: background-color 0.2s;
   background: var(--color-ink);
   -webkit-tap-highlight-color: transparent;
 }
@@ -57,7 +97,7 @@ body {
     inset: 0;
     z-index: -1;
     pointer-events: none;
-    background-image: radial-gradient(rgba(244, 244, 245, 0.09) 1.1px, transparent 1.4px);
+    background-image: radial-gradient(var(--halftone-dot) 1.1px, transparent 1.4px);
     background-size: 7px 7px;
     mask-image: radial-gradient(circle at 100% 0%, black, transparent 55%);
   }
@@ -78,13 +118,13 @@ body {
 
 /* Trame d'impression (points noirs) pour les cases sur fond papier. */
 @utility tone {
-  background-image: radial-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1.35px);
+  background-image: radial-gradient(var(--tone-dot) 1px, transparent 1.35px);
   background-size: 6px 6px;
 }
 
 /* Lignes de vitesse manga, à poser en fond d'une case. */
 @utility speed-lines {
-  background-image: repeating-conic-gradient(from 0deg at 85% 50%, rgba(0, 0, 0, 0.09) 0deg 1.2deg, transparent 1.2deg 7deg);
+  background-image: repeating-conic-gradient(from 0deg at 85% 50%, var(--tone-dot) 0deg 1.2deg, transparent 1.2deg 7deg);
 }
 
 /* L'intro vidéo n'est jouée qu'une fois par session (voir IntroSplash). */

@@ -289,7 +289,7 @@ function Receipt({ receipt, onNext }: { receipt: TransactionReceipt; onNext: () 
   return (
     <section aria-live="polite" className="border-[6px] border-black bg-paper p-6 text-ink">
       <div className="flex items-center gap-3">
-        <span className="grid size-12 place-items-center bg-emerald-500 text-paper">
+        <span className="grid size-12 place-items-center bg-emerald-500 text-white">
           <Check className="size-7" strokeWidth={3} />
         </span>
         <div>

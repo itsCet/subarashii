@@ -7,7 +7,7 @@ export function PassTeaser({ profile }: { profile: Profile | null }) {
   const progress = profile ? premiumProgress(profile.current_season_spent) : null;
 
   return (
-    <section aria-labelledby="pass-teaser-title" className="border-[6px] border-black bg-gold p-5 text-ink sm:p-6">
+    <section aria-labelledby="pass-teaser-title" className="border-[6px] border-black bg-gold p-5 text-black sm:p-6">
       <div className="flex flex-col gap-5 sm:flex-row sm:items-end">
         <div className="min-w-0 flex-1">
           <p className="text-xs font-extrabold uppercase tracking-[0.2em]">Pass de saison & fidélité</p>

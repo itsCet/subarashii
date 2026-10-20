@@ -114,7 +114,7 @@ function RegisterButton({
 
   if (event.is_registered) {
     return (
-      <p className={`${base} border-emerald-500/60 text-emerald-400`}>
+      <p className={`${base} border-ok/60 text-ok`}>
         <Check className="size-4" /> Inscrit·e
       </p>
     );
@@ -134,7 +134,7 @@ function RegisterButton({
       type="button"
       onClick={onRegister}
       disabled={pending}
-      className={`${base} border-black bg-torii text-paper shadow-panel hover:bg-torii-bright disabled:opacity-70`}
+      className={`${base} border-black bg-torii text-white shadow-panel hover:bg-torii-bright disabled:opacity-70`}
     >
       {pending && <Loader2 className="size-4 animate-spin" />}
       {event.price_chf === 0 ? "S'inscrire" : "Réserver ma place"}

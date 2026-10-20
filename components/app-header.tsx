@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NAV_ITEMS, isActive } from "./nav-items";
+import { ThemeToggle } from "./theme-toggle";
 
 export function AppHeader() {
   const pathname = usePathname();
@@ -40,7 +41,7 @@ export function AppHeader() {
           </ul>
         </nav>
 
-        
+        <ThemeToggle className="ml-auto md:ml-3" />
       </div>
     </header>
   );

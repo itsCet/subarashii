@@ -21,7 +21,7 @@ export default function ErrorPage({ error, reset }: { error: Error & { digest?: 
         <button
           type="button"
           onClick={reset}
-          className="inline-flex items-center gap-2 rounded-sm border-2 border-black bg-torii px-4 py-2 text-sm font-extrabold text-paper shadow-panel"
+          className="inline-flex items-center gap-2 rounded-sm border-2 border-black bg-torii px-4 py-2 text-sm font-extrabold text-white shadow-panel"
         >
           <RotateCcw className="size-4" /> Réessayer
         </button>

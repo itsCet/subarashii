@@ -7,6 +7,11 @@ DA « planche de manga » : fond charbon, cases papier à gouttières noires, ro
 trames d'impression et lignes de vitesse (`tone`, `speed-lines`, `manga-panel` dans `app/globals.css`).
 Polices auto-hébergées dans `app/fonts` ; après avoir ajouté du texte japonais : `npm run fonts:jp`.
 
+**Mode clair / sombre** : bouton soleil/lune dans le header. Par défaut le site suit le réglage du
+téléphone ; le choix est ensuite mémorisé. Le thème clair redéfinit les variables de couleur dans
+`app/globals.css` (`ink`, `charcoal`, `paper` et l'échelle `zinc` inversée), sans classes `dark:`.
+Sur un fond d'accent plein (`bg-torii`, `bg-gold`…), utiliser `text-white` / `text-black`.
+
 Les infos du lieu (adresse, horaires, réseaux, partenaires) sont dans `lib/cafe.ts`.
 > ⚠️ **À compléter** : arrêt de tram/bus, liens des partenaires, et `alcoveBookingUrl` (le bouton
 > « Réserver une Alcôve » renvoie aux infos pratiques tant qu'il n'est pas renseigné).

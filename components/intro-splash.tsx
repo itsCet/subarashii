@@ -57,7 +57,7 @@ export function IntroSplash() {
           <button
             type="button"
             onClick={dismiss}
-            className="absolute bottom-10 rounded-full border border-zinc-700 px-4 py-1.5 text-xs uppercase tracking-[0.3em] text-zinc-400 transition hover:border-torii hover:text-paper"
+            className="absolute bottom-10 rounded-full border border-white/25 px-4 py-1.5 text-xs uppercase tracking-[0.3em] text-white/70 transition hover:border-torii hover:text-white"
           >
             Passer
           </button>

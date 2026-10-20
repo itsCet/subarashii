@@ -22,7 +22,7 @@ export function StaffTabs() {
             href={href}
             aria-current={active ? "page" : undefined}
             className={`flex items-center justify-center gap-2 py-3 text-sm font-extrabold ${
-              active ? "bg-torii text-paper" : "bg-charcoal text-zinc-300 hover:bg-zinc-800"
+              active ? "bg-torii text-white" : "bg-charcoal text-zinc-300 hover:bg-zinc-800"
             }`}
           >
             <Icon className="size-4" /> {label}

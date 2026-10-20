@@ -12,7 +12,7 @@ type Props = {
 const TONES = {
   torii: { track: "border-zinc-700 bg-zinc-900", fill: "bg-torii" },
   gold: { track: "border-zinc-700 bg-zinc-900", fill: "bg-gold" },
-  ink: { track: "border-black bg-transparent", fill: "bg-ink" },
+  ink: { track: "border-black bg-transparent", fill: "bg-black" },
 };
 
 export function ProgressBar({ value, tone = "torii", className = "h-2.5", label }: Props) {

@@ -4,7 +4,7 @@ export const inputClass =
   "w-full border-2 border-zinc-700 bg-ink px-3 py-2.5 text-paper outline-none placeholder:text-zinc-600 focus:border-paper";
 
 export const primaryButton =
-  "inline-flex items-center justify-center gap-2 border-2 border-black bg-torii px-4 py-2.5 text-sm font-extrabold text-paper shadow-panel hover:bg-torii-bright disabled:opacity-60";
+  "inline-flex items-center justify-center gap-2 border-2 border-black bg-torii px-4 py-2.5 text-sm font-extrabold text-white shadow-panel hover:bg-torii-bright disabled:opacity-60";
 
 export const secondaryButton =
   "inline-flex items-center justify-center gap-2 border-2 border-zinc-600 px-4 py-2.5 text-sm font-extrabold text-paper hover:border-paper disabled:opacity-60";

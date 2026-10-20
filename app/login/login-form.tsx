@@ -76,7 +76,7 @@ export function LoginForm({ next }: { next?: string }) {
   const input =
     "w-full border-2 border-zinc-700 bg-ink px-3 py-3 text-paper outline-none placeholder:text-zinc-600 focus:border-paper";
   const button =
-    "flex w-full items-center justify-center gap-2 border-2 border-black bg-torii py-3 text-sm font-extrabold text-paper shadow-panel transition hover:bg-torii-bright disabled:opacity-70";
+    "flex w-full items-center justify-center gap-2 border-2 border-black bg-torii py-3 text-sm font-extrabold text-white shadow-panel transition hover:bg-torii-bright disabled:opacity-70";
 
   if (step === "password") {
     return (

@@ -4,6 +4,7 @@ import { AppHeader } from "@/components/app-header";
 import { BottomNav } from "@/components/bottom-nav";
 import { IntroSplash, introSeenScript } from "@/components/intro-splash";
 import { ServiceWorkerRegistration } from "@/components/service-worker";
+import { themeScript } from "@/components/theme-toggle";
 import "./globals.css";
 
 // Polices auto-hébergées (app/fonts) : le build ne dépend pas de Google Fonts.
@@ -47,8 +48,11 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#121214",
-  colorScheme: "dark",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f5f3ee" },
+    { media: "(prefers-color-scheme: dark)", color: "#121214" },
+  ],
+  colorScheme: "dark light",
   viewportFit: "cover",
 };
 
@@ -56,6 +60,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="fr-CH" suppressHydrationWarning className={`${rounded.variable} ${dela.variable} ${delaJp.variable}`}>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <script dangerouslySetInnerHTML={{ __html: introSeenScript }} />
       </head>
       <body className="font-sans antialiased">

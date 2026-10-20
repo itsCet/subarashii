@@ -33,7 +33,7 @@ export function Hero() {
 
         {/* Case verticale japonaise */}
         <div className="hidden items-center justify-center bg-torii md:flex">
-          <span className="font-display text-3xl leading-tight text-paper [writing-mode:vertical-rl]">
+          <span className="font-display text-3xl leading-tight text-white [writing-mode:vertical-rl]">
             素晴らしい漫画喫茶
           </span>
         </div>
@@ -53,7 +53,7 @@ export function Hero() {
       </div>
 
       <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3">
-        <Link href="/events" className="border-2 border-black bg-torii px-5 py-3 text-sm font-extrabold text-paper shadow-panel hover:bg-torii-bright">
+        <Link href="/events" className="border-2 border-black bg-torii px-5 py-3 text-sm font-extrabold text-white shadow-panel hover:bg-torii-bright">
           Voir l&apos;agenda
         </Link>
         <Link href="/pass" className="border-2 border-black bg-paper px-5 py-3 text-sm font-extrabold text-ink shadow-panel hover:bg-white">

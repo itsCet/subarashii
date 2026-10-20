@@ -66,7 +66,7 @@ export function Catalog({ products }: { products: Product[] }) {
                     {p.name}
                   </div>
                 )}
-                {p.is_new && <span className="absolute top-2 left-2 bg-torii px-2 py-0.5 text-[10px] font-extrabold uppercase text-paper">Nouveau</span>}
+                {p.is_new && <span className="absolute top-2 left-2 bg-torii px-2 py-0.5 text-[10px] font-extrabold uppercase text-white">Nouveau</span>}
               </div>
               <div className="flex flex-1 flex-col p-3">
                 <span className="text-[10px] font-bold uppercase text-zinc-500">{productCategoryLabel(p.category)}</span>

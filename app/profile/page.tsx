@@ -34,7 +34,7 @@ export default async function ProfilePage() {
       {(isStaff || mode === "demo") && (
         <Link
           href="/staff"
-          className="mx-auto block max-w-sm border-2 border-black bg-gold px-4 py-3 text-center text-sm font-extrabold text-ink shadow-panel"
+          className="mx-auto block max-w-sm border-2 border-black bg-gold px-4 py-3 text-center text-sm font-extrabold text-black shadow-panel"
         >
           Espace staff : caisse, agenda, shop
         </Link>
