@@ -29,9 +29,11 @@ export function LoginForm({ next }: { next?: string }) {
     if (error) {
       console.error("[auth] signInWithOtp :", error.message);
       setError(
-        error.status === 429
-          ? "Trop de demandes. Patiente une minute avant de redemander un code."
-          : "Envoi impossible. Vérifie l'adresse et réessaie.",
+        error.code === "over_email_send_rate_limit"
+          ? "Trop d'e-mails envoyés pour le moment. Réessaie plus tard, ou saisis un code déjà reçu."
+          : error.status === 429
+            ? "Trop de demandes. Patiente une minute, ou saisis un code déjà reçu."
+            : "Envoi impossible. Vérifie l'adresse et réessaie.",
       );
       return;
     }
@@ -123,6 +125,17 @@ export function LoginForm({ next }: { next?: string }) {
         Recevoir mon code
       </button>
       {error && <p className="text-sm text-torii">{error}</p>}
+      <button
+        type="button"
+        disabled={!email}
+        onClick={() => {
+          setError(null);
+          setStep("code");
+        }}
+        className="text-sm text-zinc-400 underline underline-offset-4 hover:text-paper disabled:opacity-40"
+      >
+        J&apos;ai déjà reçu un code
+      </button>
     </form>
   );
 }

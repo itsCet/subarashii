@@ -44,7 +44,10 @@ Sans variables Supabase, l'app tourne en **mode démo** (données locales + bout
    ```
    Le code à 6 chiffres et le lien `token_hash` marchent même si l'e-mail s'ouvre dans un autre
    navigateur ou si l'app est installée sur l'écran d'accueil (le lien par défaut, lui, échoue dans ces cas).
-6. Donner un rôle au staff :
+6. **E-mails (indispensable en production)** : le service d'e-mail intégré de Supabase est limité à
+   quelques envois par heure et sert uniquement aux tests. Configurer un SMTP (Resend, Brevo, Postmark…)
+   dans Authentication → SMTP Settings, puis relever la limite dans Authentication → Rate Limits.
+7. Donner un rôle au staff :
    ```sql
    update public.profiles set role = 'cashier' where id = '<uuid du compte>';
    ```
