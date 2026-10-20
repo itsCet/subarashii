@@ -36,16 +36,16 @@ export function BattlePassTimeline({ tiers, playerLevel, isPremium, claimed, pen
 
   return (
     <div className="relative">
-      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-10 bg-gradient-to-l from-slate-950 to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-10 bg-gradient-to-l from-zinc-950 to-transparent" />
 
       <div className="flex">
         {/* Libellés des voies */}
-        <div className="z-10 flex w-11 shrink-0 flex-col gap-2 border-r border-slate-800 bg-slate-950/90 pr-2">
-          <LaneLabel className="h-44 text-neon-violet" icon={<Sparkles className="size-3.5" />}>
+        <div className="z-10 flex w-11 shrink-0 flex-col gap-2 border-r border-zinc-700 bg-zinc-950/90 pr-2">
+          <LaneLabel className="h-44 text-torii" icon={<Sparkles className="size-3.5" />}>
             Gratuit
           </LaneLabel>
           <div className="h-10" />
-          <LaneLabel className="h-44 text-cyber-yellow" icon={isPremium ? <Crown className="size-3.5" /> : <Lock className="size-3.5" />}>
+          <LaneLabel className="h-44 text-gold" icon={isPremium ? <Crown className="size-3.5" /> : <Lock className="size-3.5" />}>
             Premium
           </LaneLabel>
         </div>
@@ -82,21 +82,21 @@ export function BattlePassTimeline({ tiers, playerLevel, isPremium, claimed, pen
                 {/* Rail de progression */}
                 <div className="relative flex h-10 items-center justify-center">
                   <div
-                    className={`absolute top-1/2 -right-1.5 -left-1.5 h-1 -translate-y-1/2 ${
+                    className={`absolute top-1/2 -right-1.5 -left-1.5 h-1 -tranzinc-y-1/2 ${
                       tier.level < playerLevel
-                        ? "bg-gradient-to-r from-neon-violet to-neon-pink"
+                        ? "bg-torii"
                         : isCurrent
-                          ? "bg-gradient-to-r from-neon-pink via-slate-800 to-slate-800"
-                          : "bg-slate-800"
+                          ? "bg-gradient-to-r from-sakura via-zinc-800 to-zinc-800"
+                          : "bg-zinc-800"
                     }`}
                   />
                   <div
                     className={`relative grid size-9 place-items-center rounded-lg font-display text-sm ${
                       isCurrent
-                        ? "bg-cyber-yellow text-black shadow-neon-yellow ring-4 ring-cyber-yellow/20"
+                        ? "bg-gold text-black shadow-gold ring-4 ring-gold/20"
                         : reached
-                          ? "bg-gradient-to-br from-neon-violet to-neon-pink text-white shadow-neon-violet"
-                          : "border border-slate-700 bg-slate-900 text-slate-500"
+                          ? "bg-torii text-paper shadow-card"
+                          : "border border-zinc-700 bg-zinc-900 text-zinc-500"
                     }`}
                     aria-label={`Palier ${tier.level}${isCurrent ? " (actuel)" : ""}`}
                   >
@@ -147,7 +147,7 @@ function ScrollButton({ label, onClick, children }: { label: string; onClick: ()
       type="button"
       aria-label={label}
       onClick={onClick}
-      className="grid size-8 place-items-center rounded-lg border border-slate-800 bg-slate-900 text-slate-300 transition hover:border-neon-violet hover:text-white"
+      className="grid size-8 place-items-center rounded-lg border border-zinc-700 bg-zinc-900 text-zinc-300 transition hover:border-torii hover:text-paper"
     >
       {children}
     </button>
@@ -156,18 +156,18 @@ function ScrollButton({ label, onClick, children }: { label: string; onClick: ()
 
 const CARD_STYLES: Record<Track, Record<RewardState, string>> = {
   free: {
-    claimable: "border-neon-violet/70 bg-neon-violet/10 shadow-neon-violet",
-    claimed: "border-slate-800 bg-slate-900/40",
-    locked: "border-slate-800 bg-slate-900/60",
+    claimable: "border-torii/70 bg-torii/10 shadow-card",
+    claimed: "border-zinc-700 bg-zinc-900/40",
+    locked: "border-zinc-700 bg-zinc-900/60",
     "premium-locked": "",
-    empty: "border-dashed border-slate-800/70 bg-transparent",
+    empty: "border-dashed border-zinc-700/70 bg-transparent",
   },
   premium: {
-    claimable: "border-cyber-yellow/70 bg-gradient-to-b from-amber-400/15 to-neon-pink/10 shadow-neon-yellow",
+    claimable: "border-gold/70 bg-gradient-to-b from-amber-400/15 to-sakura/10 shadow-gold",
     claimed: "border-amber-900/40 bg-amber-950/10",
-    locked: "border-amber-900/40 bg-gradient-to-b from-amber-500/5 to-neon-pink/5",
-    "premium-locked": "border-amber-900/40 bg-gradient-to-b from-amber-500/5 to-neon-pink/5",
-    empty: "border-dashed border-slate-800/70 bg-transparent",
+    locked: "border-amber-900/40 bg-gradient-to-b from-amber-500/5 to-sakura/5",
+    "premium-locked": "border-amber-900/40 bg-gradient-to-b from-amber-500/5 to-sakura/5",
+    empty: "border-dashed border-zinc-700/70 bg-transparent",
   },
 };
 
@@ -198,12 +198,12 @@ function RewardCard({
         <>
           <div
             className={`mt-1 grid size-12 place-items-center rounded-xl ${
-              premium ? "bg-cyber-yellow/10 text-cyber-yellow" : "bg-neon-violet/15 text-violet-300"
+              premium ? "bg-gold/10 text-gold" : "bg-torii/15 text-red-300"
             } ${muted ? "opacity-50" : ""}`}
           >
             <RewardIcon icon={icon} className="size-6" />
           </div>
-          <p className={`mt-2 line-clamp-3 text-xs font-semibold leading-snug ${muted ? "text-slate-500" : "text-slate-100"}`}>
+          <p className={`mt-2 line-clamp-3 text-xs font-semibold leading-snug ${muted ? "text-zinc-500" : "text-zinc-100"}`}>
             {label}
           </p>
 
@@ -215,8 +215,8 @@ function RewardCard({
                 disabled={pending}
                 className={`flex w-full items-center justify-center gap-1 rounded-lg py-1.5 text-[11px] font-bold uppercase tracking-wider transition active:scale-95 disabled:opacity-70 ${
                   premium
-                    ? "bg-cyber-yellow text-black hover:bg-yellow-300"
-                    : "bg-gradient-to-r from-neon-violet to-neon-pink text-white hover:brightness-110"
+                    ? "bg-gold text-black hover:bg-dorayaki"
+                    : "bg-torii text-paper hover:brightness-110"
                 }`}
               >
                 {pending ? <Loader2 className="size-3.5 animate-spin" /> : "Réclamer"}
@@ -228,12 +228,12 @@ function RewardCard({
               </span>
             )}
             {state === "locked" && (
-              <span className="flex items-center justify-center gap-1 py-1.5 text-[11px] uppercase tracking-wider text-slate-500">
+              <span className="flex items-center justify-center gap-1 py-1.5 text-[11px] uppercase tracking-wider text-zinc-500">
                 <Lock className="size-3" /> Verrouillé
               </span>
             )}
             {state === "premium-locked" && (
-              <span className="flex items-center justify-center gap-1 py-1.5 text-[11px] font-bold uppercase tracking-wider text-amber-500/80">
+              <span className="flex items-center justify-center gap-1 py-1.5 text-[11px] font-bold uppercase tracking-wider text-gold/80">
                 <Crown className="size-3" /> Premium
               </span>
             )}

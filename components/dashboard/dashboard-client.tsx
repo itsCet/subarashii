@@ -145,16 +145,16 @@ export function DashboardClient({ initial }: { initial: DashboardData }) {
       <section ref={timelineRef} aria-labelledby="pass-title" className="scroll-mt-20">
         <div className="mb-3 flex flex-wrap items-end justify-between gap-2">
           <div>
-            <p className="text-[11px] font-bold uppercase tracking-[0.3em] text-neon-pink">
+            <p className="text-[11px] font-bold uppercase tracking-[0.3em] text-sakura">
               {initial.season?.title ?? "Hors saison"}
             </p>
-            <h2 id="pass-title" className="font-display text-lg text-white">
+            <h2 id="pass-title" className="font-display text-lg text-paper">
               Pass de Combat
             </h2>
           </div>
           <div className="flex items-center gap-2">
             {claimable.free + claimable.premium > 0 && (
-              <span className="inline-flex items-center gap-1 rounded-full border border-neon-pink/50 bg-neon-pink/10 px-2.5 py-1 text-[11px] font-semibold text-pink-200">
+              <span className="inline-flex items-center gap-1 rounded-full border border-sakura/50 bg-sakura/10 px-2.5 py-1 text-[11px] font-semibold text-sakura">
                 <Gift className="size-3.5" /> {claimable.free + claimable.premium} à réclamer
               </span>
             )}
@@ -172,7 +172,7 @@ export function DashboardClient({ initial }: { initial: DashboardData }) {
             onClaim={handleClaim}
           />
         ) : (
-          <p className="rounded-xl border border-dashed border-slate-800 p-6 text-center text-sm text-slate-500">
+          <p className="rounded-xl border border-dashed border-zinc-700 p-6 text-center text-sm text-zinc-500">
             Aucune saison active pour le moment. Reviens bientôt !
           </p>
         )}
@@ -189,8 +189,8 @@ function SeasonCountdown({ endDate }: { endDate: string }) {
   const now = useNow();
   const remaining = now === null ? null : Math.max(Math.floor((seasonEndsAt(endDate) - now) / 1000), 0);
   return (
-    <span className="inline-flex items-center gap-1 rounded-full border border-slate-800 bg-slate-900/80 px-2.5 py-1 text-[11px] font-semibold text-slate-300 tabular-nums">
-      <Hourglass className="size-3.5 text-cyber-yellow" />
+    <span className="inline-flex items-center gap-1 rounded-full border border-zinc-700 bg-zinc-900/80 px-2.5 py-1 text-[11px] font-semibold text-zinc-300 tabular-nums">
+      <Hourglass className="size-3.5 text-gold" />
       {remaining === null ? "…" : remaining > 0 ? `Fin dans ${formatDuration(remaining)}` : "Saison terminée"}
     </span>
   );
@@ -200,9 +200,9 @@ const DEMO_AMOUNTS = [6.5, 12, 18.5];
 
 function DemoPanel({ onPurchase }: { onPurchase: (amount: number) => void }) {
   return (
-    <aside className="rounded-xl border border-dashed border-cyber-yellow/40 bg-cyber-yellow/5 p-3 text-xs text-slate-300">
+    <aside className="rounded-xl border border-dashed border-gold/40 bg-gold/5 p-3 text-xs text-zinc-300">
       <p>
-        <strong className="text-cyber-yellow">Mode démo</strong> — Supabase n&apos;est pas configuré, les
+        <strong className="text-gold">Mode démo</strong> — Supabase n&apos;est pas configuré, les
         données sont locales. Simule un ticket de caisse :
       </p>
       <div className="mt-2 flex flex-wrap gap-2">
@@ -211,9 +211,9 @@ function DemoPanel({ onPurchase }: { onPurchase: (amount: number) => void }) {
             key={amount}
             type="button"
             onClick={() => onPurchase(amount)}
-            className="inline-flex items-center gap-1 rounded-lg border border-slate-700 bg-slate-900 px-2.5 py-1.5 font-semibold text-white transition hover:border-cyber-yellow active:scale-95"
+            className="inline-flex items-center gap-1 rounded-lg border border-zinc-700 bg-zinc-900 px-2.5 py-1.5 font-semibold text-paper transition hover:border-gold active:scale-95"
           >
-            <ScanLine className="size-3.5 text-cyber-yellow" /> {formatChf(amount)} CHF
+            <ScanLine className="size-3.5 text-gold" /> {formatChf(amount)} CHF
           </button>
         ))}
       </div>

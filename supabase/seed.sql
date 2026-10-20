@@ -1,5 +1,5 @@
 -- Fichier généré par scripts/generate-seed.ts — ne pas éditer à la main.
--- Saison active de 90 jours démarrant aujourd'hui, 30 paliers et quêtes.
+-- Saison active de 90 jours démarrant aujourd'hui, 30 paliers, quêtes et agenda d'exemple.
 
 with season as (
   insert into public.seasons (title, start_date, end_date, is_active)
@@ -47,4 +47,17 @@ values
   ('daily-purchase', 'Passage en caisse', 'Fais scanner ta carte membre lors d''un achat.', 150, 'daily', 'purchase', 1, 'scan-line', 2),
   ('daily-spend-15', 'Festin d''Otaku', 'Dépense 15 CHF au café ou en boutique aujourd''hui.', 200, 'daily', 'spend', 15, 'utensils', 3),
   ('weekly-3-visits', 'Habitué du quartier', 'Passe en caisse 3 fois cette semaine.', 400, 'weekly', 'purchase', 3, 'calendar-check', 1)
+on conflict (slug) do nothing;
+
+-- Événements d'exemple (agenda).
+insert into public.events (slug, title, description, category, tag, starts_at, ends_at, price_chf, conditions, capacity)
+values
+  ('tournoi-one-piece', 'Tournoi One Piece TCG', 'Store tournament en rondes suisses, lots pour le top 4 et booster de participation.', 'tcg', 'One Piece', ((current_date + 3) + time '14:00') at time zone 'Europe/Zurich', ((current_date + 3) + time '14:00') at time zone 'Europe/Zurich' + interval '300 minutes', 10, 'Deck de 50 cartes + Leader, decklist à remettre à l''accueil', 32),
+  ('soiree-loup-garou', 'Soirée Loup-Garou', 'Le village de Thiercelieux s''invite au café. Débutants bienvenus, un MJ anime chaque table.', 'game_night', 'Loup-Garou', ((current_date + 5) + time '19:30') at time zone 'Europe/Zurich', ((current_date + 5) + time '19:30') at time zone 'Europe/Zurich' + interval '180 minutes', 0, 'Gratuit avec une consommation', 18),
+  ('quiz-manga-anime', 'Quiz Manga & Animé', 'Blind tests d''openings, questions shōnen, seinen et culture japonaise.', 'game_night', 'Quiz', ((current_date + 9) + time '20:00') at time zone 'Europe/Zurich', ((current_date + 9) + time '20:00') at time zone 'Europe/Zurich' + interval '150 minutes', 5, 'Par personne · équipes de 2 à 5', 40),
+  ('tournoi-pokemon', 'Tournoi Pokémon TCG', 'Format Standard, ambiance conviviale, ouvert à tous les niveaux.', 'tcg', 'Pokémon', ((current_date + 11) + time '13:30') at time zone 'Europe/Zurich', ((current_date + 11) + time '13:30') at time zone 'Europe/Zurich' + interval '300 minutes', 10, 'Format Standard · decklist obligatoire', 24),
+  ('before-kpop', 'Before K-Pop', 'Random play dance, playlist K-Pop et bubble tea avant de sortir.', 'nocturne', 'K-Pop', ((current_date + 13) + time '19:00') at time zone 'Europe/Zurich', ((current_date + 13) + time '19:00') at time zone 'Europe/Zurich' + interval '180 minutes', 0, 'Entrée libre', 60),
+  ('yugioh-locals', 'Yu-Gi-Oh! Locals', 'Tournoi local en format Advanced, cartes promo à gagner.', 'tcg', 'Yu-Gi-Oh!', ((current_date + 17) + time '14:00') at time zone 'Europe/Zurich', ((current_date + 17) + time '14:00') at time zone 'Europe/Zurich' + interval '300 minutes', 8, 'Format Advanced · Konami ID requis', 24),
+  ('soiree-jdr', 'Soirée JDR découverte', 'One-shot d''initiation au jeu de rôle dans un univers inspiré des mangas.', 'game_night', 'JDR', ((current_date + 20) + time '19:00') at time zone 'Europe/Zurich', ((current_date + 20) + time '19:00') at time zone 'Europe/Zurich' + interval '240 minutes', 15, 'Boisson incluse · aucune expérience requise', 10),
+  ('nocturne-hip-hop', 'Nocturne Hip-Hop × Manga', 'DJ set hip-hop, lectures en accès libre et cocktails japonais jusqu''à tard.', 'nocturne', 'Hip-Hop', ((current_date + 24) + time '21:00') at time zone 'Europe/Zurich', ((current_date + 24) + time '21:00') at time zone 'Europe/Zurich' + interval '240 minutes', 10, 'Une boisson offerte', 80)
 on conflict (slug) do nothing;

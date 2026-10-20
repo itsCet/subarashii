@@ -1,17 +1,24 @@
 @import "tailwindcss";
 
+/* DA « Manga Café chaleureux » : charbon, papier manga, rouge torii, or dorayaki, sakura. */
 @theme {
-  --color-neon-violet: #8b5cf6;
-  --color-neon-pink: #ec4899;
-  --color-cyber-yellow: #facc15;
-  --color-logo-red: #ef1c24;
+  --color-ink: #121214;
+  --color-charcoal: #18181b;
+  --color-paper: #f4f4f5;
+  --color-torii: #e63946;
+  --color-torii-bright: #ef4444;
+  --color-gold: #e9c46a;
+  --color-dorayaki: #f4a261;
+  --color-sakura: #f6c9d4;
 
-  --shadow-neon-violet: 0 0 15px rgba(139, 92, 246, 0.3);
-  --shadow-neon-pink: 0 0 15px rgba(236, 72, 153, 0.35);
-  --shadow-neon-yellow: 0 0 18px rgba(250, 204, 21, 0.35);
+  --shadow-card: 0 1px 0 rgba(244, 244, 245, 0.04) inset, 0 12px 30px -18px rgba(0, 0, 0, 0.8);
+  --shadow-torii: 0 10px 30px -12px rgba(230, 57, 70, 0.55);
+  --shadow-gold: 0 10px 30px -12px rgba(233, 196, 106, 0.5);
+  /* Ombre « case de manga » : décalée et nette. */
+  --shadow-panel: 4px 4px 0 0 #000;
 
-  --animate-shimmer: shimmer 2.8s linear infinite;
-  --animate-pulse-glow: pulse-glow 2s ease-in-out infinite;
+  --animate-shimmer: shimmer 3.2s linear infinite;
+  --animate-pulse-glow: pulse-glow 2.4s ease-in-out infinite;
 
   @keyframes shimmer {
     from { background-position: 200% 0; }
@@ -19,14 +26,14 @@
   }
 
   @keyframes pulse-glow {
-    0%, 100% { box-shadow: 0 0 10px rgba(250, 204, 21, 0.25); }
-    50% { box-shadow: 0 0 22px rgba(250, 204, 21, 0.55); }
+    0%, 100% { box-shadow: 0 0 0 0 rgba(233, 196, 106, 0.2); }
+    50% { box-shadow: 0 0 0 4px rgba(233, 196, 106, 0.15); }
   }
 }
 
 @theme inline {
-  --font-sans: var(--font-chakra), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-dela), var(--font-chakra), ui-sans-serif, sans-serif;
+  --font-sans: var(--font-rounded), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-dela), var(--font-rounded), ui-sans-serif, sans-serif;
 }
 
 :root {
@@ -34,31 +41,29 @@
 }
 
 html {
-  background: #020617;
+  background: var(--color-ink);
   -webkit-tap-highlight-color: transparent;
 }
 
 body {
   min-height: 100dvh;
   background:
-    radial-gradient(60rem 30rem at 85% -10%, rgba(139, 92, 246, 0.16), transparent 60%),
-    radial-gradient(50rem 30rem at -10% 20%, rgba(236, 72, 153, 0.1), transparent 60%),
-    #020617;
-  color: #e2e8f0;
+    radial-gradient(50rem 26rem at 90% -10%, rgba(230, 57, 70, 0.12), transparent 60%),
+    radial-gradient(40rem 24rem at -10% 30%, rgba(244, 162, 97, 0.07), transparent 60%),
+    var(--color-ink);
+  color: var(--color-paper);
 }
 
-/* Grille Neo-Tokyo en fond */
+/* Trame manga (halftone) très légère sur tout le fond */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background-image:
-    linear-gradient(rgba(139, 92, 246, 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(139, 92, 246, 0.06) 1px, transparent 1px);
-  background-size: 32px 32px;
-  mask-image: linear-gradient(to bottom, black, transparent 85%);
+  background-image: radial-gradient(rgba(244, 244, 245, 0.05) 1px, transparent 1.3px);
+  background-size: 14px 14px;
+  mask-image: linear-gradient(to bottom, black, transparent 70%);
 }
 
 @utility scrollbar-none {
@@ -68,11 +73,37 @@ body::before {
   }
 }
 
-@utility text-neon {
-  background: linear-gradient(90deg, #8b5cf6, #ec4899);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+/* Case de manga : fond charbon, bordure nette, trame en dégradé dans le coin. */
+@utility manga-panel {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border: 1px solid var(--color-zinc-700);
+  background-color: var(--color-charcoal);
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image: radial-gradient(rgba(244, 244, 245, 0.09) 1.1px, transparent 1.4px);
+    background-size: 7px 7px;
+    mask-image: radial-gradient(circle at 100% 0%, black, transparent 55%);
+  }
+}
+
+/* Variante : trame rouge plus présente (cartes mises en avant). */
+@utility halftone-torii {
+  &::before {
+    background-image: radial-gradient(rgba(230, 57, 70, 0.28) 1.2px, transparent 1.5px);
+  }
+}
+
+@utility halftone-gold {
+  &::before {
+    background-image: radial-gradient(rgba(233, 196, 106, 0.25) 1.2px, transparent 1.5px);
+  }
 }
 
 /* L'intro vidéo n'est jouée qu'une fois par session (voir IntroSplash). */

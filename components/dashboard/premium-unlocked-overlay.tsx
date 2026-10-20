@@ -5,7 +5,7 @@ import { Crown } from "lucide-react";
 import Image from "next/image";
 import { useMemo } from "react";
 
-const COLORS = ["#8b5cf6", "#ec4899", "#facc15", "#ef1c24", "#ffffff"];
+const COLORS = ["#e63946", "#e9c46a", "#f4a261", "#f6c9d4", "#f4f4f5"];
 
 type Props = {
   open: boolean;
@@ -46,7 +46,7 @@ export function PremiumUnlockedOverlay({ open, rewardsReady, onClose }: Props) {
         >
           <motion.div
             aria-hidden
-            className="absolute size-[42rem] rounded-full bg-[conic-gradient(from_0deg,transparent,rgba(250,204,21,0.25),transparent_30%,rgba(236,72,153,0.25),transparent_60%,rgba(139,92,246,0.25),transparent)]"
+            className="absolute size-[42rem] rounded-full bg-[conic-gradient(from_0deg,transparent,rgba(233,196,106,0.25),transparent_30%,rgba(230,57,70,0.25),transparent_60%,rgba(246,201,212,0.2),transparent)]"
             animate={{ rotate: 360 }}
             transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
           />
@@ -75,16 +75,16 @@ export function PremiumUnlockedOverlay({ open, rewardsReady, onClose }: Props) {
                 alt=""
                 width={192}
                 height={192}
-                className="rounded-full shadow-[0_0_60px_rgba(250,204,21,0.5)]"
+                className="rounded-full shadow-[0_0_60px_rgba(233,196,106,0.5)]"
               />
-              <span className="absolute -top-3 left-1/2 grid size-12 -translate-x-1/2 place-items-center rounded-xl bg-cyber-yellow text-black shadow-neon-yellow">
+              <span className="absolute -top-3 left-1/2 grid size-12 -tranzinc-x-1/2 place-items-center rounded-xl bg-gold text-black shadow-gold">
                 <Crown className="size-7" />
               </span>
             </motion.div>
 
             <motion.h2
               id="premium-unlocked-title"
-              className="mt-8 font-display text-3xl leading-tight text-cyber-yellow drop-shadow-[0_0_18px_rgba(250,204,21,0.6)] sm:text-4xl"
+              className="mt-8 font-display text-3xl leading-tight text-gold drop-shadow-[0_0_18px_rgba(233,196,106,0.6)] sm:text-4xl"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.35 }}
@@ -92,7 +92,7 @@ export function PremiumUnlockedOverlay({ open, rewardsReady, onClose }: Props) {
               PASS PREMIUM DÉBLOQUÉ ! 🎉
             </motion.h2>
             <motion.p
-              className="mt-3 max-w-sm text-slate-300"
+              className="mt-3 max-w-sm text-zinc-300"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.5 }}
@@ -104,7 +104,7 @@ export function PremiumUnlockedOverlay({ open, rewardsReady, onClose }: Props) {
             <motion.button
               type="button"
               onClick={onClose}
-              className="mt-8 rounded-xl bg-cyber-yellow px-6 py-3 text-sm font-bold uppercase tracking-wider text-black shadow-neon-yellow transition hover:bg-yellow-300 active:scale-95"
+              className="mt-8 rounded-xl bg-gold px-6 py-3 text-sm font-bold uppercase tracking-wider text-black shadow-gold transition hover:bg-dorayaki active:scale-95"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.65 }}

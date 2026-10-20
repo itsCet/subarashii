@@ -4,17 +4,17 @@ import { motion } from "framer-motion";
 
 type Props = {
   value: number; // 0 → 1
-  tone?: "violet" | "yellow";
+  tone?: "torii" | "gold";
   className?: string;
   label?: string;
 };
 
 const TONES = {
-  violet: "from-neon-violet via-fuchsia-500 to-neon-pink shadow-[0_0_12px_rgba(236,72,153,0.6)]",
-  yellow: "from-amber-400 via-cyber-yellow to-yellow-200 shadow-[0_0_12px_rgba(250,204,21,0.6)]",
+  torii: "from-torii to-dorayaki",
+  gold: "from-dorayaki to-gold",
 };
 
-export function NeonProgress({ value, tone = "violet", className = "h-2.5", label }: Props) {
+export function ProgressBar({ value, tone = "torii", className = "h-2.5", label }: Props) {
   const pct = Math.round(Math.min(Math.max(value, 0), 1) * 100);
   return (
     <div
@@ -23,7 +23,7 @@ export function NeonProgress({ value, tone = "violet", className = "h-2.5", labe
       aria-valuemin={0}
       aria-valuemax={100}
       aria-valuenow={pct}
-      className={`relative overflow-hidden rounded-full bg-slate-800/80 ring-1 ring-inset ring-white/5 ${className}`}
+      className={`relative overflow-hidden rounded-full border border-zinc-700 bg-zinc-900 ${className}`}
     >
       <motion.div
         className={`h-full rounded-full bg-gradient-to-r ${TONES[tone]}`}

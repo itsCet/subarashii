@@ -4,12 +4,12 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "Subarashii Manga Café",
     short_name: "Subarashii",
-    description: "Pass de Combat, quêtes et classement du Subarashii Manga Café de Genève.",
+    description: "Manga café à Genève : agenda, Pass fidélité, quêtes et shop.",
     start_url: "/",
     display: "standalone",
     orientation: "portrait",
-    background_color: "#020617",
-    theme_color: "#020617",
+    background_color: "#121214",
+    theme_color: "#121214",
     lang: "fr-CH",
     icons: [
       { src: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },

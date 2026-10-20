@@ -3,6 +3,7 @@
 import { writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { SEASON_LENGTH_DAYS } from "../lib/game";
+import { SAMPLE_EVENTS } from "../lib/events-content";
 import { QUESTS, SEASON_1, SEASON_1_TIERS } from "../lib/season-content";
 
 const q = (v: string | number | null) =>
@@ -18,8 +19,13 @@ const quests = QUESTS.map(
     `  (${[q(x.slug), q(x.title), q(x.description), x.xp_reward, q(x.frequency), q(x.verification), x.target_value, q(x.icon_name), x.sort_order].join(", ")})`,
 ).join(",\n");
 
+const events = SAMPLE_EVENTS.map((e) => {
+  const start = `((current_date + ${e.day_offset}) + time '${e.time}') at time zone 'Europe/Zurich'`;
+  return `  (${[q(e.slug), q(e.title), q(e.description), q(e.category), q(e.tag), start, `${start} + interval '${e.duration_min} minutes'`, e.price_chf, q(e.conditions), e.capacity ?? "null"].join(", ")})`;
+}).join(",\n");
+
 const sql = `-- Fichier généré par scripts/generate-seed.ts — ne pas éditer à la main.
--- Saison active de ${SEASON_LENGTH_DAYS} jours démarrant aujourd'hui, 30 paliers et quêtes.
+-- Saison active de ${SEASON_LENGTH_DAYS} jours démarrant aujourd'hui, 30 paliers, quêtes et agenda d'exemple.
 
 with season as (
   insert into public.seasons (title, start_date, end_date, is_active)
@@ -35,6 +41,12 @@ ${tiers}
 insert into public.quests (slug, title, description, xp_reward, frequency, verification, target_value, icon_name, sort_order)
 values
 ${quests}
+on conflict (slug) do nothing;
+
+-- Événements d'exemple (agenda).
+insert into public.events (slug, title, description, category, tag, starts_at, ends_at, price_chf, conditions, capacity)
+values
+${events}
 on conflict (slug) do nothing;
 `;
 
