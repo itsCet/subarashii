@@ -31,30 +31,10 @@ export const CAFE = {
 };
 
 export const UNIVERSES = [
-  {
-    key: "library",
-    title: "Bibliothèque & Alcôves",
-    description: "Des milliers de mangas à lire au calme, lovés dans nos alcôves.",
-    icon: "book-open",
-  },
-  {
-    key: "bar",
-    title: "Bar & Fooding",
-    description: "Boissons japonaises, bubble tea, snacks et douceurs maison.",
-    icon: "coffee",
-  },
-  {
-    key: "gaming",
-    title: "Zone Gaming",
-    description: "Consoles, jeux de société et soirées entre otakus.",
-    icon: "gamepad-2",
-  },
-  {
-    key: "shop",
-    title: "Shop TCG & Mangas",
-    description: "Nouveautés manga, boosters, displays et accessoires TCG.",
-    icon: "layers",
-  },
+  { key: "library", title: "Bibliothèque & alcôves", description: "Lecture sur place, installé·e dans une alcôve." },
+  { key: "bar", title: "Bar & fooding", description: "Boissons et snacks à grignoter en lisant." },
+  { key: "gaming", title: "Zone gaming", description: "PS5, borne d'arcade et jeux de société." },
+  { key: "shop", title: "Shop TCG & mangas", description: "Mangas, boosters et accessoires TCG." },
 ] as const;
 
 export type DayHours = { open: string; close: string } | null;

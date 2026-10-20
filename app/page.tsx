@@ -10,7 +10,7 @@ export default async function HomePage() {
   const [events, player] = await Promise.all([getUpcomingEvents(3), getPlayerSummary()]);
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-14">
       <Hero />
       <UpcomingEvents events={events} />
       <PassTeaser profile={player.profile} />

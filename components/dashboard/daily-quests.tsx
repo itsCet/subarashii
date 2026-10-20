@@ -69,16 +69,16 @@ function QuestRow({
 
   return (
     <li
-      className={`flex items-center gap-3 rounded-xl border p-3 backdrop-blur-md transition ${
+      className={`flex items-center gap-3 rounded-sm border p-3 transition ${
         quest.completed
           ? "border-zinc-700/60 bg-zinc-900/30"
           : ready
-            ? "border-sakura/50 bg-sakura/5 shadow-torii"
+            ? "border-torii bg-torii/5"
             : "border-zinc-700 bg-zinc-900/60"
       }`}
     >
       <div
-        className={`grid size-11 shrink-0 place-items-center rounded-xl ${
+        className={`grid size-11 shrink-0 place-items-center rounded-sm ${
           quest.completed ? "bg-zinc-800/60 text-zinc-500" : "bg-torii/15 text-red-300"
         }`}
       >
@@ -104,7 +104,7 @@ function QuestRow({
       </div>
 
       {quest.completed ? (
-        <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-emerald-500/10 text-emerald-400" aria-label="Quête terminée">
+        <span className="grid size-9 shrink-0 place-items-center rounded-sm bg-emerald-500/10 text-emerald-400" aria-label="Quête terminée">
           <Check className="size-5" />
         </span>
       ) : (
@@ -112,7 +112,7 @@ function QuestRow({
           type="button"
           disabled={!ready || pending}
           onClick={() => onComplete(quest)}
-          className="min-w-[5.5rem] shrink-0 rounded-lg bg-torii px-3 py-2 text-[11px] font-bold uppercase tracking-wider text-paper transition hover:bg-torii-bright active:scale-95 disabled:cursor-not-allowed disabled:bg-zinc-800 disabled:text-zinc-500"
+          className="min-w-[5.5rem] shrink-0 rounded-sm bg-torii px-3 py-2 text-[11px] font-bold uppercase tracking-wider text-paper transition hover:bg-torii-bright active:scale-95 disabled:cursor-not-allowed disabled:bg-zinc-800 disabled:text-zinc-500"
         >
           {pending ? (
             <Loader2 className="mx-auto size-4 animate-spin" />

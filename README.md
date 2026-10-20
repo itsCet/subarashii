@@ -3,8 +3,9 @@
 Web App / PWA du Subarashii Manga Café de Genève : vitrine du lieu (horaires, accès, partenaires),
 agenda des événements, Pass de Combat saisonnier, XP & quêtes, classement TOP 10, carte membre QR et interface caisse.
 
-DA « manga café chaleureux » : fond charbon, papier manga, rouge torii, or dorayaki, touches sakura,
-cases de manga à bordure nette et trames halftone (`manga-panel`, `halftone-*` dans `app/globals.css`).
+DA « planche de manga » : fond charbon, cases papier à gouttières noires, rouge torii, or dorayaki,
+trames d'impression et lignes de vitesse (`tone`, `speed-lines`, `manga-panel` dans `app/globals.css`).
+Polices auto-hébergées dans `app/fonts` ; après avoir ajouté du texte japonais : `npm run fonts:jp`.
 
 Les infos du lieu (adresse, horaires, réseaux, partenaires) sont dans `lib/cafe.ts`.
 > ⚠️ **À compléter** : arrêt de tram/bus, liens des partenaires, et `alcoveBookingUrl` (le bouton
@@ -28,11 +29,22 @@ Sans variables Supabase, l'app tourne en **mode démo** (données locales + bout
 3. Exécuter dans le SQL Editor, dans l'ordre :
    - `supabase/migrations/20261020000000_init.sql` (tables, RLS, fonctions, realtime)
    - `supabase/migrations/20261021000000_events.sql` (agenda, inscriptions à places limitées)
+   - `supabase/migrations/20261022000000_profiles_backfill.sql` (profils des comptes déjà créés)
    - `supabase/seed.sql` (Saison 1 « Cyber Arcade », 30 paliers, quêtes, événements d'exemple)
 
    ou avec la CLI : `supabase db push` puis `supabase db reset` en local.
-4. Authentication → URL Configuration : ajouter `http://localhost:3000/auth/callback**` (et l'URL de prod) aux Redirect URLs — le `**` autorise le paramètre `?next=`.
-5. Donner un rôle au staff :
+4. Authentication → URL Configuration :
+   - **Site URL** : l'URL de prod (ex. `https://subarashii.vercel.app`), pas `localhost`.
+   - **Redirect URLs** : `https://<prod>/auth/callback**` et `http://localhost:3000/auth/callback**`.
+5. Authentication → Emails → modèles **Magic Link** et **Confirm signup** : remplacer le contenu par
+   ```html
+   <h2>Connexion au Subarashii Manga Café</h2>
+   <p>Ton code : <strong>{{ .Token }}</strong></p>
+   <p>Ou clique ici : <a href="{{ .SiteURL }}/auth/callback?token_hash={{ .TokenHash }}&type=email&next=/pass">se connecter</a></p>
+   ```
+   Le code à 6 chiffres et le lien `token_hash` marchent même si l'e-mail s'ouvre dans un autre
+   navigateur ou si l'app est installée sur l'écran d'accueil (le lien par défaut, lui, échoue dans ces cas).
+6. Donner un rôle au staff :
    ```sql
    update public.profiles set role = 'cashier' where id = '<uuid du compte>';
    ```

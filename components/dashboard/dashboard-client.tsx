@@ -88,7 +88,7 @@ export function DashboardClient({ initial }: { initial: DashboardData }) {
 
     if (!result.ok) return push(result.error, "error");
     setClaimed((prev) => new Set(prev).add(key));
-    push(`🎁 ${track === "free" ? tier.free_reward : tier.premium_reward}`, track === "premium" ? "xp" : "info");
+    push(`Récompense obtenue : ${track === "free" ? tier.free_reward : tier.premium_reward}`, track === "premium" ? "xp" : "info");
   }
 
   async function handleQuest(quest: PlayerQuest) {
@@ -172,7 +172,7 @@ export function DashboardClient({ initial }: { initial: DashboardData }) {
             onClaim={handleClaim}
           />
         ) : (
-          <p className="rounded-xl border border-dashed border-zinc-700 p-6 text-center text-sm text-zinc-500">
+          <p className="rounded-sm border border-dashed border-zinc-700 p-6 text-center text-sm text-zinc-500">
             Aucune saison active pour le moment. Reviens bientôt !
           </p>
         )}
@@ -200,7 +200,7 @@ const DEMO_AMOUNTS = [6.5, 12, 18.5];
 
 function DemoPanel({ onPurchase }: { onPurchase: (amount: number) => void }) {
   return (
-    <aside className="rounded-xl border border-dashed border-gold/40 bg-gold/5 p-3 text-xs text-zinc-300">
+    <aside className="rounded-sm border border-dashed border-gold/40 bg-gold/5 p-3 text-xs text-zinc-300">
       <p>
         <strong className="text-gold">Mode démo</strong> — Supabase n&apos;est pas configuré, les
         données sont locales. Simule un ticket de caisse :
@@ -211,7 +211,7 @@ function DemoPanel({ onPurchase }: { onPurchase: (amount: number) => void }) {
             key={amount}
             type="button"
             onClick={() => onPurchase(amount)}
-            className="inline-flex items-center gap-1 rounded-lg border border-zinc-700 bg-zinc-900 px-2.5 py-1.5 font-semibold text-paper transition hover:border-gold active:scale-95"
+            className="inline-flex items-center gap-1 rounded-sm border border-zinc-700 bg-zinc-900 px-2.5 py-1.5 font-semibold text-paper transition hover:border-gold active:scale-95"
           >
             <ScanLine className="size-3.5 text-gold" /> {formatChf(amount)} CHF
           </button>

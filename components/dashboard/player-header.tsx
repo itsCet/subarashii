@@ -35,7 +35,7 @@ export function PlayerHeader({ profile }: { profile: Profile }) {
         <div className="flex flex-wrap items-center gap-2">
           <h1 className="truncate font-display text-xl text-paper">{name}</h1>
           {profile.is_premium_pass ? (
-            <span className="inline-flex items-center gap-1 rounded-full border border-gold/60 bg-gold/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-gold animate-pulse-glow">
+            <span className="inline-flex items-center gap-1 rounded-full border border-gold/60 bg-gold/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-gold">
               <Crown className="size-3" /> Premium VIP
             </span>
           ) : (

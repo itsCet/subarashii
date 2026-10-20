@@ -1,56 +1,46 @@
-import { ChevronRight, Crown, Swords } from "lucide-react";
 import Link from "next/link";
 import { ProgressBar } from "@/components/ui/progress-bar";
 import { PREMIUM_THRESHOLD_CHF, formatChf, formatXp, levelForXp, premiumProgress } from "@/lib/game";
 import type { Profile } from "@/lib/supabase/database.types";
 
 export function PassTeaser({ profile }: { profile: Profile | null }) {
-  return (
-    <section aria-labelledby="pass-teaser-title" className="manga-panel halftone-gold rounded-2xl p-5 shadow-panel sm:p-6">
-      <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
-        <div className="grid size-14 shrink-0 place-items-center rounded-xl border-2 border-black bg-gold text-ink shadow-panel">
-          {profile?.is_premium_pass ? <Crown className="size-7" /> : <Swords className="size-7" />}
-        </div>
+  const progress = profile ? premiumProgress(profile.current_season_spent) : null;
 
+  return (
+    <section aria-labelledby="pass-teaser-title" className="border-[6px] border-black bg-gold p-5 text-ink sm:p-6">
+      <div className="flex flex-col gap-5 sm:flex-row sm:items-end">
         <div className="min-w-0 flex-1">
-          <p className="text-xs font-extrabold uppercase tracking-widest text-gold">Pass Saisonnier & Fidélité</p>
-          <h2 id="pass-teaser-title" className="mt-0.5 font-display text-xl text-paper">
-            {profile
-              ? profile.is_premium_pass
-                ? "Pass Premium actif 🎉"
-                : `${formatChf(profile.current_season_spent)} / ${formatChf(PREMIUM_THRESHOLD_CHF)} CHF`
-              : "Chaque visite te fait progresser"}
+          <p className="text-xs font-extrabold uppercase tracking-[0.2em]">Pass de saison & fidélité</p>
+          <h2 id="pass-teaser-title" className="mt-1 font-display text-2xl leading-tight sm:text-3xl">
+            {!profile
+              ? "Chaque passage en caisse te fait monter de niveau."
+              : profile.is_premium_pass
+                ? "Ta voie Premium est ouverte."
+                : `${formatChf(profile.current_season_spent)} / ${formatChf(PREMIUM_THRESHOLD_CHF)} CHF`}
           </h2>
 
-          {profile ? (
+          {profile && progress ? (
             <>
               {!profile.is_premium_pass && (
-                <ProgressBar
-                  value={premiumProgress(profile.current_season_spent).ratio}
-                  tone="gold"
-                  className="mt-3 h-2.5"
-                  label="Progression vers le Pass Premium"
-                />
+                <ProgressBar value={progress.ratio} tone="ink" className="mt-3 h-3" label="Progression vers le Pass Premium" />
               )}
-              <p className="mt-2 text-sm text-zinc-400">
-                Niveau <strong className="text-paper">{levelForXp(profile.xp)}</strong> · {formatXp(profile.xp)} XP
-                {!profile.is_premium_pass && (
-                  <> · encore {formatChf(premiumProgress(profile.current_season_spent).remaining)} CHF pour la voie Premium</>
-                )}
+              <p className="mt-2 text-sm">
+                Niveau {levelForXp(profile.xp)} · {formatXp(profile.xp)} XP
+                {!profile.is_premium_pass && <> · encore {formatChf(progress.remaining)} CHF pour la voie Premium</>}
               </p>
             </>
           ) : (
-            <p className="mt-1 text-sm text-zinc-400">
-              1 CHF = 10 XP, 30 paliers de récompenses et la voie Premium offerte dès 25 CHF dépensés dans la saison.
+            <p className="mt-2 max-w-xl text-sm">
+              1 CHF = 10 XP. Trente paliers de récompenses dans la saison, et la voie Premium s&apos;ouvre dès 25 CHF dépensés.
             </p>
           )}
         </div>
 
         <Link
           href={profile ? "/pass" : "/login?next=/pass"}
-          className="inline-flex shrink-0 items-center justify-center gap-1 rounded-xl border-2 border-black bg-paper px-4 py-2.5 text-sm font-extrabold text-ink shadow-panel transition hover:-translate-y-0.5"
+          className="shrink-0 border-2 border-black bg-ink px-5 py-3 text-center text-sm font-extrabold text-paper hover:bg-black"
         >
-          {profile ? "Ouvrir mon Pass" : "Rejoindre le Pass"} <ChevronRight className="size-4" />
+          {profile ? "Ouvrir mon pass" : "Rejoindre le pass"}
         </Link>
       </div>
     </section>

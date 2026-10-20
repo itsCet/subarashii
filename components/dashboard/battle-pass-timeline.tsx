@@ -36,7 +36,7 @@ export function BattlePassTimeline({ tiers, playerLevel, isPremium, claimed, pen
 
   return (
     <div className="relative">
-      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-10 bg-gradient-to-l from-zinc-950 to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-10 bg-gradient-to-l from-ink to-transparent" />
 
       <div className="flex">
         {/* Libellés des voies */}
@@ -82,20 +82,20 @@ export function BattlePassTimeline({ tiers, playerLevel, isPremium, claimed, pen
                 {/* Rail de progression */}
                 <div className="relative flex h-10 items-center justify-center">
                   <div
-                    className={`absolute top-1/2 -right-1.5 -left-1.5 h-1 -tranzinc-y-1/2 ${
+                    className={`absolute top-1/2 -right-1.5 -left-1.5 h-1 -translate-y-1/2 ${
                       tier.level < playerLevel
                         ? "bg-torii"
                         : isCurrent
-                          ? "bg-gradient-to-r from-sakura via-zinc-800 to-zinc-800"
+                          ? "bg-gradient-to-r from-torii from-50% to-zinc-800 to-50%"
                           : "bg-zinc-800"
                     }`}
                   />
                   <div
-                    className={`relative grid size-9 place-items-center rounded-lg font-display text-sm ${
+                    className={`relative grid size-9 place-items-center rounded-sm font-display text-sm ${
                       isCurrent
-                        ? "bg-gold text-black shadow-gold ring-4 ring-gold/20"
+                        ? "bg-gold text-black ring-4 ring-gold/20"
                         : reached
-                          ? "bg-torii text-paper shadow-card"
+                          ? "bg-torii text-paper"
                           : "border border-zinc-700 bg-zinc-900 text-zinc-500"
                     }`}
                     aria-label={`Palier ${tier.level}${isCurrent ? " (actuel)" : ""}`}
@@ -147,7 +147,7 @@ function ScrollButton({ label, onClick, children }: { label: string; onClick: ()
       type="button"
       aria-label={label}
       onClick={onClick}
-      className="grid size-8 place-items-center rounded-lg border border-zinc-700 bg-zinc-900 text-zinc-300 transition hover:border-torii hover:text-paper"
+      className="grid size-8 place-items-center rounded-sm border border-zinc-700 bg-zinc-900 text-zinc-300 transition hover:border-torii hover:text-paper"
     >
       {children}
     </button>
@@ -156,17 +156,17 @@ function ScrollButton({ label, onClick, children }: { label: string; onClick: ()
 
 const CARD_STYLES: Record<Track, Record<RewardState, string>> = {
   free: {
-    claimable: "border-torii/70 bg-torii/10 shadow-card",
+    claimable: "border-torii bg-torii/10",
     claimed: "border-zinc-700 bg-zinc-900/40",
     locked: "border-zinc-700 bg-zinc-900/60",
     "premium-locked": "",
     empty: "border-dashed border-zinc-700/70 bg-transparent",
   },
   premium: {
-    claimable: "border-gold/70 bg-gradient-to-b from-amber-400/15 to-sakura/10 shadow-gold",
+    claimable: "border-gold bg-gold/10",
     claimed: "border-amber-900/40 bg-amber-950/10",
-    locked: "border-amber-900/40 bg-gradient-to-b from-amber-500/5 to-sakura/5",
-    "premium-locked": "border-amber-900/40 bg-gradient-to-b from-amber-500/5 to-sakura/5",
+    locked: "border-amber-900/40 bg-amber-950/10",
+    "premium-locked": "border-amber-900/40 bg-amber-950/10",
     empty: "border-dashed border-zinc-700/70 bg-transparent",
   },
 };
@@ -192,12 +192,12 @@ function RewardCard({
   return (
     <motion.div
       layout
-      className={`relative flex h-44 flex-col items-center rounded-xl border p-2.5 text-center transition-colors ${CARD_STYLES[track][state]}`}
+      className={`relative flex h-44 flex-col items-center rounded-sm border p-2.5 text-center transition-colors ${CARD_STYLES[track][state]}`}
     >
       {state !== "empty" && (
         <>
           <div
-            className={`mt-1 grid size-12 place-items-center rounded-xl ${
+            className={`mt-1 grid size-12 place-items-center rounded-sm ${
               premium ? "bg-gold/10 text-gold" : "bg-torii/15 text-red-300"
             } ${muted ? "opacity-50" : ""}`}
           >
@@ -213,7 +213,7 @@ function RewardCard({
                 type="button"
                 onClick={onClaim}
                 disabled={pending}
-                className={`flex w-full items-center justify-center gap-1 rounded-lg py-1.5 text-[11px] font-bold uppercase tracking-wider transition active:scale-95 disabled:opacity-70 ${
+                className={`flex w-full items-center justify-center gap-1 rounded-sm py-1.5 text-[11px] font-bold uppercase tracking-wider transition active:scale-95 disabled:opacity-70 ${
                   premium
                     ? "bg-gold text-black hover:bg-dorayaki"
                     : "bg-torii text-paper hover:brightness-110"

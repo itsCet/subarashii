@@ -1,4 +1,5 @@
 import "server-only";
+import { unstable_rethrow } from "next/navigation";
 import { connection } from "next/server";
 import { SAMPLE_EVENTS } from "@/lib/events-content";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
@@ -19,6 +20,7 @@ export async function getUpcomingEvents(limit = 50): Promise<UpcomingEvent[]> {
     // PostgREST renvoie les `numeric` sous forme de chaîne.
     return (data ?? []).map((e) => ({ ...e, price_chf: Number(e.price_chf) }));
   } catch (error) {
+    unstable_rethrow(error); // laisse passer les signaux internes de Next (rendu dynamique, redirections)
     console.error("[events] chargement impossible :", error);
     return [];
   }

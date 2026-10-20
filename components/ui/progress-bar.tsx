@@ -4,14 +4,15 @@ import { motion } from "framer-motion";
 
 type Props = {
   value: number; // 0 → 1
-  tone?: "torii" | "gold";
+  tone?: "torii" | "gold" | "ink";
   className?: string;
   label?: string;
 };
 
 const TONES = {
-  torii: "from-torii to-dorayaki",
-  gold: "from-dorayaki to-gold",
+  torii: { track: "border-zinc-700 bg-zinc-900", fill: "bg-torii" },
+  gold: { track: "border-zinc-700 bg-zinc-900", fill: "bg-gold" },
+  ink: { track: "border-black bg-transparent", fill: "bg-ink" },
 };
 
 export function ProgressBar({ value, tone = "torii", className = "h-2.5", label }: Props) {
@@ -23,10 +24,10 @@ export function ProgressBar({ value, tone = "torii", className = "h-2.5", label 
       aria-valuemin={0}
       aria-valuemax={100}
       aria-valuenow={pct}
-      className={`relative overflow-hidden rounded-full border border-zinc-700 bg-zinc-900 ${className}`}
+      className={`relative overflow-hidden border ${TONES[tone].track} ${className}`}
     >
       <motion.div
-        className={`h-full rounded-full bg-gradient-to-r ${TONES[tone]}`}
+        className={`h-full ${TONES[tone].fill}`}
         initial={false}
         animate={{ width: `${pct}%` }}
         transition={{ type: "spring", stiffness: 80, damping: 20 }}

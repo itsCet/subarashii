@@ -38,7 +38,7 @@ export function PremiumUnlockedOverlay({ open, rewardsReady, onClose }: Props) {
           role="dialog"
           aria-modal="true"
           aria-labelledby="premium-unlocked-title"
-          className="fixed inset-0 z-[90] grid place-items-center overflow-hidden bg-black/85 px-6 backdrop-blur-md"
+          className="fixed inset-0 z-[90] grid place-items-center overflow-hidden bg-black/85 px-6"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -75,16 +75,16 @@ export function PremiumUnlockedOverlay({ open, rewardsReady, onClose }: Props) {
                 alt=""
                 width={192}
                 height={192}
-                className="rounded-full shadow-[0_0_60px_rgba(233,196,106,0.5)]"
+                className="rounded-full border-4 border-black"
               />
-              <span className="absolute -top-3 left-1/2 grid size-12 -tranzinc-x-1/2 place-items-center rounded-xl bg-gold text-black shadow-gold">
+              <span className="absolute -top-3 left-1/2 grid size-12 -translate-x-1/2 place-items-center rounded-sm bg-gold text-black">
                 <Crown className="size-7" />
               </span>
             </motion.div>
 
             <motion.h2
               id="premium-unlocked-title"
-              className="mt-8 font-display text-3xl leading-tight text-gold drop-shadow-[0_0_18px_rgba(233,196,106,0.6)] sm:text-4xl"
+              className="mt-8 font-display text-3xl leading-tight text-gold sm:text-4xl"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.35 }}
@@ -104,7 +104,7 @@ export function PremiumUnlockedOverlay({ open, rewardsReady, onClose }: Props) {
             <motion.button
               type="button"
               onClick={onClose}
-              className="mt-8 rounded-xl bg-gold px-6 py-3 text-sm font-bold uppercase tracking-wider text-black shadow-gold transition hover:bg-dorayaki active:scale-95"
+              className="mt-8 rounded-sm bg-gold px-6 py-3 text-sm font-bold uppercase tracking-wider text-black transition hover:bg-dorayaki active:scale-95"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.65 }}

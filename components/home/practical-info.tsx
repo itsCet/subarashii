@@ -1,4 +1,3 @@
-import { Clock, MapPin, Navigation, TrainFront } from "lucide-react";
 import { SectionTitle } from "@/components/ui/section-title";
 import { CAFE } from "@/lib/cafe";
 import { HoursTable, OpenStatusBadge } from "./opening-hours";
@@ -6,65 +5,57 @@ import { HoursTable, OpenStatusBadge } from "./opening-hours";
 export function PracticalInfo() {
   return (
     <section id="infos" aria-labelledby="infos-title" className="scroll-mt-24">
-      <SectionTitle kicker="Infos pratiques" title="Horaires & Accès" id="infos-title" />
+      <SectionTitle index="02" title="Horaires & accès" id="infos-title" aside="営業時間" />
 
-      <div className="grid gap-4 md:grid-cols-2">
-        <div className="manga-panel rounded-xl p-5 shadow-card">
-          <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-            <h3 className="flex items-center gap-2 font-extrabold text-paper">
-              <Clock className="size-4 text-gold" /> Horaires d&apos;ouverture
-            </h3>
+      <div className="grid gap-10 md:grid-cols-2">
+        <div>
+          <div className="mb-3">
             <OpenStatusBadge />
           </div>
           <HoursTable />
         </div>
 
-        <div className="manga-panel flex flex-col rounded-xl p-5 shadow-card">
-          <h3 className="flex items-center gap-2 font-extrabold text-paper">
-            <MapPin className="size-4 text-torii" /> Adresse
-          </h3>
-          <address className="mt-2 not-italic text-zinc-300">
-            {CAFE.address.street}
-            <br />
-            {CAFE.address.zip} {CAFE.address.city}
+        <div>
+          <address className="not-italic">
+            <span className="block font-display text-2xl leading-tight text-paper">{CAFE.address.street}</span>
+            <span className="block text-paper">
+              {CAFE.address.zip} {CAFE.address.city}
+            </span>
             <span className="mt-1 block text-sm text-gold">{CAFE.address.note}</span>
           </address>
 
-          <h3 className="mt-5 flex items-center gap-2 font-extrabold text-paper">
-            <TrainFront className="size-4 text-gold" /> Accès
-          </h3>
-          <ul className="mt-2 space-y-1.5 text-sm">
-            {CAFE.access.map((a) => (
-              <li key={a.mode} className="flex gap-2">
-                <span className="w-24 shrink-0 font-bold text-zinc-300">{a.mode}</span>
-                <span className="text-zinc-400">{a.detail}</span>
-              </li>
-            ))}
-          </ul>
+          <dl className="mt-5 space-y-1.5 text-sm">
+            {CAFE.access
+              .filter((a) => a.mode !== "Entrée")
+              .map((a) => (
+                <div key={a.mode} className="flex gap-3">
+                  <dt className="w-24 shrink-0 text-zinc-500">{a.mode}</dt>
+                  <dd className="text-zinc-300">{a.detail}</dd>
+                </div>
+              ))}
+          </dl>
 
-          <ul className="mt-5 flex flex-wrap gap-2">
+          <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3">
+            <a
+              href={CAFE.address.mapsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="border-2 border-black bg-paper px-4 py-2.5 text-sm font-extrabold text-ink shadow-panel hover:bg-white"
+            >
+              Itinéraire
+            </a>
             {CAFE.socials.map((s) => (
-              <li key={s.label}>
-                <a
-                  href={s.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block rounded-full border border-zinc-700 px-3 py-1 text-xs font-bold text-zinc-300 transition hover:border-torii hover:text-paper"
-                >
-                  {s.label}
-                </a>
-              </li>
+              <a
+                key={s.label}
+                href={s.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm font-bold text-zinc-400 underline-offset-4 hover:text-paper hover:underline"
+              >
+                {s.label}
+              </a>
             ))}
-          </ul>
-
-          <a
-            href={CAFE.address.mapsUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-5 inline-flex items-center justify-center gap-2 self-start rounded-xl border-2 border-black bg-paper px-4 py-2 text-sm font-extrabold text-ink shadow-panel transition hover:-translate-y-0.5"
-          >
-            <Navigation className="size-4" /> Itinéraire
-          </a>
+          </div>
         </div>
       </div>
     </section>

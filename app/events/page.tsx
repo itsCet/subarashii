@@ -13,12 +13,9 @@ export default async function EventsPage() {
 
   return (
     <div>
-      <header className="mb-6">
-        <p className="font-display text-sm text-torii">イベント</p>
-        <h1 className="font-display text-3xl text-paper">Agenda</h1>
-        <p className="mt-1 max-w-xl text-sm text-zinc-400">
-          Tournois TCG, soirées jeux et nocturnes : inscris-toi et viens jouer avec la communauté.
-        </p>
+      <header className="mb-6 border-b-2 border-paper pb-4">
+        <h1 className="font-display text-4xl text-paper">Agenda</h1>
+        <p className="mt-2 max-w-xl text-sm text-zinc-400">Tournois TCG, soirées jeux, befores et nocturnes au café.</p>
       </header>
       <EventsBrowser events={events} mode={player.mode} isLoggedIn={player.profile !== null} />
     </div>

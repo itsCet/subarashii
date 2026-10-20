@@ -1,23 +1,26 @@
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { EventHeading } from "@/components/events/event-card";
+import { EventDate, EventMeta } from "@/components/events/event-card";
 import { SectionTitle } from "@/components/ui/section-title";
 import type { UpcomingEvent } from "@/lib/supabase/database.types";
 
 export function UpcomingEvents({ events }: { events: UpcomingEvent[] }) {
   return (
     <section aria-labelledby="events-title">
-      <SectionTitle kicker="Prochainement !" title="Prochains événements" id="events-title" action={{ href: "/events", label: "Tout l'agenda" }} />
+      <SectionTitle index="01" title="À l'agenda" id="events-title" aside="イベント" action={{ href: "/events", label: "Tout le programme" }} />
       {events.length === 0 ? (
-        <p className="manga-panel rounded-xl p-6 text-sm text-zinc-400">Le prochain programme arrive très bientôt.</p>
+        <p className="py-6 text-sm text-zinc-400">Le prochain programme arrive bientôt.</p>
       ) : (
-        <ul className="grid gap-3 md:grid-cols-3">
+        <ul className="divide-y divide-zinc-800">
           {events.map((event) => (
             <li key={event.id}>
-              <Link
-                href="/events"
-                className="manga-panel block h-full rounded-xl p-4 shadow-card transition hover:-translate-y-0.5 hover:border-zinc-500"
-              >
-                <EventHeading event={event} compact />
+              <Link href="/events" className="group flex items-center gap-4 py-4">
+                <EventDate iso={event.starts_at} />
+                <div className="min-w-0 flex-1">
+                  <h3 className="text-lg leading-tight font-extrabold text-paper group-hover:text-torii">{event.title}</h3>
+                  <EventMeta event={event} />
+                </div>
+                <ArrowRight className="size-5 shrink-0 text-zinc-600 transition group-hover:translate-x-1 group-hover:text-torii" />
               </Link>
             </li>
           ))}

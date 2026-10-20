@@ -20,9 +20,9 @@ export function useToasts() {
 }
 
 const TONES = {
-  xp: "border-gold/50 text-gold shadow-gold",
-  error: "border-sakura/50 text-sakura shadow-torii",
-  info: "border-torii/50 text-paper shadow-card",
+  xp: "border-gold text-gold",
+  error: "border-torii text-paper",
+  info: "border-paper text-paper",
 };
 
 export function Toaster({ toasts }: { toasts: Toast[] }) {
@@ -39,7 +39,7 @@ export function Toaster({ toasts }: { toasts: Toast[] }) {
             initial={{ opacity: 0, y: -16, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.95 }}
-            className={`rounded-xl border bg-zinc-950/90 px-4 py-2 text-sm font-semibold backdrop-blur-md ${TONES[t.tone ?? "info"]}`}
+            className={`border-2 bg-ink px-4 py-2 text-sm font-bold shadow-panel ${TONES[t.tone ?? "info"]}`}
           >
             {t.title}
           </motion.div>

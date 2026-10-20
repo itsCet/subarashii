@@ -1,29 +1,25 @@
 import Link from "next/link";
 
 type Props = {
-  kicker?: string; // petit texte japonais / sur-titre dans la bulle
+  index: string; // « 01 », « 02 »…
   title: string;
   id?: string;
+  aside?: string; // petit texte à droite (japonais, précision…)
   action?: { href: string; label: string };
 };
 
-/** Titre de section façon bulle de dialogue manga. */
-export function SectionTitle({ kicker, title, id, action }: Props) {
+/** En-tête de section éditorial : numéro, titre, filet épais. */
+export function SectionTitle({ index, title, id, aside, action }: Props) {
   return (
-    <div className="mb-4 flex items-end justify-between gap-3">
-      <div className="relative">
-        {kicker && (
-          <span className="relative mb-2 inline-block rounded-full border-2 border-black bg-paper px-3 py-0.5 text-xs font-extrabold text-ink after:absolute after:-bottom-[7px] after:left-4 after:size-3 after:rotate-45 after:border-r-2 after:border-b-2 after:border-black after:bg-paper">
-            {kicker}
-          </span>
-        )}
-        <h2 id={id} className="font-display text-xl text-paper sm:text-2xl">
-          {title}
-        </h2>
-      </div>
+    <div className="mb-5 flex items-end gap-3 border-b-2 border-paper pb-2">
+      <span className="font-display text-sm text-torii">{index}</span>
+      <h2 id={id} className="font-display text-2xl leading-none text-paper">
+        {title}
+      </h2>
+      {aside && <span className="hidden text-xs text-zinc-500 sm:inline">{aside}</span>}
       {action && (
-        <Link href={action.href} className="shrink-0 text-sm font-bold text-torii hover:text-torii-bright">
-          {action.label} →
+        <Link href={action.href} className="ml-auto text-sm font-extrabold text-paper underline decoration-torii decoration-2 underline-offset-4 hover:text-torii">
+          {action.label}
         </Link>
       )}
     </div>

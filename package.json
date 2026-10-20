@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "db:seed:generate": "tsx scripts/generate-seed.ts"
+    "db:seed:generate": "tsx scripts/generate-seed.ts",
+    "fonts:jp": "tsx scripts/subset-jp-font.mts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",

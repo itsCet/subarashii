@@ -25,8 +25,8 @@ const dela = localFont({
   weight: "400",
 });
 
-// Sous-ensemble limité aux caractères japonais utilisés dans l'UI (いらっしゃいませ, 素晴らしい, イベント, 仲間).
-// Ajouter un nouveau caractère japonais → regénérer ce fichier via Google Fonts (`&text=`).
+// Sous-ensemble limité aux caractères japonais utilisés dans l'UI.
+// Nouveau caractère japonais dans le code → `npm run fonts:jp`.
 const delaJp = localFont({
   variable: "--font-dela-jp",
   display: "swap",
@@ -61,7 +61,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body className="font-sans antialiased">
         <IntroSplash />
         <AppHeader />
-        <main className="mx-auto max-w-6xl px-4 pt-5 pb-32 md:pb-16">{children}</main>
+        <main className="mx-auto max-w-6xl px-4 pt-6 pb-28 md:pt-10 md:pb-20">{children}</main>
         <BottomNav />
         <ServiceWorkerRegistration />
       </body>

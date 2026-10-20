@@ -1,79 +1,71 @@
-import { CalendarDays, Sofa, Swords } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { RewardIcon } from "@/components/ui/reward-icon";
 import { CAFE, UNIVERSES } from "@/lib/cafe";
+import { OpenStatusBadge } from "./opening-hours";
 
+// Le hero est composé comme une planche de manga : cases sur papier, gouttières noires.
 export function Hero() {
   const alcoveHref = CAFE.alcoveBookingUrl ?? "#infos";
 
   return (
-    <section className="manga-panel halftone-torii rounded-2xl p-5 shadow-panel sm:p-8">
-      <div className="grid items-center gap-8 md:grid-cols-[1.2fr_1fr]">
-        <div>
-          <span className="relative inline-block rounded-2xl border-2 border-black bg-paper px-4 py-1.5 font-display text-sm text-ink after:absolute after:-bottom-[8px] after:left-6 after:size-3.5 after:rotate-45 after:border-r-2 after:border-b-2 after:border-black after:bg-paper">
-            いらっしゃいませ ! Bienvenue
-          </span>
-          <h1 className="mt-5 font-display text-3xl leading-tight text-paper sm:text-5xl">
-            {CAFE.tagline.replace(" à Genève", "")}
-            <span className="block text-torii">à {CAFE.city}</span>
+    <section aria-labelledby="hero-title">
+      <div className="grid gap-1.5 border-[6px] border-black bg-black md:grid-cols-[1fr_1fr_8rem]">
+        {/* Case principale */}
+        <div className="speed-lines relative overflow-hidden bg-paper p-6 text-ink sm:p-8 md:col-span-2">
+          <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-torii">{CAFE.claim}</p>
+          <h1 id="hero-title" className="mt-3 max-w-md font-display text-4xl leading-[1.05] sm:text-6xl">
+            Subarashii Manga Café
           </h1>
-          <p className="mt-3 text-sm font-extrabold uppercase tracking-widest text-gold">{CAFE.claim} 🇨🇭</p>
-          <p className="mt-3 max-w-lg text-zinc-300">
-            Installe-toi dans une alcôve avec une pile de mangas, un bubble tea et des amis : le Subarashii,
-            c&apos;est une bibliothèque, un bar, une zone gaming et un shop TCG sous le même toit.
+          <p className="mt-4 max-w-sm text-[15px] leading-relaxed text-zinc-700">
+            Une bibliothèque de mangas, des alcôves, un bar, des consoles et un shop TCG.
+            <br />
+            {CAFE.address.street}, {CAFE.address.city}.
           </p>
-
-          <div className="mt-6 flex flex-wrap gap-3">
-            <Link
-              href="/events"
-              className="inline-flex items-center gap-2 rounded-xl border-2 border-black bg-torii px-4 py-2.5 text-sm font-extrabold text-paper shadow-panel transition hover:-translate-y-0.5 hover:bg-torii-bright"
-            >
-              <CalendarDays className="size-4" /> Voir l&apos;Agenda
-            </Link>
-            <Link
-              href="/pass"
-              className="inline-flex items-center gap-2 rounded-xl border-2 border-black bg-gold px-4 py-2.5 text-sm font-extrabold text-ink shadow-panel transition hover:-translate-y-0.5 hover:bg-dorayaki"
-            >
-              <Swords className="size-4" /> Mon Pass Fidélité
-            </Link>
-            <Link
-              href={alcoveHref}
-              className="inline-flex items-center gap-2 rounded-xl border-2 border-zinc-600 bg-charcoal px-4 py-2.5 text-sm font-extrabold text-paper transition hover:-translate-y-0.5 hover:border-paper"
-            >
-              <Sofa className="size-4" /> Réserver une Alcôve
-            </Link>
-          </div>
-        </div>
-
-        <div className="relative order-first mx-auto grid aspect-square w-full max-w-[13rem] place-items-center md:order-none md:max-w-xs">
-          {/* Lignes de vitesse manga derrière le logo */}
-          <div
-            aria-hidden
-            className="absolute inset-0 rounded-full bg-[repeating-conic-gradient(from_0deg,rgba(244,244,245,0.09)_0deg_1.5deg,transparent_1.5deg_8deg)] [mask-image:radial-gradient(circle,transparent_38%,black_45%,transparent_72%)]"
-          />
           <Image
             src="/brand/logo.png"
-            alt="Subarashii Manga Café"
-            width={320}
-            height={320}
+            alt=""
+            width={260}
+            height={260}
             priority
-            className="relative size-[78%] rounded-full shadow-[0_20px_60px_-20px_rgba(230,57,70,0.7)]"
+            className="pointer-events-none absolute -right-10 -bottom-12 hidden w-56 rotate-[-8deg] rounded-full border-4 border-black sm:block lg:w-64"
           />
         </div>
+
+        {/* Case verticale japonaise */}
+        <div className="hidden items-center justify-center bg-torii md:flex">
+          <span className="font-display text-3xl leading-tight text-paper [writing-mode:vertical-rl]">
+            素晴らしい漫画喫茶
+          </span>
+        </div>
+
+        {/* Les quatre univers, une case chacun */}
+        <ul className="grid grid-cols-2 gap-1.5 md:col-span-3 md:grid-cols-4">
+          {UNIVERSES.map((u, i) => (
+            <li key={u.key} className={`p-4 ${i % 3 === 0 ? "tone bg-paper text-ink" : "bg-charcoal text-paper"}`}>
+              <span className="font-display text-xs text-torii">0{i + 1}</span>
+              <h2 className="mt-1 text-base leading-tight font-extrabold">{u.title}</h2>
+              <p className={`mt-1 text-xs leading-relaxed ${i % 3 === 0 ? "text-zinc-700" : "text-zinc-400"}`}>
+                {u.description}
+              </p>
+            </li>
+          ))}
+        </ul>
       </div>
 
-      <ul className="mt-8 grid grid-cols-2 gap-3 lg:grid-cols-4">
-        {UNIVERSES.map((u) => (
-          <li key={u.key} className="rounded-xl border border-zinc-700 bg-ink/60 p-3.5">
-            <span className="grid size-10 place-items-center rounded-lg bg-torii/15 text-torii">
-              <RewardIcon icon={u.icon} className="size-5" />
-            </span>
-            <h3 className="mt-2.5 text-sm font-extrabold text-paper">{u.title}</h3>
-            <p className="mt-1 text-xs leading-relaxed text-zinc-400">{u.description}</p>
-          </li>
-        ))}
-      </ul>
+      <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3">
+        <Link href="/events" className="border-2 border-black bg-torii px-5 py-3 text-sm font-extrabold text-paper shadow-panel hover:bg-torii-bright">
+          Voir l&apos;agenda
+        </Link>
+        <Link href="/pass" className="border-2 border-black bg-paper px-5 py-3 text-sm font-extrabold text-ink shadow-panel hover:bg-white">
+          Mon pass fidélité
+        </Link>
+        <Link href={alcoveHref} className="text-sm font-extrabold text-paper underline decoration-torii decoration-2 underline-offset-4 hover:text-torii">
+          Réserver une alcôve
+        </Link>
+        <span className="ml-auto">
+          <OpenStatusBadge />
+        </span>
+      </div>
     </section>
   );
 }

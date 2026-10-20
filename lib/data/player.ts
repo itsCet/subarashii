@@ -1,4 +1,5 @@
 import "server-only";
+import { unstable_rethrow } from "next/navigation";
 import { connection } from "next/server";
 import { getDemoDashboard } from "@/lib/demo";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
@@ -21,6 +22,7 @@ export async function getPlayerSummary(): Promise<{ mode: "demo" | "live"; profi
     const { data } = await supabase.from("profiles").select("*").eq("id", user.id).single();
     return { mode: "live", profile: data ? normalizeProfile(data) : null };
   } catch (error) {
+    unstable_rethrow(error); // laisse passer les signaux internes de Next (rendu dynamique, redirections)
     console.error("[player] chargement du profil impossible :", error);
     return { mode: "live", profile: null };
   }

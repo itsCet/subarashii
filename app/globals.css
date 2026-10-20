@@ -11,24 +11,9 @@
   --color-dorayaki: #f4a261;
   --color-sakura: #f6c9d4;
 
-  --shadow-card: 0 1px 0 rgba(244, 244, 245, 0.04) inset, 0 12px 30px -18px rgba(0, 0, 0, 0.8);
-  --shadow-torii: 0 10px 30px -12px rgba(230, 57, 70, 0.55);
-  --shadow-gold: 0 10px 30px -12px rgba(233, 196, 106, 0.5);
   /* Ombre « case de manga » : décalée et nette. */
   --shadow-panel: 4px 4px 0 0 #000;
 
-  --animate-shimmer: shimmer 3.2s linear infinite;
-  --animate-pulse-glow: pulse-glow 2.4s ease-in-out infinite;
-
-  @keyframes shimmer {
-    from { background-position: 200% 0; }
-    to { background-position: -200% 0; }
-  }
-
-  @keyframes pulse-glow {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(233, 196, 106, 0.2); }
-    50% { box-shadow: 0 0 0 4px rgba(233, 196, 106, 0.15); }
-  }
 }
 
 @theme inline {
@@ -47,23 +32,8 @@ html {
 
 body {
   min-height: 100dvh;
-  background:
-    radial-gradient(50rem 26rem at 90% -10%, rgba(230, 57, 70, 0.12), transparent 60%),
-    radial-gradient(40rem 24rem at -10% 30%, rgba(244, 162, 97, 0.07), transparent 60%),
-    var(--color-ink);
+  background: var(--color-ink);
   color: var(--color-paper);
-}
-
-/* Trame manga (halftone) très légère sur tout le fond */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background-image: radial-gradient(rgba(244, 244, 245, 0.05) 1px, transparent 1.3px);
-  background-size: 14px 14px;
-  mask-image: linear-gradient(to bottom, black, transparent 70%);
 }
 
 @utility scrollbar-none {
@@ -104,6 +74,17 @@ body::before {
   &::before {
     background-image: radial-gradient(rgba(233, 196, 106, 0.25) 1.2px, transparent 1.5px);
   }
+}
+
+/* Trame d'impression (points noirs) pour les cases sur fond papier. */
+@utility tone {
+  background-image: radial-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1.35px);
+  background-size: 6px 6px;
+}
+
+/* Lignes de vitesse manga, à poser en fond d'une case. */
+@utility speed-lines {
+  background-image: repeating-conic-gradient(from 0deg at 85% 50%, rgba(0, 0, 0, 0.09) 0deg 1.2deg, transparent 1.2deg 7deg);
 }
 
 /* L'intro vidéo n'est jouée qu'une fois par session (voir IntroSplash). */
