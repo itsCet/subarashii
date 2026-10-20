@@ -34,7 +34,7 @@ Sans variables Supabase, l'app tourne en **mode démo** (données locales + bout
 
    ou avec la CLI : `supabase db push` puis `supabase db reset` en local.
 4. Authentication → URL Configuration :
-   - **Site URL** : l'URL de prod (ex. `https://subarashii.vercel.app`), pas `localhost`.
+   - **Site URL** : l'URL de prod (ex. `https://subarashii-one.vercel.app`), pas `localhost` — sinon les liens des e-mails renvoient vers `localhost:3000`.
    - **Redirect URLs** : `https://<prod>/auth/callback**` et `http://localhost:3000/auth/callback**`.
 5. Authentication → Emails → modèles **Magic Link** et **Confirm signup** : remplacer le contenu par
    ```html
