@@ -9,7 +9,8 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "db:seed:generate": "tsx scripts/generate-seed.ts",
-    "fonts:jp": "tsx scripts/subset-jp-font.mts"
+    "fonts:jp": "tsx scripts/subset-jp-font.mts",
+    "db:bundle": "tsx scripts/bundle-sql.mts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",

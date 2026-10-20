@@ -26,14 +26,10 @@ Sans variables Supabase, l'app tourne en **mode démo** (données locales + bout
 
 1. Créer un projet sur [supabase.com](https://supabase.com).
 2. Copier `.env.example` en `.env.local` et renseigner l'URL et la clé `anon`.
-3. Exécuter dans le SQL Editor, dans l'ordre :
-   - `supabase/migrations/20261020000000_init.sql` (tables, RLS, fonctions, realtime)
-   - `supabase/migrations/20261021000000_events.sql` (agenda, inscriptions à places limitées)
-   - `supabase/migrations/20261022000000_profiles_backfill.sql` (profils des comptes déjà créés)
-   - `supabase/migrations/20261023000000_staff.sql` (articles du shop, droits staff, images, historique caisse)
-   - `supabase/seed.sql` (Saison 1 « Cyber Arcade », 30 paliers, quêtes, événements d'exemple)
+3. **Installer la base** : SQL Editor → New query → coller tout `supabase/setup.sql` → Run.
+   Ce fichier regroupe les migrations de `supabase/migrations/` et le seed (régénéré par `npm run db:bundle`).
+   Sur une base déjà installée, n'exécuter que les nouvelles migrations.
 
-   ou avec la CLI : `supabase db push` puis `supabase db reset` en local.
 4. Authentication → URL Configuration :
    - **Site URL** : l'URL de prod (ex. `https://subarashii-one.vercel.app`), pas `localhost` — sinon les liens des e-mails renvoient vers `localhost:3000`.
    - **Redirect URLs** : `https://<prod>/auth/callback**` et `http://localhost:3000/auth/callback**`.
