@@ -19,7 +19,7 @@ export function IntroSplash() {
       return;
     }
     // Filet de sécurité si la vidéo ne se lance pas (mode économie d'énergie, etc.).
-    const timeout = setTimeout(dismiss, 9000);
+    const timeout = setTimeout(dismiss, 6500);
     videoRef.current?.play().catch(dismiss);
     return () => clearTimeout(timeout);
   }, []);
@@ -44,7 +44,6 @@ export function IntroSplash() {
           <video
             ref={videoRef}
             className="aspect-square w-[min(80vw,26rem)]"
-            poster="/brand/logo.png"
             muted
             playsInline
             autoPlay

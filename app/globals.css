@@ -134,7 +134,7 @@ html[data-intro-seen] #intro-splash {
 
 /* Garde-fou : l'intro ne bloque jamais l'app, même si le JS ne s'exécute pas. */
 #intro-splash {
-  animation: intro-failsafe 0s 10s forwards;
+  animation: intro-failsafe 0s 7s forwards;
 }
 
 @keyframes intro-failsafe {

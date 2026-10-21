@@ -1,7 +1,7 @@
 // Service worker minimal : l'app reste installable et les assets de marque
 // sont servis depuis le cache. Les pages et données passent toujours par le réseau.
-const CACHE = "subarashii-v1";
-const PRECACHE = ["/brand/logo.png", "/brand/logo-intro.mp4", "/icons/icon-192.png", "/icons/icon-512.png"];
+const CACHE = "subarashii-v2"; // incrémenter quand un fichier de /brand ou /icons change
+const PRECACHE = ["/brand/logo.png", "/brand/logo-intro.mp4", "/brand/logo-intro.webm", "/icons/icon-192.png", "/icons/icon-512.png"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(PRECACHE)));
