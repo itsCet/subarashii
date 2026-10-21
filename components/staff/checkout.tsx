@@ -1,5 +1,6 @@
 "use client";
 
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Check, Crown, Gift, Loader2, ScanLine, Search, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import {
@@ -49,6 +50,7 @@ export function Checkout({ mode, initialTransactions }: Props) {
   const [history, setHistory] = useState(initialTransactions);
   const [pendingRewards, setPendingRewards] = useState<PendingReward[]>([]);
   const [redeemingId, setRedeemingId] = useState<string | null>(null);
+  const reduceMotion = useReducedMotion();
 
   // Recherche par pseudo, avec un léger délai pendant la frappe.
   useEffect(() => {
@@ -227,14 +229,25 @@ export function Checkout({ mode, initialTransactions }: Props) {
               )}
             </section>
 
+            <AnimatePresence initial={false}>
             {member && pendingRewards.length > 0 && (
-              <section aria-labelledby="pending-rewards" className="mt-6 border-2 border-gold p-4">
+              <motion.section
+                key="pending-rewards"
+                exit={{ opacity: 0, transition: { duration: 0.15, ease: [0.23, 1, 0.32, 1] } }}
+                aria-labelledby="pending-rewards" className="mt-6 border-2 border-gold p-4">
                 <h2 id="pending-rewards" className="flex items-center gap-2 text-sm font-extrabold text-paper">
                   <Gift className="size-4 text-gold-ink" /> Récompenses à remettre · {pendingRewards.length}
                 </h2>
                 <ul className="mt-3 divide-y divide-zinc-800">
+                  {/* initial={false} : la liste chargée ne s'anime pas ; seule la récompense remise s'efface. */}
+                  <AnimatePresence initial={false}>
                   {pendingRewards.map((r) => (
-                    <li key={r.id} className="flex items-center gap-3 py-2">
+                    <motion.li
+                      key={r.id}
+                      exit={{ opacity: 0, transform: reduceMotion ? "scale(1)" : "scale(0.98)" }}
+                      transition={{ duration: 0.15, ease: [0.23, 1, 0.32, 1] }}
+                      className="flex items-center gap-3 py-2"
+                    >
                       <RewardIcon icon={r.icon_name} className="size-5 shrink-0 text-gold-ink" />
                       <span className="min-w-0 flex-1">
                         <span className="block font-bold text-paper">{r.reward}</span>
@@ -250,11 +263,13 @@ export function Checkout({ mode, initialTransactions }: Props) {
                       >
                         {redeemingId === r.id ? <Loader2 className="size-4 animate-spin" /> : "Remettre"}
                       </button>
-                    </li>
+                    </motion.li>
                   ))}
+                  </AnimatePresence>
                 </ul>
-              </section>
+              </motion.section>
             )}
+            </AnimatePresence>
 
             {/* Étape 2 : montant */}
             <form onSubmit={submit} aria-labelledby="step-amount" className={`mt-8 ${member ? "" : "pointer-events-none opacity-40"}`}>

@@ -1,3 +1,6 @@
+"use client";
+
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Crown, Sparkles } from "lucide-react";
 import { ProgressBar } from "@/components/ui/progress-bar";
 import { formatXp, levelProgress } from "@/lib/game";
@@ -26,9 +29,7 @@ export function PlayerHeader({ profile }: { profile: Profile }) {
             </div>
           )}
         </div>
-        <span className="absolute -right-1 -bottom-1 rounded-md border border-zinc-950 bg-gold px-1.5 font-display text-xs text-black">
-          {level}
-        </span>
+        <LevelBadge level={level} />
       </div>
 
       <div className="min-w-0 flex-1">
@@ -57,5 +58,23 @@ export function PlayerHeader({ profile }: { profile: Profile }) {
         </p>
       </div>
     </section>
+  );
+}
+
+/** Badge du niveau : petit « pop » quand on monte de niveau pendant la visite (jamais au chargement). */
+function LevelBadge({ level }: { level: number }) {
+  const reduceMotion = useReducedMotion();
+  return (
+    <AnimatePresence initial={false} mode="popLayout">
+      <motion.span
+        key={level}
+        initial={{ opacity: 0, transform: reduceMotion ? "scale(1)" : "scale(0.9)" }}
+        animate={{ opacity: 1, transform: "scale(1)" }}
+        transition={reduceMotion ? { duration: 0.15 } : { type: "spring", duration: 0.4, bounce: 0.3 }}
+        className="absolute -right-1 -bottom-1 rounded-md border border-zinc-950 bg-gold px-1.5 font-display text-xs text-black"
+      >
+        {level}
+      </motion.span>
+    </AnimatePresence>
   );
 }

@@ -80,7 +80,7 @@ export function LoginForm({ next }: { next?: string }) {
 
   if (step === "password") {
     return (
-      <form onSubmit={signInWithPassword} className="mt-8 w-full space-y-3 text-left">
+      <form key="password" onSubmit={signInWithPassword} className="mt-8 w-full space-y-3 text-left transition duration-200 ease-snappy starting:translate-y-1 starting:opacity-0 motion-reduce:starting:translate-y-0">
         <label htmlFor="pw-email" className="text-xs font-bold uppercase tracking-wider text-zinc-400">
           E-mail
         </label>
@@ -126,7 +126,7 @@ export function LoginForm({ next }: { next?: string }) {
 
   if (step === "code") {
     return (
-      <form onSubmit={verifyCode} className="mt-8 w-full space-y-3 text-left">
+      <form key="code" onSubmit={verifyCode} className="mt-8 w-full space-y-3 text-left transition duration-200 ease-snappy starting:translate-y-1 starting:opacity-0 motion-reduce:starting:translate-y-0">
         <p className="text-sm text-zinc-300">
           C&apos;est envoyé à <strong className="text-paper">{email}</strong>. Clique sur le lien de l&apos;e-mail, ou saisis
           le code ici :
@@ -167,7 +167,7 @@ export function LoginForm({ next }: { next?: string }) {
   }
 
   return (
-    <form onSubmit={sendCode} className="mt-8 w-full space-y-3 text-left">
+    <form key="email" onSubmit={sendCode} className="mt-8 w-full space-y-3 text-left transition duration-200 ease-snappy starting:translate-y-1 starting:opacity-0 motion-reduce:starting:translate-y-0">
       <label htmlFor="email" className="text-xs font-bold uppercase tracking-wider text-zinc-400">
         E-mail
       </label>

@@ -1,9 +1,11 @@
 "use client";
 
+import { motion, useReducedMotion } from "framer-motion";
 import { Check, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { registerForEvent } from "@/app/actions/events";
+import { TabIndicator } from "@/components/ui/tab-indicator";
 import { Toaster, useToasts } from "@/components/ui/toaster";
 import { EVENT_CATEGORIES } from "@/lib/events-content";
 import type { EventCategory, UpcomingEvent } from "@/lib/supabase/database.types";
@@ -52,11 +54,12 @@ export function EventsBrowser({ events: initialEvents, mode, isLoggedIn }: Props
               role="tab"
               aria-selected={active}
               onClick={() => setFilter(c.key)}
-              className={`-mb-px shrink-0 border-b-2 py-3 text-sm font-extrabold transition ${
-                active ? "border-torii text-paper" : "border-transparent text-zinc-400 hover:text-zinc-300"
+              className={`relative shrink-0 py-3 text-sm font-extrabold transition ${
+                active ? "text-paper" : "text-zinc-400 hover:text-zinc-300"
               }`}
             >
               {c.label}
+              {active && <TabIndicator layoutId="events-tab" />}
             </button>
           );
         })}
@@ -111,12 +114,20 @@ function RegisterButton({
   onRegister: () => void;
 }) {
   const base = "flex w-full items-center justify-center gap-2 border-2 px-4 py-2.5 text-sm font-extrabold transition";
+  // Seule une inscription faite pendant la visite s'anime ; celles déjà connues au chargement restent fixes.
+  const [registeredOnMount] = useState(event.is_registered);
+  const reduceMotion = useReducedMotion();
 
   if (event.is_registered) {
     return (
-      <p className={`${base} border-ok/60 text-ok`}>
+      <motion.p
+        initial={registeredOnMount ? false : { opacity: 0, transform: reduceMotion ? "scale(1)" : "scale(0.95)" }}
+        animate={{ opacity: 1, transform: "scale(1)" }}
+        transition={{ duration: 0.22, ease: [0.23, 1, 0.32, 1] }}
+        className={`${base} border-ok/60 text-ok`}
+      >
         <Check className="size-4" /> Inscrit·e
-      </p>
+      </motion.p>
     );
   }
   if (event.spots_left === 0) {

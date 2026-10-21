@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { TabIndicator } from "@/components/ui/tab-indicator";
 import { formatChf } from "@/lib/game";
 import { PRODUCT_CATEGORIES, productCategoryLabel } from "@/lib/products-content";
 import type { Product, ProductCategory } from "@/lib/supabase/database.types";
@@ -32,11 +33,12 @@ export function Catalog({ products }: { products: Product[] }) {
                   setTab(t.key);
                   setQuery("");
                 }}
-                className={`shrink-0 border-b-2 py-3 text-sm font-extrabold ${
-                  active ? "border-torii text-paper" : "border-transparent text-zinc-400 hover:text-zinc-300"
+                className={`relative shrink-0 py-3 text-sm font-extrabold ${
+                  active ? "text-paper" : "text-zinc-400 hover:text-zinc-300"
                 }`}
               >
                 {t.label}
+                {active && <TabIndicator layoutId="shop-tab" />}
               </button>
             );
           })}
