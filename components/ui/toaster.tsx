@@ -20,7 +20,7 @@ export function useToasts() {
 }
 
 const TONES = {
-  xp: "border-gold text-gold",
+  xp: "border-gold text-gold-ink",
   error: "border-torii text-paper",
   info: "border-paper text-paper",
 };

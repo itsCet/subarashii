@@ -18,7 +18,7 @@ export function PassProgressBanner({ spent, isPremium, premiumRewardsReady }: Pr
             <Crown className="size-6" />
           </div>
           <div>
-            <p className="font-display text-lg text-gold">Pass Premium VIP actif</p>
+            <p className="font-display text-lg text-gold-ink">Pass Premium VIP actif</p>
             <p className="text-sm text-zinc-300">
               Voie Premium débloquée pour toute la saison
               {premiumRewardsReady > 0 && (
@@ -41,12 +41,12 @@ export function PassProgressBanner({ spent, isPremium, premiumRewardsReady }: Pr
       <div className="relative">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <p className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.25em] text-sakura">
+            <p className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.25em] text-sakura-ink">
               <Lock className="size-3" /> Pass Premium
             </p>
             <p className="mt-1 font-display text-2xl text-paper tabular-nums">
               {formatChf(spent)}
-              <span className="whitespace-nowrap text-base text-zinc-500"> / {formatChf(PREMIUM_THRESHOLD_CHF)} CHF</span>
+              <span className="whitespace-nowrap text-base text-zinc-400"> / {formatChf(PREMIUM_THRESHOLD_CHF)} CHF</span>
             </p>
           </div>
           <Link
@@ -60,7 +60,7 @@ export function PassProgressBanner({ spent, isPremium, premiumRewardsReady }: Pr
         <ProgressBar value={ratio} className="mt-4 h-3" label="Progression vers le Pass Premium" />
 
         <p className="mt-3 text-sm text-zinc-400">
-          Plus que <strong className="text-gold">{formatChf(remaining)} CHF</strong> d&apos;achats
+          Plus que <strong className="text-gold-ink">{formatChf(remaining)} CHF</strong> d&apos;achats
           cette saison pour activer automatiquement la voie Premium. Présente ta carte membre en caisse.
         </p>
       </div>

@@ -53,7 +53,7 @@ export function EventsBrowser({ events: initialEvents, mode, isLoggedIn }: Props
               aria-selected={active}
               onClick={() => setFilter(c.key)}
               className={`-mb-px shrink-0 border-b-2 py-3 text-sm font-extrabold transition ${
-                active ? "border-torii text-paper" : "border-transparent text-zinc-500 hover:text-zinc-300"
+                active ? "border-torii text-paper" : "border-transparent text-zinc-400 hover:text-zinc-300"
               }`}
             >
               {c.label}
@@ -63,7 +63,7 @@ export function EventsBrowser({ events: initialEvents, mode, isLoggedIn }: Props
       </div>
 
       {filter !== "all" && (
-        <p className="mt-3 text-sm text-zinc-500">{EVENT_CATEGORIES.find((c) => c.key === filter)?.examples}</p>
+        <p className="mt-3 text-sm text-zinc-400">{EVENT_CATEGORIES.find((c) => c.key === filter)?.examples}</p>
       )}
 
       {visible.length === 0 ? (
@@ -77,12 +77,12 @@ export function EventsBrowser({ events: initialEvents, mode, isLoggedIn }: Props
                 <h2 className="text-xl leading-tight font-extrabold text-paper">{event.title}</h2>
                 <EventMeta event={event} />
                 <p className="mt-3 max-w-prose text-sm leading-relaxed text-zinc-300">{event.description}</p>
-                {event.conditions && <p className="mt-2 text-xs text-zinc-500">{event.conditions}</p>}
+                {event.conditions && <p className="mt-2 text-xs text-zinc-400">{event.conditions}</p>}
               </div>
               <div className="sm:text-right">
-                <p className={`mb-2 text-xs font-bold ${event.spots_left !== null && event.spots_left <= 3 ? "text-torii" : "text-zinc-400"}`}>
+                <p className={`mb-2 text-xs font-bold ${event.spots_left !== null && event.spots_left <= 3 ? "text-torii-ink" : "text-zinc-400"}`}>
                   {spotsLabel(event.spots_left)}
-                  {event.capacity !== null && <span className="text-zinc-600"> sur {event.capacity}</span>}
+                  {event.capacity !== null && <span className="text-zinc-400"> sur {event.capacity}</span>}
                 </p>
                 <RegisterButton
                   event={event}
@@ -120,11 +120,11 @@ function RegisterButton({
     );
   }
   if (event.spots_left === 0) {
-    return <p className={`${base} border-zinc-700 text-zinc-500`}>Complet</p>;
+    return <p className={`${base} border-zinc-700 text-zinc-400`}>Complet</p>;
   }
   if (needsLogin) {
     return (
-      <Link href="/login?next=/events" className={`${base} border-zinc-500 text-paper hover:border-paper`}>
+      <Link href="/login?next=/events" className={`pressable ${base} border-zinc-500 text-paper hover:border-paper`}>
         Se connecter pour s&apos;inscrire
       </Link>
     );
@@ -134,7 +134,7 @@ function RegisterButton({
       type="button"
       onClick={onRegister}
       disabled={pending}
-      className={`${base} border-black bg-torii text-white shadow-panel hover:bg-torii-bright disabled:opacity-70`}
+      className={`${base} border-black bg-torii text-white shadow-panel hover:bg-torii-strong disabled:opacity-70`}
     >
       {pending && <Loader2 className="size-4 animate-spin" />}
       {event.price_chf === 0 ? "S'inscrire" : "Réserver ma place"}

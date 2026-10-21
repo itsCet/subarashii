@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { Check, ChevronLeft, ChevronRight, Crown, Loader2, Lock, Sparkles } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { RewardIcon } from "@/components/ui/reward-icon";
@@ -41,11 +41,11 @@ export function BattlePassTimeline({ tiers, playerLevel, isPremium, claimed, pen
       <div className="flex">
         {/* Libellés des voies */}
         <div className="z-10 flex w-11 shrink-0 flex-col gap-2 border-r border-zinc-700 bg-zinc-950/90 pr-2">
-          <LaneLabel className="h-44 text-torii" icon={<Sparkles className="size-3.5" />}>
+          <LaneLabel className="h-44 text-torii-ink" icon={<Sparkles className="size-3.5" />}>
             Gratuit
           </LaneLabel>
           <div className="h-10" />
-          <LaneLabel className="h-44 text-gold" icon={isPremium ? <Crown className="size-3.5" /> : <Lock className="size-3.5" />}>
+          <LaneLabel className="h-44 text-gold-ink" icon={isPremium ? <Crown className="size-3.5" /> : <Lock className="size-3.5" />}>
             Premium
           </LaneLabel>
         </div>
@@ -96,7 +96,7 @@ export function BattlePassTimeline({ tiers, playerLevel, isPremium, claimed, pen
                         ? "bg-gold text-black ring-4 ring-gold/20"
                         : reached
                           ? "bg-torii text-white"
-                          : "border border-zinc-700 bg-zinc-900 text-zinc-500"
+                          : "border border-zinc-700 bg-zinc-900 text-zinc-400"
                     }`}
                     aria-label={`Palier ${tier.level}${isCurrent ? " (actuel)" : ""}`}
                   >
@@ -190,20 +190,19 @@ function RewardCard({
   const muted = state === "locked" || state === "premium-locked" || state === "claimed";
 
   return (
-    <motion.div
-      layout
+    <div
       className={`relative flex h-44 flex-col items-center rounded-sm border p-2.5 text-center transition-colors ${CARD_STYLES[track][state]}`}
     >
       {state !== "empty" && (
         <>
           <div
             className={`mt-1 grid size-12 place-items-center rounded-sm ${
-              premium ? "bg-gold/10 text-gold" : "bg-torii/15 text-torii"
+              premium ? "bg-gold/10 text-gold-ink" : "bg-torii/15 text-torii-ink"
             } ${muted ? "opacity-50" : ""}`}
           >
             <RewardIcon icon={icon} className="size-6" />
           </div>
-          <p className={`mt-2 line-clamp-3 text-xs font-semibold leading-snug ${muted ? "text-zinc-500" : "text-zinc-100"}`}>
+          <p className={`mt-2 line-clamp-3 text-xs font-semibold leading-snug ${muted ? "text-zinc-400" : "text-zinc-100"}`}>
             {label}
           </p>
 
@@ -213,7 +212,7 @@ function RewardCard({
                 type="button"
                 onClick={onClaim}
                 disabled={pending}
-                className={`flex w-full items-center justify-center gap-1 rounded-sm py-1.5 text-[11px] font-bold uppercase tracking-wider transition active:scale-95 disabled:opacity-70 ${
+                className={`flex w-full items-center justify-center gap-1 rounded-sm py-1.5 text-[11px] font-bold uppercase tracking-wider transition disabled:opacity-70 ${
                   premium
                     ? "bg-gold text-black hover:bg-dorayaki"
                     : "bg-torii text-white hover:brightness-110"
@@ -222,24 +221,33 @@ function RewardCard({
                 {pending ? <Loader2 className="size-3.5 animate-spin" /> : "Réclamer"}
               </button>
             )}
-            {state === "claimed" && (
-              <span className="flex items-center justify-center gap-1 py-1.5 text-[11px] font-bold uppercase tracking-wider text-ok">
-                <Check className="size-3.5" /> Obtenu
-              </span>
-            )}
+            {/* initial={false} : les récompenses déjà obtenues au chargement ne s'animent pas. */}
+            <AnimatePresence initial={false}>
+              {state === "claimed" && (
+                <motion.span
+                  key="claimed"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.22, ease: [0.23, 1, 0.32, 1] }}
+                  className="flex items-center justify-center gap-1 py-1.5 text-[11px] font-bold uppercase tracking-wider text-ok"
+                >
+                  <Check className="size-3.5" /> Obtenu
+                </motion.span>
+              )}
+            </AnimatePresence>
             {state === "locked" && (
-              <span className="flex items-center justify-center gap-1 py-1.5 text-[11px] uppercase tracking-wider text-zinc-500">
+              <span className="flex items-center justify-center gap-1 py-1.5 text-[11px] uppercase tracking-wider text-zinc-400">
                 <Lock className="size-3" /> Verrouillé
               </span>
             )}
             {state === "premium-locked" && (
-              <span className="flex items-center justify-center gap-1 py-1.5 text-[11px] font-bold uppercase tracking-wider text-gold/80">
+              <span className="flex items-center justify-center gap-1 py-1.5 text-[11px] font-bold uppercase tracking-wider text-gold-ink">
                 <Crown className="size-3" /> Premium
               </span>
             )}
           </div>
         </>
       )}
-    </motion.div>
+    </div>
   );
 }

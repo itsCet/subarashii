@@ -27,7 +27,7 @@ export function MyRewards({ rewards, index }: { rewards: MyReward[]; index: stri
           {toCollect.length > 0 && (
             <div>
               <h3 className="flex items-center gap-2 font-extrabold text-paper">
-                <Gift className="size-4 text-torii" /> À retirer au comptoir · {toCollect.length}
+                <Gift className="size-4 text-torii-ink" /> À retirer au comptoir · {toCollect.length}
               </h3>
               <p className="mt-1 text-sm text-zinc-400">Montre ta carte membre en caisse : l&apos;équipe te remet la récompense.</p>
               <ul className="mt-3 grid gap-1.5 border-[6px] border-black bg-black sm:grid-cols-2">
@@ -54,7 +54,7 @@ export function MyRewards({ rewards, index }: { rewards: MyReward[]; index: stri
               <ul className="mt-2 flex flex-wrap gap-2">
                 {digital.map((r) => (
                   <li key={r.id} className="inline-flex items-center gap-1.5 border-2 border-zinc-700 px-3 py-1.5 text-sm font-bold text-paper">
-                    <RewardIcon icon={r.icon_name} className="size-4 text-gold" /> {r.reward}
+                    <RewardIcon icon={r.icon_name} className="size-4 text-gold-ink" /> {r.reward}
                   </li>
                 ))}
               </ul>
@@ -70,7 +70,7 @@ export function MyRewards({ rewards, index }: { rewards: MyReward[]; index: stri
                     <span className="inline-flex items-center gap-2 text-zinc-400">
                       <Check className="size-4 text-ok" /> {r.reward}
                     </span>
-                    <span className="shrink-0 text-xs text-zinc-500">{formatDateTimeShort(r.redeemed_at!)}</span>
+                    <span className="shrink-0 text-xs text-zinc-400">{formatDateTimeShort(r.redeemed_at!)}</span>
                   </li>
                 ))}
               </ul>

@@ -12,7 +12,7 @@ export function MemberCard({ profile }: { profile: Profile }) {
     <section aria-label="Carte membre" className="mx-auto max-w-sm border-[6px] border-black bg-paper text-ink">
       <div className="flex items-baseline justify-between border-b-[6px] border-black bg-torii px-4 py-2 text-white">
         <span className="font-display text-sm">SUBARASHII</span>
-        <span className="text-[10px] font-extrabold uppercase tracking-[0.2em]">Carte membre</span>
+        <span className="text-[11px] font-extrabold uppercase tracking-[0.2em]">Carte membre</span>
       </div>
       <div className="tone flex flex-col items-center px-6 py-6">
         <div className="border-[6px] border-black bg-white p-3">

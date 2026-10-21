@@ -139,13 +139,13 @@ export function EventManager({ mode, initialEvents }: Props) {
             </button>
           </div>
           {registrations.list.length === 0 ? (
-            <p className="mt-2 text-sm text-zinc-500">{demo ? "Liste indisponible en mode démo." : "Personne pour l'instant."}</p>
+            <p className="mt-2 text-sm text-zinc-400">{demo ? "Liste indisponible en mode démo." : "Personne pour l'instant."}</p>
           ) : (
             <ol className="mt-3 list-decimal space-y-1 pl-5 text-sm text-zinc-300">
               {registrations.list.map((r, i) => (
                 <li key={i}>
                   <span className="font-bold text-paper">{r.username}</span>{" "}
-                  <span className="text-xs text-zinc-500">· inscrit·e le {formatDateTimeShort(r.registered_at)}</span>
+                  <span className="text-xs text-zinc-400">· inscrit·e le {formatDateTimeShort(r.registered_at)}</span>
                 </li>
               ))}
             </ol>
@@ -180,7 +180,7 @@ function EventList({
         {title} · {events.length}
       </h2>
       {events.length === 0 ? (
-        <p className="text-sm text-zinc-500">Aucun événement.</p>
+        <p className="text-sm text-zinc-400">Aucun événement.</p>
       ) : (
         <ul className="divide-y divide-zinc-800 border-y border-zinc-800">
           {events.map((e) => (
@@ -188,7 +188,7 @@ function EventList({
               <div className="min-w-0 flex-1">
                 <p className="font-extrabold text-paper">
                   {e.title}
-                  {!e.is_published && <span className="ml-2 text-xs font-bold text-gold">brouillon</span>}
+                  {!e.is_published && <span className="ml-2 text-xs font-bold text-gold-ink">brouillon</span>}
                 </p>
                 <p className="text-xs text-zinc-400 first-letter:uppercase">
                   {formatEventDate(e.starts_at)} · {formatEventTime(e.starts_at)} ·{" "}
@@ -240,7 +240,7 @@ function EventForm({
   }
 
   return (
-    <form onSubmit={submit} className="mb-8 border-[6px] border-black bg-charcoal p-5">
+    <form onSubmit={submit} className="mb-8 border-[6px] border-black bg-charcoal p-5 transition duration-200 ease-snappy starting:-translate-y-1.5 starting:opacity-0 motion-reduce:starting:translate-y-0">
       <h2 className="mb-5 font-display text-xl text-paper">{form.id ? "Modifier l'événement" : "Nouvel événement"}</h2>
 
       <div className="grid gap-4 sm:grid-cols-2">
@@ -293,7 +293,7 @@ function EventForm({
         </div>
       </div>
 
-      {error && <p className="mt-4 text-sm text-torii">{error}</p>}
+      {error && <p className="mt-4 text-sm text-torii-ink">{error}</p>}
 
       <div className="mt-6 flex flex-wrap items-center gap-3">
         <button type="submit" disabled={pending} className={primaryButton}>
@@ -304,7 +304,7 @@ function EventForm({
           Annuler
         </button>
         {onDelete && (
-          <button type="button" onClick={onDelete} className="ml-auto text-sm font-bold text-torii hover:underline">
+          <button type="button" onClick={onDelete} className="ml-auto text-sm font-bold text-torii-ink hover:underline">
             Supprimer
           </button>
         )}

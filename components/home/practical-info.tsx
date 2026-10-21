@@ -21,7 +21,7 @@ export function PracticalInfo() {
             <span className="block text-paper">
               {CAFE.address.zip} {CAFE.address.city}
             </span>
-            <span className="mt-1 block text-sm text-gold">{CAFE.address.note}</span>
+            <span className="mt-1 block text-sm text-gold-ink">{CAFE.address.note}</span>
           </address>
 
           <dl className="mt-5 space-y-1.5 text-sm">
@@ -29,7 +29,7 @@ export function PracticalInfo() {
               .filter((a) => a.mode !== "Entrée")
               .map((a) => (
                 <div key={a.mode} className="flex gap-3">
-                  <dt className="w-24 shrink-0 text-zinc-500">{a.mode}</dt>
+                  <dt className="w-24 shrink-0 text-zinc-400">{a.mode}</dt>
                   <dd className="text-zinc-300">{a.detail}</dd>
                 </div>
               ))}
@@ -40,7 +40,7 @@ export function PracticalInfo() {
               href={CAFE.address.mapsUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="border-2 border-black bg-paper px-4 py-2.5 text-sm font-extrabold text-ink shadow-panel hover:bg-white"
+              className="pressable border-2 border-black bg-paper px-4 py-2.5 text-sm font-extrabold text-ink shadow-panel hover:bg-white"
             >
               Itinéraire
             </a>

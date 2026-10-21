@@ -35,24 +35,24 @@ export function PlayerHeader({ profile }: { profile: Profile }) {
         <div className="flex flex-wrap items-center gap-2">
           <h1 className="truncate font-display text-xl text-paper">{name}</h1>
           {profile.is_premium_pass ? (
-            <span className="inline-flex items-center gap-1 rounded-full border border-gold/60 bg-gold/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-gold">
+            <span className="inline-flex items-center gap-1 rounded-full border border-gold/60 bg-gold/10 px-2 py-0.5 text-[11px] font-bold uppercase tracking-widest text-gold-ink">
               <Crown className="size-3" /> Premium VIP
             </span>
           ) : (
-            <span className="inline-flex items-center gap-1 rounded-full border border-zinc-700 bg-zinc-900 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-zinc-400">
+            <span className="inline-flex items-center gap-1 rounded-full border border-zinc-700 bg-zinc-900 px-2 py-0.5 text-[11px] font-bold uppercase tracking-widest text-zinc-400">
               <Sparkles className="size-3" /> Gratuit
             </span>
           )}
         </div>
 
         <div className="mt-1.5 flex items-baseline justify-between text-xs">
-          <span className="font-semibold uppercase tracking-wider text-torii">Niveau {level}</span>
+          <span className="font-semibold uppercase tracking-wider text-torii-ink">Niveau {level}</span>
           <span className="tabular-nums text-zinc-400">
             {formatXp(into)} / {formatXp(needed)} XP
           </span>
         </div>
         <ProgressBar value={ratio} className="mt-1 h-2" label="Progression vers le niveau suivant" />
-        <p className="mt-1 text-[11px] text-zinc-500">
+        <p className="mt-1 text-[11px] text-zinc-400">
           Total <span className="font-semibold tabular-nums text-zinc-300">{formatXp(profile.xp)} XP</span>
         </p>
       </div>

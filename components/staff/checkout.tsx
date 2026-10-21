@@ -172,7 +172,7 @@ export function Checkout({ mode, initialTransactions }: Props) {
                     <p className="truncate text-lg font-extrabold text-paper">{member.username}</p>
                     <p className="text-xs text-zinc-400">
                       Niveau {member.level} · {formatXp(member.xp)} XP · {formatChf(member.current_season_spent)} CHF cette saison
-                      {member.is_premium_pass && <span className="ml-1 font-bold text-gold">· Premium</span>}
+                      {member.is_premium_pass && <span className="ml-1 font-bold text-gold-ink">· Premium</span>}
                     </p>
                   </div>
                   <button type="button" onClick={reset} aria-label="Changer de membre" className="text-zinc-400 hover:text-paper">
@@ -182,7 +182,7 @@ export function Checkout({ mode, initialTransactions }: Props) {
               ) : scanning ? (
                 <div className="max-w-sm">
                   <QrScanner onScan={onScan} onClose={() => setScanning(false)} />
-                  <p className="mt-2 text-xs text-zinc-500">Vise le QR code affiché dans « Mon profil » sur le téléphone du client.</p>
+                  <p className="mt-2 text-xs text-zinc-400">Vise le QR code affiché dans « Mon profil » sur le téléphone du client.</p>
                 </div>
               ) : (
                 <div className="space-y-3">
@@ -190,7 +190,7 @@ export function Checkout({ mode, initialTransactions }: Props) {
                     <ScanLine className="size-5" /> Scanner la carte membre
                   </button>
                   <div className="relative">
-                    <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-zinc-500" />
+                    <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-zinc-400" />
                     <input
                       type="search"
                       value={query}
@@ -202,7 +202,7 @@ export function Checkout({ mode, initialTransactions }: Props) {
                       aria-label="Chercher un membre par pseudo"
                       className={`${inputClass} pl-9`}
                     />
-                    {searching && <Loader2 className="absolute top-1/2 right-3 size-4 -translate-y-1/2 animate-spin text-zinc-500" />}
+                    {searching && <Loader2 className="absolute top-1/2 right-3 size-4 -translate-y-1/2 animate-spin text-zinc-400" />}
                   </div>
                   {results.length > 0 && (
                     <ul className="divide-y divide-zinc-800 border-2 border-zinc-700">
@@ -214,14 +214,14 @@ export function Checkout({ mode, initialTransactions }: Props) {
                             className="flex w-full items-center justify-between px-3 py-2.5 text-left hover:bg-zinc-800"
                           >
                             <span className="font-bold text-paper">{m.username}</span>
-                            <span className="text-xs text-zinc-500">niv. {m.level}</span>
+                            <span className="text-xs text-zinc-400">niv. {m.level}</span>
                           </button>
                         </li>
                       ))}
                     </ul>
                   )}
                   {query.trim().length >= 2 && !searching && results.length === 0 && (
-                    <p className="text-sm text-zinc-500">Aucun membre trouvé.</p>
+                    <p className="text-sm text-zinc-400">Aucun membre trouvé.</p>
                   )}
                 </div>
               )}
@@ -230,15 +230,15 @@ export function Checkout({ mode, initialTransactions }: Props) {
             {member && pendingRewards.length > 0 && (
               <section aria-labelledby="pending-rewards" className="mt-6 border-2 border-gold p-4">
                 <h2 id="pending-rewards" className="flex items-center gap-2 text-sm font-extrabold text-paper">
-                  <Gift className="size-4 text-gold" /> Récompenses à remettre · {pendingRewards.length}
+                  <Gift className="size-4 text-gold-ink" /> Récompenses à remettre · {pendingRewards.length}
                 </h2>
                 <ul className="mt-3 divide-y divide-zinc-800">
                   {pendingRewards.map((r) => (
                     <li key={r.id} className="flex items-center gap-3 py-2">
-                      <RewardIcon icon={r.icon_name} className="size-5 shrink-0 text-gold" />
+                      <RewardIcon icon={r.icon_name} className="size-5 shrink-0 text-gold-ink" />
                       <span className="min-w-0 flex-1">
                         <span className="block font-bold text-paper">{r.reward}</span>
-                        <span className="text-xs text-zinc-500">
+                        <span className="text-xs text-zinc-400">
                           Palier {r.tier_level} · {r.track === "premium" ? "Premium" : "Gratuit"}
                         </span>
                       </span>
@@ -287,7 +287,7 @@ export function Checkout({ mode, initialTransactions }: Props) {
                   {preview.level > preview.levelBefore && <> · passe niveau {preview.level}</>} · cumul saison{" "}
                   {formatChf(member.current_season_spent)} → {formatChf(preview.currentSeasonSpent)} CHF
                   {preview.premiumUnlocked && (
-                    <p className="mt-1 font-extrabold text-gold">Ce ticket débloque le Pass Premium !</p>
+                    <p className="mt-1 font-extrabold text-gold-ink">Ce ticket débloque le Pass Premium !</p>
                   )}
                   {!preview.isPremiumPass && (
                     <p className="mt-1 text-xs text-zinc-400">
@@ -317,20 +317,20 @@ export function Checkout({ mode, initialTransactions }: Props) {
           Derniers tickets
         </h2>
         {history.length === 0 ? (
-          <p className="text-sm text-zinc-500">Aucun ticket enregistré pour l&apos;instant.</p>
+          <p className="text-sm text-zinc-400">Aucun ticket enregistré pour l&apos;instant.</p>
         ) : (
           <ul className="divide-y divide-zinc-800 text-sm">
             {history.map((t) => (
               <li key={t.id} className="flex items-baseline justify-between gap-3 py-2">
                 <span className="min-w-0">
                   <span className="block truncate font-bold text-paper">{t.member}</span>
-                  <span className="text-xs text-zinc-500">
+                  <span className="text-xs text-zinc-400">
                     {formatDateTimeShort(t.created_at)} · {t.cashier}
                   </span>
                 </span>
                 <span className="shrink-0 text-right tabular-nums">
                   <span className="block text-paper">{formatChf(t.amount_chf)}</span>
-                  <span className="text-xs text-gold">+{t.xp_gained} XP</span>
+                  <span className="text-xs text-gold-ink">+{t.xp_gained} XP</span>
                 </span>
               </li>
             ))}
@@ -343,31 +343,31 @@ export function Checkout({ mode, initialTransactions }: Props) {
 
 function Receipt({ receipt, onNext }: { receipt: TransactionReceipt; onNext: () => void }) {
   return (
-    <section aria-live="polite" className="border-[6px] border-black bg-paper p-6 text-ink">
+    <section aria-live="polite" className="border-[6px] border-black bg-paper p-6 text-ink transition duration-200 ease-snappy starting:scale-[0.97] starting:opacity-0 motion-reduce:starting:scale-100">
       <div className="flex items-center gap-3">
         <span className="grid size-12 place-items-center bg-emerald-500 text-white">
           <Check className="size-7" strokeWidth={3} />
         </span>
         <div>
-          <p className="text-xs font-extrabold uppercase tracking-wider text-zinc-600">Ticket validé</p>
+          <p className="text-xs font-extrabold uppercase tracking-wider text-zinc-400">Ticket validé</p>
           <p className="font-display text-2xl leading-tight">{receipt.username}</p>
         </div>
       </div>
 
       <dl className="mt-6 grid grid-cols-3 gap-3 text-center">
         <div className="border-2 border-black p-3">
-          <dt className="text-xs font-bold uppercase text-zinc-600">Montant</dt>
+          <dt className="text-xs font-bold uppercase text-zinc-400">Montant</dt>
           <dd className="font-display text-xl">{formatChf(receipt.amount_chf)}</dd>
         </div>
         <div className="border-2 border-black p-3">
-          <dt className="text-xs font-bold uppercase text-zinc-600">XP</dt>
+          <dt className="text-xs font-bold uppercase text-zinc-400">XP</dt>
           <dd className="font-display text-xl">+{formatXp(receipt.xp_gained)}</dd>
         </div>
         <div className="border-2 border-black p-3">
-          <dt className="text-xs font-bold uppercase text-zinc-600">Niveau</dt>
+          <dt className="text-xs font-bold uppercase text-zinc-400">Niveau</dt>
           <dd className="font-display text-xl">
             {receipt.level}
-            {receipt.level > receipt.level_before && <span className="text-sm text-torii"> ↑</span>}
+            {receipt.level > receipt.level_before && <span className="text-sm text-torii-ink-inv"> ↑</span>}
           </dd>
         </div>
       </dl>

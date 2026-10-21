@@ -10,14 +10,18 @@ export function PassTeaser({ profile }: { profile: Profile | null }) {
     <section aria-labelledby="pass-teaser-title" className="border-[6px] border-black bg-gold p-5 text-black sm:p-6">
       <div className="flex flex-col gap-5 sm:flex-row sm:items-end">
         <div className="min-w-0 flex-1">
-          <p className="text-xs font-extrabold uppercase tracking-[0.2em]">Pass de saison & fidélité</p>
-          <h2 id="pass-teaser-title" className="mt-1 font-display text-2xl leading-tight sm:text-3xl">
+          <h2 id="pass-teaser-title" className="font-display text-2xl leading-tight sm:text-3xl">
             {!profile
-              ? "Chaque passage en caisse te fait monter de niveau."
+              ? "Ton pass fidélité : chaque passage en caisse te fait monter de niveau."
               : profile.is_premium_pass
-                ? "Ta voie Premium est ouverte."
-                : `${formatChf(profile.current_season_spent)} / ${formatChf(PREMIUM_THRESHOLD_CHF)} CHF`}
+                ? "Pass de saison : ta voie Premium est ouverte."
+                : "Pass de saison"}
           </h2>
+          {profile && !profile.is_premium_pass && (
+            <p className="mt-1 font-display text-xl tabular-nums">
+              {formatChf(profile.current_season_spent)} / {formatChf(PREMIUM_THRESHOLD_CHF)} CHF
+            </p>
+          )}
 
           {profile && progress ? (
             <>
@@ -38,7 +42,7 @@ export function PassTeaser({ profile }: { profile: Profile | null }) {
 
         <Link
           href={profile ? "/pass" : "/login?next=/pass"}
-          className="shrink-0 border-2 border-black bg-ink px-5 py-3 text-center text-sm font-extrabold text-paper hover:bg-black"
+          className="pressable shrink-0 border-2 border-black bg-ink px-5 py-3 text-center text-sm font-extrabold text-paper hover:bg-black"
         >
           {profile ? "Ouvrir mon pass" : "Rejoindre le pass"}
         </Link>

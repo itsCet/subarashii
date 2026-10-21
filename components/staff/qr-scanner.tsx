@@ -59,7 +59,7 @@ export function QrScanner({ onScan, onClose }: Props) {
       {error && (
         <div className="absolute inset-0 grid place-items-center bg-charcoal p-6 text-center">
           <div>
-            <CameraOff className="mx-auto size-8 text-torii" />
+            <CameraOff className="mx-auto size-8 text-torii-ink" />
             <p className="mt-3 text-sm text-zinc-300">{error}</p>
           </div>
         </div>

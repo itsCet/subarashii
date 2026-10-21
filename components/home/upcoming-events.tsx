@@ -17,10 +17,10 @@ export function UpcomingEvents({ events }: { events: UpcomingEvent[] }) {
               <Link href="/events" className="group flex items-center gap-4 py-4">
                 <EventDate iso={event.starts_at} />
                 <div className="min-w-0 flex-1">
-                  <h3 className="text-lg leading-tight font-extrabold text-paper group-hover:text-torii">{event.title}</h3>
+                  <h3 className="text-lg leading-tight font-extrabold text-paper group-hover:text-torii-ink">{event.title}</h3>
                   <EventMeta event={event} />
                 </div>
-                <ArrowRight className="size-5 shrink-0 text-zinc-600 transition group-hover:translate-x-1 group-hover:text-torii" />
+                <ArrowRight className="size-5 shrink-0 text-zinc-400 transition group-hover:translate-x-1 group-hover:text-torii-ink" />
               </Link>
             </li>
           ))}

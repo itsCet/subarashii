@@ -33,7 +33,7 @@ export function Catalog({ products }: { products: Product[] }) {
                   setQuery("");
                 }}
                 className={`shrink-0 border-b-2 py-3 text-sm font-extrabold ${
-                  active ? "border-torii text-paper" : "border-transparent text-zinc-500 hover:text-zinc-300"
+                  active ? "border-torii text-paper" : "border-transparent text-zinc-400 hover:text-zinc-300"
                 }`}
               >
                 {t.label}
@@ -66,16 +66,16 @@ export function Catalog({ products }: { products: Product[] }) {
                     {p.name}
                   </div>
                 )}
-                {p.is_new && <span className="absolute top-2 left-2 bg-torii px-2 py-0.5 text-[10px] font-extrabold uppercase text-white">Nouveau</span>}
+                {p.is_new && <span className="absolute top-2 left-2 bg-torii px-2 py-0.5 text-[11px] font-extrabold uppercase text-white">Nouveau</span>}
               </div>
               <div className="flex flex-1 flex-col p-3">
-                <span className="text-[10px] font-bold uppercase text-zinc-500">{productCategoryLabel(p.category)}</span>
+                <span className="text-[11px] font-bold uppercase text-zinc-400">{productCategoryLabel(p.category)}</span>
                 <h2 className="mt-0.5 text-sm leading-snug font-extrabold text-paper">{p.name}</h2>
                 {p.description && <p className="mt-1 line-clamp-2 text-xs text-zinc-400">{p.description}</p>}
                 <div className="mt-auto flex items-baseline justify-between pt-3">
                   <span className="font-display text-lg text-paper">{formatChf(p.price_chf)}</span>
                   {p.stock !== null && (
-                    <span className={`text-xs font-bold ${p.stock === 0 ? "text-torii" : p.stock <= 3 ? "text-gold" : "text-zinc-500"}`}>
+                    <span className={`text-xs font-bold ${p.stock === 0 ? "text-torii-ink" : p.stock <= 3 ? "text-gold-ink" : "text-zinc-400"}`}>
                       {p.stock === 0 ? "Rupture" : p.stock <= 3 ? `Plus que ${p.stock}` : "En stock"}
                     </span>
                   )}

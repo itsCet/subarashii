@@ -20,7 +20,7 @@ export default async function StaffLayout({ children }: { children: React.ReactN
           {access.profile.username} · {access.profile.role === "admin" ? "admin" : "caisse"}
         </p>
         {access.mode === "demo" && (
-          <p className="w-full text-xs text-gold">Mode démo : rien n&apos;est enregistré tant que Supabase n&apos;est pas branché.</p>
+          <p className="w-full text-xs text-gold-ink">Mode démo : rien n&apos;est enregistré tant que Supabase n&apos;est pas branché.</p>
         )}
       </div>
       <StaffTabs />

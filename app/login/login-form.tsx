@@ -70,13 +70,13 @@ export function LoginForm({ next }: { next?: string }) {
   }
 
   if (!isSupabaseConfigured) {
-    return <p className="mt-8 text-sm text-zinc-500">Supabase n&apos;est pas configuré : l&apos;app fonctionne en mode démo.</p>;
+    return <p className="mt-8 text-sm text-zinc-400">Supabase n&apos;est pas configuré : l&apos;app fonctionne en mode démo.</p>;
   }
 
   const input =
     "w-full border-2 border-zinc-700 bg-ink px-3 py-3 text-paper outline-none placeholder:text-zinc-600 focus:border-paper";
   const button =
-    "flex w-full items-center justify-center gap-2 border-2 border-black bg-torii py-3 text-sm font-extrabold text-white shadow-panel transition hover:bg-torii-bright disabled:opacity-70";
+    "flex w-full items-center justify-center gap-2 border-2 border-black bg-torii py-3 text-sm font-extrabold text-white shadow-panel transition hover:bg-torii-strong disabled:opacity-70";
 
   if (step === "password") {
     return (
@@ -109,7 +109,7 @@ export function LoginForm({ next }: { next?: string }) {
           {pending && <Loader2 className="size-4 animate-spin" />}
           Se connecter
         </button>
-        {error && <p className="text-sm text-torii">{error}</p>}
+        {error && <p className="text-sm text-torii-ink">{error}</p>}
         <button
           type="button"
           onClick={() => {
@@ -150,7 +150,7 @@ export function LoginForm({ next }: { next?: string }) {
           {pending && <Loader2 className="size-4 animate-spin" />}
           Valider le code
         </button>
-        {error && <p className="text-sm text-torii">{error}</p>}
+        {error && <p className="text-sm text-torii-ink">{error}</p>}
         <button
           type="button"
           onClick={() => {
@@ -185,7 +185,7 @@ export function LoginForm({ next }: { next?: string }) {
         {pending && <Loader2 className="size-4 animate-spin" />}
         Recevoir mon lien de connexion
       </button>
-      {error && <p className="text-sm text-torii">{error}</p>}
+      {error && <p className="text-sm text-torii-ink">{error}</p>}
       <button
         type="button"
         disabled={!email}

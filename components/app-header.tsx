@@ -17,7 +17,7 @@ export function AppHeader() {
           <Image src="/brand/logo.png" alt="" width={44} height={44} priority className="size-11 rounded-full" />
           <span className="font-display text-sm leading-none text-paper">
             SUBARASHII
-            <span className="mt-0.5 block text-[10px] tracking-[0.3em] text-torii">MANGA CAFÉ</span>
+            <span className="mt-0.5 block text-[11px] tracking-[0.3em] text-torii-ink">MANGA CAFÉ</span>
           </span>
         </Link>
 

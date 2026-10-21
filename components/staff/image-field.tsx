@@ -45,7 +45,7 @@ export function ImageField({ id, value, onChange, folder, demo }: Props) {
         <div className="flex items-start gap-3">
           {/* eslint-disable-next-line @next/next/no-img-element -- image distante (Supabase Storage) */}
           <img src={value} alt="" className="size-24 border-2 border-zinc-700 object-cover" />
-          <button type="button" onClick={() => onChange(null)} className="inline-flex items-center gap-1 text-sm text-zinc-400 hover:text-torii">
+          <button type="button" onClick={() => onChange(null)} className="inline-flex items-center gap-1 text-sm text-zinc-400 hover:text-torii-ink">
             <Trash2 className="size-4" /> Retirer
           </button>
         </div>
@@ -69,7 +69,7 @@ export function ImageField({ id, value, onChange, folder, demo }: Props) {
           if (file) upload(file);
         }}
       />
-      {error && <p className="mt-1 text-xs text-torii">{error}</p>}
+      {error && <p className="mt-1 text-xs text-torii-ink">{error}</p>}
     </div>
   );
 }

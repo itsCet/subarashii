@@ -16,6 +16,19 @@ Les infos du lieu (adresse, horaires, réseaux, partenaires) sont dans `lib/cafe
 > ⚠️ **À compléter** : arrêt de tram/bus, liens des partenaires, et `alcoveBookingUrl` (le bouton
 > « Réserver une Alcôve » renvoie aux infos pratiques tant qu'il n'est pas renseigné).
 
+## Outils de design installés dans le projet
+
+- **Motion** (`.claude/skills/` : `emil-design-eng`, `animate`, `review-animations`,
+  `find-animation-opportunities`, `animation-vocabulary`) — skills d'Emil Kowalski.
+- **Impeccable** (`.claude/skills/impeccable`) — revue de design ; détecteur automatique :
+  `npx impeccable detect http://localhost:3000` (ajouter `--viewport 390x844` pour le mobile).
+- **Playwright MCP** (`.mcp.json`) — navigateur piloté par Claude Code pour tester le site.
+
+Règles de couleur : un accent existe en version **fond** (`bg-torii`, `bg-gold` : texte blanc/noir
+dessus) et **texte** (`text-torii-ink`, `text-gold-ink`, `text-sakura-ink`), et `-ink-inv` dans les
+cases inversées (`bg-paper`). Pas de texte sous 11 px. Retour tactile global sur les boutons
+(`scale: 0.97`) ; ajouter `pressable` aux liens stylés en bouton.
+
 **Stack** : Next.js 16 (App Router, TypeScript) · Tailwind CSS 4 · Framer Motion · Lucide · Supabase (Auth, Postgres, RLS, Realtime).
 
 ## Démarrage

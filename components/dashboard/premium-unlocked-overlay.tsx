@@ -104,7 +104,7 @@ export function PremiumUnlockedOverlay({ open, rewardsReady, onClose }: Props) {
             <motion.button
               type="button"
               onClick={onClose}
-              className="mt-8 rounded-sm bg-gold px-6 py-3 text-sm font-bold uppercase tracking-wider text-black transition hover:bg-dorayaki active:scale-95"
+              className="mt-8 rounded-sm bg-gold px-6 py-3 text-sm font-bold uppercase tracking-wider text-black transition hover:bg-dorayaki"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.65 }}

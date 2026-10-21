@@ -114,7 +114,7 @@ export function ProductManager({ mode, initialProducts }: Props) {
 
       <h2 className="mb-2 text-sm font-extrabold uppercase tracking-wider text-zinc-400">Articles · {products.length}</h2>
       {visible.length === 0 ? (
-        <p className="text-sm text-zinc-500">Aucun article.</p>
+        <p className="text-sm text-zinc-400">Aucun article.</p>
       ) : (
         <ul className="divide-y divide-zinc-800 border-y border-zinc-800">
           {visible.map((p) => (
@@ -123,18 +123,18 @@ export function ProductManager({ mode, initialProducts }: Props) {
                 // eslint-disable-next-line @next/next/no-img-element -- image distante (Supabase Storage)
                 <img src={p.image_url} alt="" className="size-14 shrink-0 border-2 border-zinc-700 object-cover" />
               ) : (
-                <div className="grid size-14 shrink-0 place-items-center border-2 border-zinc-800 text-[10px] text-zinc-600">photo</div>
+                <div className="grid size-14 shrink-0 place-items-center border-2 border-zinc-800 text-[11px] text-zinc-400">photo</div>
               )}
               <div className="min-w-0 flex-1">
                 <p className="truncate font-extrabold text-paper">
                   {p.name}
-                  {p.is_new && <span className="ml-2 text-xs font-bold text-torii">nouveau</span>}
-                  {!p.is_published && <span className="ml-2 text-xs font-bold text-gold">masqué</span>}
+                  {p.is_new && <span className="ml-2 text-xs font-bold text-torii-ink">nouveau</span>}
+                  {!p.is_published && <span className="ml-2 text-xs font-bold text-gold-ink">masqué</span>}
                 </p>
                 <p className="text-xs text-zinc-400">
                   {productCategoryLabel(p.category)} · {formatChf(p.price_chf)} CHF
                   {p.stock !== null && (
-                    <span className={p.stock === 0 ? "text-torii" : ""}> · {p.stock === 0 ? "rupture" : `${p.stock} en stock`}</span>
+                    <span className={p.stock === 0 ? "text-torii-ink" : ""}> · {p.stock === 0 ? "rupture" : `${p.stock} en stock`}</span>
                   )}
                 </p>
               </div>
@@ -178,7 +178,7 @@ function ProductForm({
   }
 
   return (
-    <form onSubmit={submit} className="mb-8 border-[6px] border-black bg-charcoal p-5">
+    <form onSubmit={submit} className="mb-8 border-[6px] border-black bg-charcoal p-5 transition duration-200 ease-snappy starting:-translate-y-1.5 starting:opacity-0 motion-reduce:starting:translate-y-0">
       <h2 className="mb-5 font-display text-xl text-paper">{form.id ? "Modifier l'article" : "Nouvel article"}</h2>
 
       <div className="grid gap-4 sm:grid-cols-2">
@@ -215,7 +215,7 @@ function ProductForm({
         </div>
       </div>
 
-      {error && <p className="mt-4 text-sm text-torii">{error}</p>}
+      {error && <p className="mt-4 text-sm text-torii-ink">{error}</p>}
 
       <div className="mt-6 flex flex-wrap items-center gap-3">
         <button type="submit" disabled={pending} className={primaryButton}>
@@ -226,7 +226,7 @@ function ProductForm({
           Annuler
         </button>
         {onDelete && (
-          <button type="button" onClick={onDelete} className="ml-auto text-sm font-bold text-torii hover:underline">
+          <button type="button" onClick={onDelete} className="ml-auto text-sm font-bold text-torii-ink hover:underline">
             Supprimer
           </button>
         )}

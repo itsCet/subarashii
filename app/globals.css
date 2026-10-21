@@ -5,12 +5,23 @@
   --color-ink: #121214;
   --color-charcoal: #18181b;
   --color-paper: #f4f4f5;
-  --color-torii: #e63946;
-  --color-torii-bright: #ef4444;
+  /* Accents en deux variantes : la couleur « de fond » (boutons, pastilles : texte
+     blanc ou noir dessus, contraste ≥ 4,5:1) et la couleur « -ink » pour du texte
+     posé sur le fond de page. « -ink-inv » sert dans les cases inversées (bg-paper). */
+  --color-torii: #d7263d;
+  --color-torii-strong: #b81d31;
+  --color-torii-ink: #ff6b75;
+  --color-torii-ink-inv: #b3121f;
   --color-gold: #e9c46a;
+  --color-gold-ink: #e9c46a;
+  --color-gold-ink-inv: #7a5a0a;
   --color-dorayaki: #f4a261;
   --color-sakura: #f6c9d4;
+  --color-sakura-ink: #f6c9d4;
   --color-ok: #34d399;
+
+  /* Courbe de sortie (ease-out marqué) : départ vif, arrivée douce. */
+  --ease-snappy: cubic-bezier(0.23, 1, 0.32, 1);
 
   /* Ombre « case de manga » : décalée et nette. */
   --shadow-panel: 4px 4px 0 0 #000;
@@ -32,12 +43,17 @@
 
 :root[data-theme="light"] {
   color-scheme: light;
-  --color-ink: #f5f3ee;
+  --color-ink: #f0f0f0;
   --color-charcoal: #ffffff;
   --color-paper: #18181b;
+  --color-torii-ink: #b3121f;
+  --color-torii-ink-inv: #ff6b75;
   --color-gold: #c9982f;
+  --color-gold-ink: #7a5a0a;
+  --color-gold-ink-inv: #e9c46a;
   --color-sakura: #c2416c;
-  --color-ok: #059669;
+  --color-sakura-ink: #a3214f;
+  --color-ok: #047857;
 
   --color-zinc-50: oklch(14.1% 0.005 285.823);
   --color-zinc-100: oklch(21% 0.006 285.885);
@@ -68,6 +84,39 @@ html {
   transition: background-color 0.2s;
   background: var(--color-ink);
   -webkit-tap-highlight-color: transparent;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+/* Retour tactile : tout bouton (et lien-bouton .pressable) s'enfonce légèrement au toucher.
+   `scale` (et non `transform`) pour ne pas écraser un éventuel translate. */
+@layer base {
+  button,
+  .pressable {
+    transition-property: scale;
+    transition-duration: 160ms;
+    transition-timing-function: var(--ease-snappy);
+  }
+
+  button:not(:disabled):active,
+  .pressable:active {
+    scale: 0.97;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    button:not(:disabled):active,
+    .pressable:active {
+      scale: none;
+    }
+  }
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
 }
 
 body {

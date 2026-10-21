@@ -21,14 +21,15 @@ export function Hero() {
             priority
             className="mb-5 w-28 -rotate-6 rounded-full border-4 border-black sm:hidden"
           />
-          <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-torii">{CAFE.claim}</p>
-          <h1 id="hero-title" className="mt-3 max-w-md font-display text-4xl leading-[1.05] sm:text-6xl">
+          <h1 id="hero-title" className="max-w-md font-display text-4xl leading-[1.05] sm:text-6xl">
             Subarashii Manga Café
           </h1>
           <p className="mt-4 max-w-sm text-[15px] leading-relaxed text-zinc-700">
-            Une bibliothèque de mangas, des alcôves, un bar, des consoles et un shop TCG.
+            <strong className="font-extrabold text-torii-ink-inv">{CAFE.claim}.</strong> Une bibliothèque de mangas,
+            des alcôves, un bar, des consoles et un shop TCG.
             <br />
-            {CAFE.address.street}, {CAFE.address.city}.
+            {/* Espaces insécables : l'adresse ne se coupe pas en fin de ligne. */}
+            {`${CAFE.address.street}, ${CAFE.address.city}.`.replace(/ /g, "\u00a0")}
           </p>
           <Image
             src="/brand/logo.png"
@@ -51,7 +52,7 @@ export function Hero() {
         <ul className="grid grid-cols-2 gap-1.5 md:col-span-3 md:grid-cols-4">
           {UNIVERSES.map((u, i) => (
             <li key={u.key} className={`p-4 ${i % 3 === 0 ? "tone bg-paper text-ink" : "bg-charcoal text-paper"}`}>
-              <span className="font-display text-xs text-torii">0{i + 1}</span>
+              <span className={`font-display text-xs ${i % 3 === 0 ? "text-torii-ink-inv" : "text-torii-ink"}`}>0{i + 1}</span>
               <h2 className="mt-1 text-base leading-tight font-extrabold">{u.title}</h2>
               <p className={`mt-1 text-xs leading-relaxed ${i % 3 === 0 ? "text-zinc-700" : "text-zinc-400"}`}>
                 {u.description}
@@ -62,13 +63,13 @@ export function Hero() {
       </div>
 
       <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3">
-        <Link href="/events" className="border-2 border-black bg-torii px-5 py-3 text-sm font-extrabold text-white shadow-panel hover:bg-torii-bright">
+        <Link href="/events" className="pressable border-2 border-black bg-torii px-5 py-3 text-sm font-extrabold text-white shadow-panel hover:bg-torii-strong">
           Voir l&apos;agenda
         </Link>
-        <Link href="/pass" className="border-2 border-black bg-paper px-5 py-3 text-sm font-extrabold text-ink shadow-panel hover:bg-white">
+        <Link href="/pass" className="pressable border-2 border-black bg-paper px-5 py-3 text-sm font-extrabold text-ink shadow-panel hover:bg-white">
           Mon pass fidélité
         </Link>
-        <Link href={alcoveHref} className="text-sm font-extrabold text-paper underline decoration-torii decoration-2 underline-offset-4 hover:text-torii">
+        <Link href={alcoveHref} className="text-sm font-extrabold text-paper underline decoration-torii decoration-2 underline-offset-4 hover:text-torii-ink">
           Réserver une alcôve
         </Link>
         <span className="ml-auto">

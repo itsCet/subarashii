@@ -21,7 +21,7 @@ export function BottomNav() {
                 href={href}
                 aria-current={active ? "page" : undefined}
                 className={`flex flex-col items-center gap-1 border-t-2 pt-2 pb-2.5 text-[11px] font-bold ${
-                  active ? "border-torii text-paper" : "border-transparent text-zinc-500"
+                  active ? "border-torii text-paper" : "border-transparent text-zinc-400"
                 }`}
               >
                 <Icon className="size-5" strokeWidth={active ? 2.4 : 1.8} />

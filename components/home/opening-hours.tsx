@@ -46,10 +46,10 @@ export function HoursTable() {
             >
               <th scope="row" className="py-2 text-left font-bold">
                 {WEEKDAYS[day]}
-                {isToday && <span className="ml-2 text-xs font-normal text-torii">aujourd&apos;hui</span>}
+                {isToday && <span className="ml-2 text-xs font-normal text-torii-ink">aujourd&apos;hui</span>}
               </th>
               <td className="py-2 text-right tabular-nums">
-                {hours ? `${formatHour(hours.open)} – ${formatHour(hours.close)}` : <span className="text-zinc-600">Fermé</span>}
+                {hours ? `${formatHour(hours.open)} – ${formatHour(hours.close)}` : <span className="text-zinc-400">Fermé</span>}
               </td>
             </tr>
           );

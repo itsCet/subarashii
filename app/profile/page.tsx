@@ -47,7 +47,7 @@ export default async function ProfilePage() {
               <li key={t.id} className="flex items-baseline justify-between py-3 text-sm">
                 <span className="text-zinc-400">{formatDateTimeShort(t.created_at)}</span>
                 <span className="tabular-nums text-paper">
-                  {formatChf(t.amount_chf)} CHF <span className="ml-2 text-gold">+{t.xp_gained} XP</span>
+                  {formatChf(t.amount_chf)} CHF <span className="ml-2 text-gold-ink">+{t.xp_gained} XP</span>
                 </span>
               </li>
             ))}

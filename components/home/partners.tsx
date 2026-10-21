@@ -9,13 +9,13 @@ export function Partners() {
         {PARTNERS.map((p) => (
           <li key={p.name} className="border-b border-zinc-800 py-3">
             {p.url ? (
-              <a href={p.url} target="_blank" rel="noopener noreferrer" className="font-extrabold text-paper hover:text-torii">
+              <a href={p.url} target="_blank" rel="noopener noreferrer" className="font-extrabold text-paper hover:text-torii-ink">
                 {p.name}
               </a>
             ) : (
               <span className="font-extrabold text-paper">{p.name}</span>
             )}
-            <span className="ml-2 text-xs uppercase text-zinc-500">{p.kind}</span>
+            <span className="ml-2 text-xs uppercase text-zinc-400">{p.kind}</span>
             <p className="mt-0.5 text-xs text-zinc-400">{p.description}</p>
           </li>
         ))}
