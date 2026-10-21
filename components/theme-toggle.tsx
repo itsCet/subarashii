@@ -34,7 +34,7 @@ function subscribe(onChange: () => void) {
 
 const getTheme = (): Theme => (document.documentElement.dataset.theme === "light" ? "light" : "dark");
 
-export function ThemeToggle({ className = "" }: { className?: string }) {
+export function ThemeToggle({ className = "size-10" }: { className?: string }) {
   const theme = useSyncExternalStore(subscribe, getTheme, () => null);
 
   function toggle() {
@@ -52,7 +52,7 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
       onClick={toggle}
       aria-label={label}
       title={label}
-      className={`grid size-10 shrink-0 place-items-center border-2 border-zinc-700 text-paper transition hover:border-paper ${className}`}
+      className={`grid shrink-0 place-items-center border-2 border-zinc-700 text-paper transition hover:border-paper ${className}`}
     >
       {/* Avant l'hydratation le thème est inconnu : on réserve la place sans icône. */}
       {theme === "light" ? <Moon className="size-5" /> : theme === "dark" ? <Sun className="size-5" /> : null}

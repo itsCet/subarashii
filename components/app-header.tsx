@@ -10,10 +10,11 @@ export function AppHeader() {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-30 border-b-2 border-black bg-ink">
+    // pt = zone de l'encoche / barre d'état quand l'app est installée sur l'écran d'accueil (iOS).
+    <header className="sticky top-0 z-30 border-b-2 border-black bg-ink pt-[env(safe-area-inset-top)]">
       <div className="mx-auto flex h-16 max-w-6xl items-center gap-3 px-4">
         <Link href="/" className="flex items-center gap-2.5">
-          <Image src="/brand/logo.png" alt="" width={40} height={40} priority className="rounded-full" />
+          <Image src="/brand/logo.png" alt="" width={44} height={44} priority className="size-11 rounded-full" />
           <span className="font-display text-sm leading-none text-paper">
             SUBARASHII
             <span className="mt-0.5 block text-[10px] tracking-[0.3em] text-torii">MANGA CAFÉ</span>
@@ -41,7 +42,7 @@ export function AppHeader() {
           </ul>
         </nav>
 
-        <ThemeToggle className="ml-auto md:ml-3" />
+        <ThemeToggle className="ml-auto size-11 md:ml-3 md:size-10" />
       </div>
     </header>
   );

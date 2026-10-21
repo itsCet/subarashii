@@ -12,6 +12,15 @@ export function Hero() {
       <div className="grid gap-1.5 border-[6px] border-black bg-black md:grid-cols-[1fr_1fr_8rem]">
         {/* Case principale */}
         <div className="speed-lines relative overflow-hidden bg-paper p-6 text-ink sm:p-8 md:col-span-2">
+          {/* Sur mobile, le logo ouvre la case ; sur grand écran il déborde en bas à droite. */}
+          <Image
+            src="/brand/logo.png"
+            alt=""
+            width={160}
+            height={160}
+            priority
+            className="mb-5 w-28 -rotate-6 rounded-full border-4 border-black sm:hidden"
+          />
           <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-torii">{CAFE.claim}</p>
           <h1 id="hero-title" className="mt-3 max-w-md font-display text-4xl leading-[1.05] sm:text-6xl">
             Subarashii Manga Café
