@@ -226,8 +226,8 @@ function RewardCard({
               {state === "claimed" && (
                 <motion.span
                   key="claimed"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
+                  initial={{ opacity: 0, transform: "scale(0.9)" }}
+                  animate={{ opacity: 1, transform: "scale(1)" }}
                   transition={{ duration: 0.22, ease: [0.23, 1, 0.32, 1] }}
                   className="flex items-center justify-center gap-1 py-1.5 text-[11px] font-bold uppercase tracking-wider text-ok"
                 >

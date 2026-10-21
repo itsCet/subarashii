@@ -110,8 +110,8 @@ function QuestRow({
 
       {quest.completed ? (
         <motion.span
-          initial={animateCompletion ? { opacity: 0, scale: 0.9 } : false}
-          animate={{ opacity: 1, scale: 1 }}
+          initial={animateCompletion ? { opacity: 0, transform: "scale(0.9)" } : false}
+          animate={{ opacity: 1, transform: "scale(1)" }}
           transition={{ duration: 0.22, ease: [0.23, 1, 0.32, 1] }}
           className="grid size-9 shrink-0 place-items-center rounded-sm bg-emerald-500/10 text-ok"
           aria-label="Quête terminée"

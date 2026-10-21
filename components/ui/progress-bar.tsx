@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 
 type Props = {
   value: number; // 0 → 1
@@ -17,6 +17,7 @@ const TONES = {
 
 export function ProgressBar({ value, tone = "torii", className = "h-2.5", label }: Props) {
   const pct = Math.round(Math.min(Math.max(value, 0), 1) * 100);
+  const reduceMotion = useReducedMotion();
   return (
     <div
       role="progressbar"
@@ -26,11 +27,12 @@ export function ProgressBar({ value, tone = "torii", className = "h-2.5", label 
       aria-valuenow={pct}
       className={`relative overflow-hidden border ${TONES[tone].track} ${className}`}
     >
+      {/* scaleX plutôt que width : pas de recalcul de mise en page à chaque image. */}
       <motion.div
-        className={`h-full ${TONES[tone].fill}`}
+        className={`h-full w-full origin-left ${TONES[tone].fill}`}
         initial={false}
-        animate={{ width: `${pct}%` }}
-        transition={{ type: "spring", stiffness: 80, damping: 20 }}
+        animate={{ transform: `scaleX(${pct / 100})` }}
+        transition={reduceMotion ? { duration: 0 } : { duration: 0.5, ease: [0.77, 0, 0.175, 1] }}
       />
     </div>
   );

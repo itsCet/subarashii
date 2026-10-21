@@ -37,8 +37,8 @@ export function IntroSplash() {
         <motion.div
           id="intro-splash"
           className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black"
-          exit={{ opacity: 0, scale: 1.08, filter: "blur(8px)" }}
-          transition={{ duration: 0.5, ease: "easeIn" }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }}
           onClick={dismiss}
         >
           <video

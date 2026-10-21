@@ -81,7 +81,6 @@
 }
 
 html {
-  transition: background-color 0.2s;
   background: var(--color-ink);
   -webkit-tap-highlight-color: transparent;
 }
