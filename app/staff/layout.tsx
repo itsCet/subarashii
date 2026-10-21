@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { StaffTabs } from "@/components/staff/staff-tabs";
 import { getStaffAccess } from "@/lib/data/staff";
 
@@ -10,19 +9,8 @@ export default async function StaffLayout({ children }: { children: React.ReactN
   const access = await getStaffAccess();
   if (access.status === "anonymous") redirect("/login?next=/staff");
 
-  if (access.status === "forbidden") {
-    return (
-      <section className="mx-auto max-w-md border-2 border-zinc-700 bg-charcoal p-6">
-        <h1 className="font-display text-xl text-paper">Accès réservé au personnel</h1>
-        <p className="mt-2 text-sm text-zinc-400">
-          Ton compte n&apos;a pas le rôle caisse ou admin. Demande à un admin du café de te l&apos;attribuer.
-        </p>
-        <Link href="/" className="mt-4 inline-block text-sm font-bold text-paper underline decoration-torii underline-offset-4">
-          Retour à l&apos;accueil
-        </Link>
-      </section>
-    );
-  }
+  // Un compte client ne doit même pas savoir que cette page existe.
+  if (access.status === "forbidden") notFound();
 
   return (
     <div>

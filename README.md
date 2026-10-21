@@ -57,7 +57,9 @@ Sans variables Supabase, l'app tourne en **mode démo** (données locales + bout
 
 ## Espace staff (`/staff`)
 
-Accessible aux rôles `cashier` et `admin` (lien depuis « Mon profil »).
+Accessible aux rôles `cashier` et `admin` : lien discret « Espace équipe » en bas de « Mon profil »
+(visible uniquement par ces comptes), ou directement l'adresse `/staff` à mettre en favori sur la tablette de caisse.
+Pour un compte client, `/staff` répond « page introuvable ».
 
 - **Caisse** : scanner la carte membre du client (QR code dans « Mon profil ») ou le chercher par pseudo,
   saisir le montant du ticket. L'XP, le cumul de saison et le déblocage du Pass Premium sont calculés
