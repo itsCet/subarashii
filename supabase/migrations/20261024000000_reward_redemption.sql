@@ -6,8 +6,8 @@
 -- =============================================================================
 
 alter table public.battle_pass_tiers
-  add column free_redeemable    boolean not null default true,
-  add column premium_redeemable boolean not null default true;
+  add column if not exists free_redeemable    boolean not null default true,
+  add column if not exists premium_redeemable boolean not null default true;
 
 -- Même règle que `isDigitalReward` dans lib/season-content.ts.
 update public.battle_pass_tiers
@@ -15,8 +15,8 @@ set free_redeemable = coalesce(free_reward, '') !~* '^(badge|titre|cadre de prof
     premium_redeemable = coalesce(premium_reward, '') !~* '^(badge|titre|cadre de profil|fond d.écran|avatar)';
 
 alter table public.user_rewards
-  add column redeemed_at timestamptz,
-  add column redeemed_by uuid references public.profiles (id) on delete set null;
+  add column if not exists redeemed_at timestamptz,
+  add column if not exists redeemed_by uuid references public.profiles (id) on delete set null;
 
 -- Récompenses réclamées par le joueur connecté (page « Mon profil »).
 create or replace function public.get_my_rewards ()

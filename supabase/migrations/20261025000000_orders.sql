@@ -8,7 +8,7 @@
 -- Catalogue : rayon « bar » (boissons, snacks) en plus de manga / tcg / goodies.
 -- -----------------------------------------------------------------------------
 
-alter table public.products drop constraint products_category_check;
+alter table public.products drop constraint if exists products_category_check;
 alter table public.products add constraint products_category_check
   check (category in ('bar', 'manga', 'tcg', 'goodies'));
 
@@ -92,7 +92,7 @@ $$;
 -- Tables
 -- -----------------------------------------------------------------------------
 
-create table public.orders (
+create table if not exists public.orders (
   id                uuid primary key default gen_random_uuid(),
   number            bigint generated always as identity,
   user_id           uuid references public.profiles (id) on delete set null,
@@ -112,10 +112,10 @@ create table public.orders (
   cancelled_at      timestamptz
 );
 
-create index orders_open_idx on public.orders (created_at) where status in ('pending', 'preparing', 'ready');
-create index orders_user_idx on public.orders (user_id, created_at desc);
+create index if not exists orders_open_idx on public.orders (created_at) where status in ('pending', 'preparing', 'ready');
+create index if not exists orders_user_idx on public.orders (user_id, created_at desc);
 
-create table public.order_items (
+create table if not exists public.order_items (
   id             uuid primary key default gen_random_uuid(),
   order_id       uuid not null references public.orders (id) on delete cascade,
   product_id     uuid references public.products (id) on delete set null,
@@ -124,7 +124,7 @@ create table public.order_items (
   quantity       integer not null check (quantity between 1 and 99)
 );
 
-create index order_items_order_idx on public.order_items (order_id);
+create index if not exists order_items_order_idx on public.order_items (order_id);
 
 -- -----------------------------------------------------------------------------
 -- Helpers internes
@@ -534,8 +534,10 @@ $$;
 alter table public.orders      enable row level security;
 alter table public.order_items enable row level security;
 
+drop policy if exists "orders_select" on public.orders;
 create policy "orders_select" on public.orders
   for select to authenticated using (user_id = auth.uid() or public.is_staff());
+drop policy if exists "order_items_select" on public.order_items;
 create policy "order_items_select" on public.order_items
   for select to authenticated using (
     exists (select 1 from public.orders o where o.id = order_id and (o.user_id = auth.uid() or public.is_staff()))
@@ -566,4 +568,10 @@ grant execute on function public.complete_order (uuid)                to authent
 grant execute on function public.get_orders (text)                    to authenticated;
 
 -- Temps réel : le staff voit arriver les commandes, le client suit la sienne.
-alter publication supabase_realtime add table public.orders;
+do $$
+begin
+  if not exists (select 1 from pg_publication_tables where pubname = 'supabase_realtime' and tablename = 'orders') then
+    alter publication supabase_realtime add table public.orders;
+  end if;
+end;
+$$;
