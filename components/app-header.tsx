@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NAV_ITEMS, isActive } from "./nav-items";
+import { CartButton } from "./shop/cart-button";
 import { ThemeToggle } from "./theme-toggle";
 
 export function AppHeader() {
@@ -42,7 +43,8 @@ export function AppHeader() {
           </ul>
         </nav>
 
-        <ThemeToggle className="ml-auto size-11 md:ml-3 md:size-10" />
+        <CartButton className="ml-auto size-11 md:ml-3 md:size-10" />
+        <ThemeToggle className="size-11 md:size-10" />
       </div>
     </header>
   );

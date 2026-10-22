@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { ClipboardList } from "lucide-react";
 import Link from "next/link";
+import { CartButton } from "@/components/shop/cart-button";
 import { Catalog } from "@/components/shop/catalog";
 import { getProducts } from "@/lib/data/products";
 
@@ -16,9 +18,15 @@ export default async function ShopPage() {
           Boissons, snacks, mangas, cartes TCG et goodies. Commande depuis ton téléphone et récupère au comptoir :
           chaque franc dépensé te rapporte 10 XP. Prix en CHF.
         </p>
-        <Link href="/commandes" className="mt-3 inline-block text-sm font-bold text-torii-ink underline underline-offset-4">
-          Mes commandes
-        </Link>
+        <div className="mt-4 flex flex-wrap gap-2">
+          <CartButton withLabel className="px-4 py-2.5" />
+          <Link
+            href="/commandes"
+            className="pressable inline-flex items-center gap-2 border-2 border-zinc-700 px-4 py-2.5 text-sm font-extrabold text-paper hover:border-paper"
+          >
+            <ClipboardList className="size-5" /> Mes commandes
+          </Link>
+        </div>
       </header>
       <Catalog products={products} />
     </div>
