@@ -2,6 +2,7 @@
 import type { Product, ProductCategory } from "./supabase/database.types";
 
 export const PRODUCT_CATEGORIES: { key: ProductCategory; label: string }[] = [
+  { key: "bar", label: "Bar & snacks" },
   { key: "manga", label: "Mangas" },
   { key: "tcg", label: "Cartes TCG" },
   { key: "goodies", label: "Goodies" },
@@ -22,6 +23,10 @@ const demo = (p: Partial<Product> & Pick<Product, "name" | "category" | "price_c
 });
 
 export const DEMO_PRODUCTS: Product[] = [
+  { name: "Thé glacé maison", category: "bar", price_chf: 4.5, stock: null, description: "Pêche ou citron." },
+  { name: "Bubble tea", category: "bar", price_chf: 6.5, stock: null, description: "Lait, taro ou matcha." },
+  { name: "Mochi glacé", category: "bar", price_chf: 3.5, stock: 20, description: "À l'unité." },
+  { name: "Ramune", category: "bar", price_chf: 4, stock: 24, description: "Limonade japonaise." },
   { name: "One Piece — tome 108", category: "manga", price_chf: 9.9, stock: 12, is_new: true, description: "Édition française." },
   { name: "Display One Piece Card Game OP-10", category: "tcg", price_chf: 129, stock: 3, is_new: true, description: "24 boosters." },
   { name: "Booster Pokémon Écarlate & Violet", category: "tcg", price_chf: 6.5, stock: 40, description: "À l'unité." },

@@ -1,11 +1,12 @@
 "use client";
 
-import { CalendarDays, ScanLine, ShoppingBag } from "lucide-react";
+import { CalendarDays, ClipboardList, ScanLine, ShoppingBag } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const TABS = [
   { href: "/staff", label: "Caisse", icon: ScanLine },
+  { href: "/staff/commandes", label: "Commandes", icon: ClipboardList },
   { href: "/staff/events", label: "Agenda", icon: CalendarDays },
   { href: "/staff/shop", label: "Shop", icon: ShoppingBag },
 ];
@@ -13,7 +14,7 @@ const TABS = [
 export function StaffTabs() {
   const pathname = usePathname();
   return (
-    <nav aria-label="Outils staff" className="mb-6 grid grid-cols-3 gap-1.5 border-[6px] border-black bg-black">
+    <nav aria-label="Outils staff" className="mb-6 grid grid-cols-2 gap-1.5 sm:grid-cols-4 border-[6px] border-black bg-black">
       {TABS.map(({ href, label, icon: Icon }) => {
         const active = href === "/staff" ? pathname === href : pathname.startsWith(href);
         return (

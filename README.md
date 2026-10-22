@@ -74,13 +74,38 @@ Accessible aux rôles `cashier` et `admin` : lien discret « Espace équipe » e
 (visible uniquement par ces comptes), ou directement l'adresse `/staff` à mettre en favori sur la tablette de caisse.
 Pour un compte client, `/staff` répond « page introuvable ».
 
-- **Caisse** : scanner la carte membre du client (QR code dans « Mon profil ») ou le chercher par pseudo,
-  saisir le montant du ticket. L'XP, le cumul de saison et le déblocage du Pass Premium sont calculés
-  par la base ; le client voit le résultat en direct sur son téléphone.
+- **Caisse** : toucher les articles (onglets Bar & snacks, Mangas, TCG, Goodies) pour remplir le ticket,
+  ajouter au besoin une ligne « Montant libre », puis « Encaisser ». Le client paie au comptoir comme d'habitude.
+  Le stock est décrémenté automatiquement. Membre facultatif : scanner sa carte (QR code dans « Mon profil »)
+  ou le chercher par pseudo pour lui créditer l'XP (1 CHF = 10 XP) ; le client voit le résultat en direct.
   Si le membre a réclamé des récompenses physiques dans son Pass (boisson, booster, goodies…),
   elles s'affichent sous sa fiche avec un bouton « Remettre » : une récompense ne peut être remise qu'une fois.
+- **Commandes** : les commandes passées par les clients depuis le shop arrivent en direct (avec un petit son).
+  « Préparer » → « C'est prêt » (le client est prévenu sur son téléphone) → « Encaisser » / « Remise au client ».
+  L'XP est créditée à la remise (ou dès le paiement en ligne). « Annuler » remet le stock en rayon.
 - **Agenda** : créer, modifier, dépublier ou supprimer un événement, ajouter une affiche, voir les inscrits.
 - **Shop** : gérer les articles (catégorie, prix, stock, photo, nouveauté, visibilité). Ils apparaissent sur `/shop`.
+
+## Commander depuis l'app (clients)
+
+Sur `/shop`, le client ajoute des articles au panier puis commande depuis `/shop/panier` (connexion requise).
+Il suit sa commande dans `/commandes` : reçue → en préparation → prête → remise. 3 commandes en cours maximum ;
+il peut annuler tant que le staff ne l'a pas prise en charge. Les prix sont toujours recalculés par la base.
+
+### Paiement en ligne (Stripe : carte, TWINT…) — facultatif
+
+Sans configuration, seul « payer au comptoir » est proposé. Pour l'activer :
+
+1. Créer un compte [Stripe](https://dashboard.stripe.com) (mode **Test** pour essayer), activer TWINT dans
+   Settings → Payment methods.
+2. Developers → Webhooks → Add endpoint : `https://<site>/api/stripe/webhook`, événements
+   `checkout.session.completed`, `checkout.session.async_payment_succeeded`,
+   `checkout.session.async_payment_failed`, `checkout.session.expired`.
+3. Dans Vercel → Settings → Environment Variables, ajouter `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`
+   (secret de signature du webhook) et `SUPABASE_SERVICE_ROLE_KEY` (Supabase → Project Settings → API), puis redéployer.
+
+Le stock est réservé pendant le paiement (30 min max) ; une session abandonnée ou expirée annule la commande.
+En mode test, la carte `4242 4242 4242 4242` est acceptée.
 
 Le scanner utilise la caméra : il faut le site en **https** (c'est le cas sur Vercel).
 
@@ -88,7 +113,9 @@ Le scanner utilise la caméra : il faut le site en **https** (c'est le cas sur V
 
 | Règle | Où |
 | --- | --- |
-| 1 CHF = 10 XP | `record_transaction` (SQL) · `lib/game.ts` |
+| 1 CHF = 10 XP | `credit_purchase` (SQL) · `lib/game.ts` |
+| Prix, stock et total d'une vente toujours calculés par la base | `pos_checkout` · `place_order` |
+| XP d'une commande créditée une seule fois (remise ou paiement en ligne) | `complete_order` · `mark_order_paid` |
 | Niveau = `floor(XP / 500) + 1` | trigger `sync_profile_level` · `levelForXp` |
 | Pass Premium dès 25 CHF cumulés sur la saison | `record_transaction` · `applyTransaction` |
 | Récompense réclamable si niveau atteint (+ Premium pour la voie Premium) | `claim_reward` · `rewardState` |
@@ -108,8 +135,10 @@ app/
   pass/                 Pass de Combat & quêtes
   login/, auth/callback Connexion par lien magique
   profile/              Carte membre (QR code) et historique
-  shop/                 Catalogue public
-  staff/                Espace staff : caisse, agenda, shop
+  shop/                 Catalogue public + panier (shop/panier)
+  commandes/            Suivi des commandes du client (temps réel)
+  api/stripe/webhook/   Confirmation des paiements en ligne
+  staff/                Espace staff : caisse, commandes, agenda, shop
   leaderboard/          (à venir)
   actions/              Server actions (pass, quêtes, inscriptions)
 components/home/        Sections de l'accueil

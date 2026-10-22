@@ -1,7 +1,12 @@
 "use client";
 
+import { Plus, ShoppingCart } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
+import { QuantityStepper } from "@/components/ui/quantity-stepper";
 import { TabIndicator } from "@/components/ui/tab-indicator";
+import { addToCart, cartCount, cartTotal, setQuantity } from "@/lib/cart";
+import { useClientCart } from "@/lib/client-cart";
 import { formatChf } from "@/lib/game";
 import { PRODUCT_CATEGORIES, productCategoryLabel } from "@/lib/products-content";
 import type { Product, ProductCategory } from "@/lib/supabase/database.types";
@@ -10,8 +15,9 @@ type Tab = "new" | ProductCategory;
 
 export function Catalog({ products }: { products: Product[] }) {
   const hasNew = products.some((p) => p.is_new);
-  const [tab, setTab] = useState<Tab>(hasNew ? "new" : "manga");
+  const [tab, setTab] = useState<Tab>(hasNew ? "new" : "bar");
   const [query, setQuery] = useState("");
+  const [cart, updateCart] = useClientCart();
 
   const tabs: { key: Tab; label: string }[] = [...(hasNew ? [{ key: "new" as const, label: "Nouveautés" }] : []), ...PRODUCT_CATEGORIES];
   const q = query.trim().toLowerCase();
@@ -82,11 +88,66 @@ export function Catalog({ products }: { products: Product[] }) {
                     </span>
                   )}
                 </div>
+                <CartControl
+                  quantity={cart.find((l) => l.key === p.id)?.quantity ?? 0}
+                  max={p.stock ?? undefined}
+                  label={p.name}
+                  onChange={(q) =>
+                    updateCart((c) =>
+                      c.some((l) => l.key === p.id)
+                        ? setQuantity(c, p.id, q)
+                        : addToCart(c, { key: p.id, productId: p.id, name: p.name, unitPrice: p.price_chf }, q),
+                    )
+                  }
+                />
               </div>
             </li>
           ))}
         </ul>
       )}
+
+      {cart.length > 0 && (
+        <Link
+          href="/shop/panier"
+          className="pressable sticky bottom-[calc(4.5rem+env(safe-area-inset-bottom))] z-20 mt-6 flex items-center justify-between gap-3 border-2 border-black bg-torii px-4 py-3 font-extrabold text-white shadow-panel md:bottom-4"
+        >
+          <span className="flex items-center gap-2">
+            <ShoppingCart className="size-5" /> {cartCount(cart)} article{cartCount(cart) > 1 ? "s" : ""}
+          </span>
+          <span className="tabular-nums">Commander · {formatChf(cartTotal(cart))} CHF</span>
+        </Link>
+      )}
     </>
+  );
+}
+
+function CartControl({
+  quantity,
+  max,
+  label,
+  onChange,
+}: {
+  quantity: number;
+  max?: number;
+  label: string;
+  onChange: (quantity: number) => void;
+}) {
+  if (max === 0) return null;
+  if (quantity > 0) {
+    return (
+      <div className="mt-3">
+        <QuantityStepper value={quantity} max={max} label={label} onChange={onChange} />
+      </div>
+    );
+  }
+  return (
+    <button
+      type="button"
+      onClick={() => onChange(1)}
+      aria-label={`Ajouter au panier : ${label}`}
+      className="mt-3 flex w-full items-center justify-center gap-1.5 border-2 border-zinc-600 py-2 text-xs font-extrabold text-paper hover:border-paper"
+    >
+      <Plus className="size-4" /> Ajouter
+    </button>
   );
 }

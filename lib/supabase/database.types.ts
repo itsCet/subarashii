@@ -140,7 +140,7 @@ export type UpcomingEvent = Omit<CafeEvent, "is_published" | "created_at"> & {
   is_registered: boolean;
 };
 
-export type ProductCategory = "manga" | "tcg" | "goodies";
+export type ProductCategory = "bar" | "manga" | "tcg" | "goodies";
 
 export type Product = {
   id: string;
@@ -165,6 +165,27 @@ export type RecentTransaction = {
   xp_gained: number;
   member: string | null;
   cashier: string | null;
+};
+
+export type OrderStatus = "pending" | "preparing" | "ready" | "completed" | "cancelled";
+export type PaymentMethod = "counter" | "online";
+
+/** Commande telle que renvoyée par les fonctions SQL (`order_json`). */
+export type Order = {
+  id: string;
+  number: number;
+  user_id: string | null;
+  username: string | null;
+  source: "pos" | "app";
+  status: OrderStatus;
+  payment_method: PaymentMethod;
+  payment_status: "unpaid" | "paid";
+  total_chf: number;
+  note: string | null;
+  created_at: string;
+  paid_at: string | null;
+  completed_at: string | null;
+  items: { name: string; unit_price_chf: number; quantity: number; product_id: string | null }[];
 };
 
 export type LeaderboardEntry = Pick<Profile, "id" | "username" | "avatar_url" | "level" | "xp"> & {
@@ -204,6 +225,14 @@ export type Database = {
       get_my_rewards: { Args: Record<PropertyKey, never>; Returns: MyReward[] };
       get_pending_rewards: { Args: { p_user_id: string }; Returns: PendingReward[] };
       redeem_reward: { Args: { p_user_reward_id: string }; Returns: string };
+      pos_checkout: { Args: { p_user_id: string | null; p_items: Json }; Returns: Json };
+      place_order: { Args: { p_items: Json; p_note: string; p_payment_method: PaymentMethod }; Returns: Json };
+      cancel_my_order: { Args: { p_order_id: string }; Returns: Json };
+      set_order_status: { Args: { p_order_id: string; p_status: "preparing" | "ready" | "cancelled" }; Returns: Json };
+      complete_order: { Args: { p_order_id: string }; Returns: Json };
+      get_orders: { Args: { p_scope?: "mine" | "open" }; Returns: Json[] };
+      mark_order_paid: { Args: { p_order_id: string; p_session_id: string }; Returns: Json };
+      expire_online_order: { Args: { p_order_id: string }; Returns: undefined };
       is_staff: { Args: Record<PropertyKey, never>; Returns: boolean };
       is_admin: { Args: Record<PropertyKey, never>; Returns: boolean };
     };
