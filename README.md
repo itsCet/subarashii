@@ -13,8 +13,7 @@ téléphone ; le choix est ensuite mémorisé. Le thème clair redéfinit les va
 Sur un fond d'accent plein (`bg-torii`, `bg-gold`…), utiliser `text-white` / `text-black`.
 
 Les infos du lieu (adresse, horaires, réseaux, partenaires) sont dans `lib/cafe.ts`.
-> ⚠️ **À compléter** : arrêt de tram/bus, liens des partenaires, et `alcoveBookingUrl` (le bouton
-> « Réserver une Alcôve » renvoie aux infos pratiques tant qu'il n'est pas renseigné).
+> ⚠️ **À compléter** : arrêt de tram/bus et liens des partenaires. Les alcôves ne se réservent pas.
 
 ## Outils de design installés dans le projet
 

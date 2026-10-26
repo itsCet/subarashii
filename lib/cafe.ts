@@ -26,8 +26,6 @@ export const CAFE = {
     { label: "Threads", url: "https://www.threads.com/@subarashii.mangacafe" },
     { label: "X", url: "https://x.com/smangacafe" },
   ],
-  /** Lien de réservation d'alcôve (formulaire, outil de booking…). `null` → renvoie vers les infos pratiques. */
-  alcoveBookingUrl: null as string | null,
 };
 
 export const UNIVERSES = [

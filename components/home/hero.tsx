@@ -5,8 +5,6 @@ import { OpenStatusBadge } from "./opening-hours";
 
 // Le hero est composé comme une planche de manga : cases sur papier, gouttières noires.
 export function Hero() {
-  const alcoveHref = CAFE.alcoveBookingUrl ?? "#infos";
-
   return (
     <section aria-labelledby="hero-title">
       <div className="grid gap-1.5 border-[6px] border-black bg-black md:grid-cols-[1fr_1fr_8rem]">
@@ -69,8 +67,8 @@ export function Hero() {
         <Link href="/pass" className="pressable border-2 border-black bg-paper px-5 py-3 text-sm font-extrabold text-ink shadow-panel hover:bg-white">
           Mon pass fidélité
         </Link>
-        <Link href={alcoveHref} className="text-sm font-extrabold text-paper underline decoration-torii decoration-2 underline-offset-4 hover:text-torii-ink">
-          Réserver une alcôve
+        <Link href="#infos" className="text-sm font-extrabold text-paper underline decoration-torii decoration-2 underline-offset-4 hover:text-torii-ink">
+          Horaires & accès
         </Link>
         <span className="ml-auto">
           <OpenStatusBadge />

@@ -19,7 +19,7 @@
 
 ## Technique
 - [ ] Page 404 aux couleurs du café
-- [ ] Liens à compléter : partenaires, `alcoveBookingUrl` (`lib/cafe.ts`), `/leaderboard`
+- [ ] Liens à compléter : partenaires (`lib/cafe.ts`), `/leaderboard`
 - [ ] Nom du produit en `alt` des photos du shop
 - [x] Compression des photos envoyées par le staff
 - [ ] Ajouter de vraies photos du café (Staff → Photos)
