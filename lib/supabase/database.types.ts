@@ -171,6 +171,18 @@ export type RecentTransaction = {
   cashier: string | null;
 };
 
+export type GalleryArea = "cafe" | "bibliotheque" | "alcoves" | "bar" | "gaming" | "tcg" | "evenements";
+
+export type GalleryPhoto = {
+  id: string;
+  image_url: string;
+  caption: string;
+  area: GalleryArea;
+  sort_order: number;
+  is_published: boolean;
+  created_at: string;
+};
+
 export type OrderStatus = "pending" | "preparing" | "ready" | "completed" | "cancelled";
 export type PaymentMethod = "counter" | "online";
 
@@ -209,6 +221,7 @@ export type Database = {
       events: Table<CafeEvent, "slug" | "title" | "category" | "starts_at">;
       event_registrations: Table<EventRegistration, "event_id" | "user_id">;
       products: Table<Product, "name" | "category" | "price_chf">;
+      gallery_photos: Table<GalleryPhoto, "image_url">;
     };
     Views: { [_ in never]: never };
     Functions: {

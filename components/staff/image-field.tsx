@@ -2,7 +2,7 @@
 
 import { ImagePlus, Loader2, Trash2 } from "lucide-react";
 import { useState } from "react";
-import { createClient } from "@/lib/supabase/client";
+import { uploadToMedia } from "@/lib/compress-image";
 
 type Props = {
   id: string;
@@ -12,31 +12,22 @@ type Props = {
   demo: boolean;
 };
 
-const MAX_BYTES = 5 * 1024 * 1024;
-
-/** Envoi d'image vers le bucket public `media` de Supabase Storage. */
+/** Envoi d'image (compressée) vers le bucket public `media` de Supabase Storage. */
 export function ImageField({ id, value, onChange, folder, demo }: Props) {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   async function upload(file: File) {
     setError(null);
-    if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) return setError("Format accepté : JPG, PNG ou WebP.");
-    if (file.size > MAX_BYTES) return setError("Image trop lourde (5 Mo max).");
-
     if (demo) return onChange(URL.createObjectURL(file));
-
     setPending(true);
-    const supabase = createClient();
-    const ext = file.type.split("/")[1].replace("jpeg", "jpg");
-    const path = `${folder}/${crypto.randomUUID()}.${ext}`;
-    const { error } = await supabase.storage.from("media").upload(path, file, { contentType: file.type, cacheControl: "31536000" });
-    setPending(false);
-    if (error) {
-      console.error("[upload]", error.message);
-      return setError("Envoi impossible. Vérifie que le bucket « media » existe.");
+    try {
+      onChange(await uploadToMedia(file, folder));
+    } catch (e) {
+      setError((e as Error).message);
+    } finally {
+      setPending(false);
     }
-    onChange(supabase.storage.from("media").getPublicUrl(path).data.publicUrl);
   }
 
   return (
@@ -61,7 +52,7 @@ export function ImageField({ id, value, onChange, folder, demo }: Props) {
       <input
         id={id}
         type="file"
-        accept="image/jpeg,image/png,image/webp"
+        accept="image/*"
         className="sr-only"
         onChange={(e) => {
           const file = e.target.files?.[0];

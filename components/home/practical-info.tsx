@@ -5,7 +5,7 @@ import { HoursTable, OpenStatusBadge } from "./opening-hours";
 export function PracticalInfo() {
   return (
     <section id="infos" aria-labelledby="infos-title" className="scroll-mt-24">
-      <SectionTitle index="02" title="Horaires & accès" id="infos-title" aside="営業時間" />
+      <SectionTitle index="03" title="Horaires & accès" id="infos-title" aside="営業時間" />
 
       <div className="grid gap-10 md:grid-cols-2">
         <div>

@@ -4,7 +4,7 @@ import { PARTNERS } from "@/lib/cafe";
 export function Partners() {
   return (
     <section aria-labelledby="partners-title">
-      <SectionTitle index="03" title="Partenaires" id="partners-title" aside="仲間" />
+      <SectionTitle index="04" title="Partenaires" id="partners-title" aside="仲間" />
       <ul className="grid gap-x-8 sm:grid-cols-2 lg:grid-cols-3">
         {PARTNERS.map((p) => (
           <li key={p.name} className="border-b border-zinc-800 py-3">

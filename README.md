@@ -86,6 +86,9 @@ Pour un compte client, `/staff` répond « page introuvable ».
   « Préparer » → « C'est prêt » (le client est prévenu sur son téléphone) → « Encaisser » / « Remise au client ».
   L'XP est créditée à la remise (ou dès le paiement en ligne). « Annuler » remet le stock en rayon.
 - **Agenda** : créer, modifier, dépublier ou supprimer un événement, ajouter une affiche, voir les inscrits.
+- **Photos** : ajouter des photos du café (plusieurs à la fois, compressées automatiquement), légende,
+  zone (bar, alcôves, gaming…), ordre et visibilité. Elles apparaissent sur l'accueil (« Le café en images »,
+  la première est mise en avant) et sur `/galerie`. Sans photo publiée, la section reste masquée.
 - **Shop** : gérer les articles (catégorie, prix, stock, photo, nouveauté, visibilité). Ils apparaissent sur `/shop`.
 
 ## Premier passage (onboarding)
@@ -143,6 +146,7 @@ app/
   login/, auth/callback Connexion par lien magique
   profile/              Carte membre (QR code) et historique
   shop/                 Catalogue public + panier (shop/panier)
+  galerie/              Photos du café par zone, plein écran
   commandes/            Suivi des commandes du client (temps réel)
   api/stripe/webhook/   Confirmation des paiements en ligne
   staff/                Espace staff : caisse, commandes, agenda, shop
