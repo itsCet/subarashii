@@ -46,7 +46,8 @@ Sans variables Supabase, l'app tourne en **mode démo** (données locales + bout
 2. Copier `.env.example` en `.env.local` et renseigner l'URL et la clé `anon`.
 3. **Installer la base** : SQL Editor → New query → coller tout `supabase/setup.sql` → Run.
    Ce fichier regroupe les migrations de `supabase/migrations/` et le seed (régénéré par `npm run db:bundle`).
-   Sur une base déjà installée, n'exécuter que les nouvelles migrations.
+   **Sur une base déjà installée** : coller plutôt tout `supabase/update.sql` (relançable sans risque,
+   régénéré lui aussi par `npm run db:bundle`).
 
 4. Authentication → URL Configuration :
    - **Site URL** : l'URL de prod (ex. `https://subarashii-one.vercel.app`), pas `localhost` — sinon les liens des e-mails renvoient vers `localhost:3000`.
@@ -75,7 +76,8 @@ Accessible aux rôles `cashier` et `admin` : lien discret « Espace équipe » e
 Pour un compte client, `/staff` répond « page introuvable ».
 
 - **Caisse** : toucher les articles (onglets Bar & snacks, Mangas, TCG, Goodies) pour remplir le ticket,
-  ajouter au besoin une ligne « Montant libre », puis « Encaisser ». Le client paie au comptoir comme d'habitude.
+  ajouter au besoin une ligne « Montant libre », puis **glisser** la barre « Encaisser » (évite les validations
+  par erreur ; « Remettre » une récompense fonctionne pareil). Le client paie au comptoir comme d'habitude.
   Le stock est décrémenté automatiquement. Membre facultatif : scanner sa carte (QR code dans « Mon profil »)
   ou le chercher par pseudo pour lui créditer l'XP (1 CHF = 10 XP) ; le client voit le résultat en direct.
   Si le membre a réclamé des récompenses physiques dans son Pass (boisson, booster, goodies…),
@@ -85,6 +87,11 @@ Pour un compte client, `/staff` répond « page introuvable ».
   L'XP est créditée à la remise (ou dès le paiement en ligne). « Annuler » remet le stock en rayon.
 - **Agenda** : créer, modifier, dépublier ou supprimer un événement, ajouter une affiche, voir les inscrits.
 - **Shop** : gérer les articles (catégorie, prix, stock, photo, nouveauté, visibilité). Ils apparaissent sur `/shop`.
+
+## Premier passage (onboarding)
+
+Après sa première connexion, le joueur passe par `/bienvenue` : pseudo (unique), univers préféré
+(mangas, TCG, gaming, bar), puis le fonctionnement du Pass en 3 cases. Le personnel en est dispensé.
 
 ## Commander depuis l'app (clients)
 

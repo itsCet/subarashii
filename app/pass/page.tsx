@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { redirect, unstable_rethrow } from "next/navigation";
 import { DashboardClient } from "@/components/dashboard/dashboard-client";
 import { type DashboardData, getDashboardData } from "@/lib/data/dashboard";
+import { requireOnboarding } from "@/lib/onboarding";
 
 export const metadata: Metadata = { title: "Pass & Quêtes" };
 
@@ -16,6 +17,7 @@ export default async function PassPage() {
     return <PassUnavailable />;
   }
   if (!data) redirect("/login?next=/pass");
+  requireOnboarding(data.profile, data.mode, "/pass");
 
   return <DashboardClient initial={data} />;
 }

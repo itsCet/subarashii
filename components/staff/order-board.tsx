@@ -5,6 +5,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { completeOrder, getOpenOrders, setOrderStatus } from "@/app/actions/orders";
 import type { TransactionReceipt } from "@/app/actions/staff";
 import { OrderProgress } from "@/components/orders/order-status";
+import { SlideToConfirm } from "@/components/ui/slide-to-confirm";
 import { Toaster, useToasts } from "@/components/ui/toaster";
 import { formatChf, formatXp } from "@/lib/game";
 import { ORDER_STATUS_LABEL, isOpenOrder } from "@/lib/orders";
@@ -122,9 +123,14 @@ export function OrderBoard({ mode, initialOrders }: Props) {
                         </button>
                       )}
                       {o.status === "ready" && (
-                        <button type="button" onClick={() => complete(o)} className={`${primaryButton} flex-1`}>
-                          {o.payment_status === "paid" ? "Remise au client" : `Encaisser ${formatChf(o.total_chf)} CHF`}
-                        </button>
+                        <div className="min-w-0 flex-1">
+                          <SlideToConfirm
+                            size="sm"
+                            label={o.payment_status === "paid" ? "Remettre" : `Encaisser ${formatChf(o.total_chf)}`}
+                            onConfirm={() => complete(o)}
+                            pending={busy === o.id}
+                          />
+                        </div>
                       )}
                       <button type="button" onClick={() => advance(o, "cancelled")} className={secondaryButton}>
                         Annuler

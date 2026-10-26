@@ -24,8 +24,12 @@ export type Profile = {
   level: number;
   current_season_spent: number;
   is_premium_pass: boolean;
+  favorite_universe?: Universe | null;
+  onboarded_at?: string | null;
   created_at: string;
 };
+
+export type Universe = "manga" | "tcg" | "gaming" | "bar";
 
 export type Season = {
   id: string;
@@ -233,6 +237,7 @@ export type Database = {
       get_orders: { Args: { p_scope?: "mine" | "open" }; Returns: Json[] };
       mark_order_paid: { Args: { p_order_id: string; p_session_id: string }; Returns: Json };
       expire_online_order: { Args: { p_order_id: string }; Returns: undefined };
+      complete_onboarding: { Args: { p_username: string; p_universe: Universe }; Returns: Profile };
       is_staff: { Args: Record<PropertyKey, never>; Returns: boolean };
       is_admin: { Args: Record<PropertyKey, never>; Returns: boolean };
     };

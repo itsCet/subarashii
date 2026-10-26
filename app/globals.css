@@ -197,3 +197,14 @@ html[data-intro-seen] #intro-splash {
     display: none;
   }
 }
+
+/* Jauge chakra (ChakraGauge) : flux d'énergie en boucle. */
+@keyframes chakra-flow {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.chakra-flow {
+  animation: chakra-flow 1.8s linear infinite;
+}

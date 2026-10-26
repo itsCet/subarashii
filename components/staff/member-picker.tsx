@@ -5,9 +5,10 @@ import { Gift, Loader2, ScanLine, Search, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { type MemberSummary, findMembers, getPendingRewards, redeemReward } from "@/app/actions/staff";
 import { RewardIcon } from "@/components/ui/reward-icon";
+import { SlideToConfirm } from "@/components/ui/slide-to-confirm";
 import { formatChf, formatXp } from "@/lib/game";
 import type { PendingReward } from "@/lib/supabase/database.types";
-import { inputClass, primaryButton, secondaryButton } from "./form";
+import { inputClass, primaryButton } from "./form";
 import { QrScanner } from "./qr-scanner";
 
 const DEMO_PENDING: PendingReward[] = [
@@ -171,18 +172,18 @@ export function MemberPicker({ demo, member, onChange, onError }: Props) {
                     key={r.id}
                     exit={{ opacity: 0, transform: reduceMotion ? "scale(1)" : "scale(0.98)" }}
                     transition={{ duration: 0.15, ease: [0.23, 1, 0.32, 1] }}
-                    className="flex items-center gap-3 py-2"
+                    className="space-y-2 py-3"
                   >
-                    <RewardIcon icon={r.icon_name} className="size-5 shrink-0 text-gold-ink" />
-                    <span className="min-w-0 flex-1">
-                      <span className="block font-bold text-paper">{r.reward}</span>
-                      <span className="text-xs text-zinc-400">
-                        Palier {r.tier_level} · {r.track === "premium" ? "Premium" : "Gratuit"}
+                    <div className="flex items-center gap-3">
+                      <RewardIcon icon={r.icon_name} className="size-5 shrink-0 text-gold-ink" />
+                      <span className="min-w-0 flex-1">
+                        <span className="block font-bold text-paper">{r.reward}</span>
+                        <span className="text-xs text-zinc-400">
+                          Palier {r.tier_level} · {r.track === "premium" ? "Premium" : "Gratuit"}
+                        </span>
                       </span>
-                    </span>
-                    <button type="button" onClick={() => redeem(r)} disabled={redeemingId === r.id} className={secondaryButton}>
-                      {redeemingId === r.id ? <Loader2 className="size-4 animate-spin" /> : "Remettre"}
-                    </button>
+                    </div>
+                    <SlideToConfirm size="sm" label="Remettre" onConfirm={() => redeem(r)} pending={redeemingId === r.id} />
                   </motion.li>
                 ))}
               </AnimatePresence>

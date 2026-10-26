@@ -8,6 +8,7 @@ import { SectionTitle } from "@/components/ui/section-title";
 import { getPlayerSummary } from "@/lib/data/player";
 import { getMyRewards } from "@/lib/data/rewards";
 import { formatChf } from "@/lib/game";
+import { requireOnboarding } from "@/lib/onboarding";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import type { Transaction } from "@/lib/supabase/database.types";
 import { createClient } from "@/lib/supabase/server";
@@ -25,6 +26,7 @@ async function getMyTransactions(): Promise<Transaction[]> {
 export default async function ProfilePage() {
   const { mode, profile } = await getPlayerSummary();
   if (!profile) redirect("/login?next=/profile");
+  requireOnboarding(profile, mode, "/profile");
 
   const [transactions, rewards] = await Promise.all([getMyTransactions(), getMyRewards()]);
   const isStaff = profile.role === "cashier" || profile.role === "admin";

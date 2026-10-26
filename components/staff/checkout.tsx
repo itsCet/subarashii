@@ -1,17 +1,18 @@
 "use client";
 
-import { Check, Crown, Loader2, Plus, Search, ShoppingCart, Trash2 } from "lucide-react";
+import { Check, Crown, Plus, Search, ShoppingCart, Trash2 } from "lucide-react";
 import { useCallback, useState } from "react";
 import { posCheckout } from "@/app/actions/orders";
 import type { MemberSummary, TransactionReceipt } from "@/app/actions/staff";
 import { QuantityStepper } from "@/components/ui/quantity-stepper";
+import { SlideToConfirm } from "@/components/ui/slide-to-confirm";
 import { TabIndicator } from "@/components/ui/tab-indicator";
 import { type CartLine, addToCart, cartCount, cartTotal, setQuantity } from "@/lib/cart";
 import { PREMIUM_THRESHOLD_CHF, applyTransaction, formatChf, formatXp } from "@/lib/game";
 import { PRODUCT_CATEGORIES } from "@/lib/products-content";
 import type { Order, Product, ProductCategory, RecentTransaction } from "@/lib/supabase/database.types";
 import { formatDateTimeShort } from "@/lib/time";
-import { inputClass, primaryButton, secondaryButton } from "./form";
+import { inputClass, secondaryButton } from "./form";
 import { MemberPicker } from "./member-picker";
 
 type Props = {
@@ -162,10 +163,14 @@ export function Checkout({ mode, products: initialProducts, initialTransactions 
             <p className="mt-3 text-xs text-zinc-400">Sans membre, la vente est enregistrée mais aucune XP n&apos;est créditée.</p>
           )}
 
-          <button type="button" onClick={checkout} disabled={cart.length === 0 || pending} className={`${primaryButton} mt-4 w-full py-4 text-base`}>
-            {pending && <Loader2 className="size-5 animate-spin" />}
-            Encaisser {total > 0 && `${formatChf(total)} CHF`}
-          </button>
+          <div className="mt-4">
+            <SlideToConfirm
+              label={total > 0 ? `Encaisser ${formatChf(total)} CHF` : "Ticket vide"}
+              onConfirm={checkout}
+              pending={pending}
+              disabled={cart.length === 0}
+            />
+          </div>
           {cart.length > 0 && (
             <button type="button" onClick={() => setCart([])} className="mt-2 flex w-full items-center justify-center gap-1.5 py-2 text-xs font-bold text-zinc-400 hover:text-paper">
               <Trash2 className="size-3.5" /> Vider le ticket

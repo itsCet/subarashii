@@ -1,6 +1,6 @@
 import { Crown, Lock, QrCode } from "lucide-react";
 import Link from "next/link";
-import { ProgressBar } from "@/components/ui/progress-bar";
+import { ChakraGauge } from "@/components/ui/chakra-gauge";
 import { PREMIUM_THRESHOLD_CHF, formatChf, premiumProgress } from "@/lib/game";
 
 type Props = {
@@ -57,7 +57,14 @@ export function PassProgressBanner({ spent, isPremium, premiumRewardsReady }: Pr
           </Link>
         </div>
 
-        <ProgressBar value={ratio} className="mt-4 h-3" label="Progression vers le Pass Premium" />
+        <div className="mt-4">
+          <ChakraGauge value={ratio} steps={5} label="Progression vers le Pass Premium" />
+          <div aria-hidden className="mt-1 flex justify-between text-[11px] font-bold tabular-nums text-zinc-400">
+            {Array.from({ length: 6 }, (_, i) => (i * PREMIUM_THRESHOLD_CHF) / 5).map((v) => (
+              <span key={v}>{v}</span>
+            ))}
+          </div>
+        </div>
 
         <p className="mt-3 text-sm text-zinc-400">
           Plus que <strong className="text-gold-ink">{formatChf(remaining)} CHF</strong> d&apos;achats
