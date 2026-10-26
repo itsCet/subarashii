@@ -90,8 +90,8 @@ Pour un compte client, `/staff` répond « page introuvable ».
 
 ## Premier passage (onboarding)
 
-Après sa première connexion, le joueur passe par `/bienvenue` : pseudo (unique), univers préféré
-(mangas, TCG, gaming, bar), puis le fonctionnement du Pass en 3 cases. Le personnel en est dispensé.
+Après sa première connexion, le joueur passe par `/bienvenue` : pseudo (unique), univers préférés
+(un ou plusieurs : mangas, TCG, gaming, bar), puis le fonctionnement du Pass en 3 cases. Le personnel en est dispensé.
 
 ## Commander depuis l'app (clients)
 

@@ -17,7 +17,7 @@ export default async function WelcomePage({ searchParams }: { searchParams: Prom
     <OnboardingFlow
       next={next}
       initialUsername={profile.username ?? ""}
-      initialUniverse={profile.favorite_universe ?? null}
+      initialUniverses={profile.favorite_universes ?? []}
     />
   );
 }

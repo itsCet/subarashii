@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { ChevronLeft, Crown, Loader2, QrCode, Zap } from "lucide-react";
+import { Check, ChevronLeft, Crown, Loader2, QrCode, Zap } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { completeOnboarding } from "@/app/actions/auth";
@@ -9,23 +9,23 @@ import { PREMIUM_THRESHOLD_CHF, XP_PER_CHF } from "@/lib/game";
 import { UNIVERSES } from "@/lib/onboarding";
 import type { Universe } from "@/lib/supabase/database.types";
 
-type Props = { next: string; initialUsername: string; initialUniverse: Universe | null };
+type Props = { next: string; initialUsername: string; initialUniverses: Universe[] };
 
 const STEPS = 3;
 const EASE = [0.23, 1, 0.32, 1] as const;
 
-export function OnboardingFlow({ next, initialUsername, initialUniverse }: Props) {
+export function OnboardingFlow({ next, initialUsername, initialUniverses }: Props) {
   const router = useRouter();
   const reduceMotion = useReducedMotion();
   const [step, setStep] = useState(0);
   const [direction, setDirection] = useState<1 | -1>(1);
   const [username, setUsername] = useState(initialUsername);
-  const [universe, setUniverse] = useState<Universe | null>(initialUniverse);
+  const [universes, setUniverses] = useState<Universe[]>(initialUniverses);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const name = username.trim();
-  const canContinue = step === 0 ? name.length >= 2 && name.length <= 24 : step === 1 ? universe !== null : true;
+  const canContinue = step === 0 ? name.length >= 2 && name.length <= 24 : step === 1 ? universes.length > 0 : true;
 
   function go(to: number) {
     setError(null);
@@ -39,7 +39,7 @@ export function OnboardingFlow({ next, initialUsername, initialUniverse }: Props
     if (step < STEPS - 1) return go(step + 1);
 
     setPending(true);
-    const result = await completeOnboarding(name, universe!);
+    const result = await completeOnboarding(name, universes);
     if (!result.ok) {
       setPending(false);
       setError(result.error);
@@ -111,18 +111,21 @@ export function OnboardingFlow({ next, initialUsername, initialUniverse }: Props
 
             {step === 1 && (
               <section>
-                <h1 className="font-display text-3xl leading-tight text-paper">Ton univers préféré au Suba ?</h1>
-                <p className="mt-2 text-sm text-zinc-400">On s&apos;en sert pour te proposer les bons événements.</p>
-                <div role="radiogroup" aria-label="Univers préféré" className="mt-8 grid grid-cols-2 gap-1.5 border-[6px] border-black bg-black">
+                <h1 className="font-display text-3xl leading-tight text-paper">Qu&apos;est-ce qui te fait venir au Suba ?</h1>
+                <p className="mt-2 text-sm text-zinc-400">
+                  Choisis-en autant que tu veux : on s&apos;en sert pour te proposer les bons événements.
+                </p>
+                <div role="group" aria-label="Univers préférés" className="mt-8 grid grid-cols-2 gap-1.5 border-[6px] border-black bg-black">
                   {UNIVERSES.map((u) => {
-                    const selected = universe === u.key;
+                    const selected = universes.includes(u.key);
                     return (
                       <button
                         key={u.key}
                         type="button"
-                        role="radio"
-                        aria-checked={selected}
-                        onClick={() => setUniverse(u.key)}
+                        aria-pressed={selected}
+                        onClick={() =>
+                          setUniverses((list) => (selected ? list.filter((x) => x !== u.key) : [...list, u.key]))
+                        }
                         className={`relative flex min-h-36 flex-col justify-end overflow-hidden p-3 text-left transition-colors duration-150 ${
                           selected ? "bg-torii text-white" : "bg-charcoal text-paper hover:bg-zinc-800"
                         }`}
@@ -133,12 +136,22 @@ export function OnboardingFlow({ next, initialUsername, initialUniverse }: Props
                         >
                           {u.kanji}
                         </span>
+                        {selected && (
+                          <span className="absolute top-2 left-2 grid size-6 place-items-center bg-white text-torii">
+                            <Check className="size-4" strokeWidth={3} />
+                          </span>
+                        )}
                         <span className="relative font-extrabold">{u.label}</span>
                         <span className={`relative mt-0.5 text-xs ${selected ? "text-white/85" : "text-zinc-400"}`}>{u.detail}</span>
                       </button>
                     );
                   })}
                 </div>
+                <p className="mt-3 text-sm text-zinc-400" aria-live="polite">
+                  {universes.length === 0
+                    ? "Touche une ou plusieurs cases."
+                    : `${universes.length} choisi${universes.length > 1 ? "s" : ""}`}
+                </p>
               </section>
             )}
 
